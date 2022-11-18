@@ -99,11 +99,32 @@ export const constantRoutes = [
   }
 ]
 
-/**
- * asyncRoutes
- * the routes that need to be dynamically loaded based on user roles
- */
+// 動態路由以及權限控制，roles控制權限（主要邏輯在permission.js）
 export const asyncRoutes = [
+  // 會員管理
+  {
+    path: '/admin_manage',
+    component: Layout,
+    redirect: '/admin_manage/admin_list',
+    hidden: false,
+    alwaysShow: true,
+    name: 'admin_manage',
+    meta: {
+      title: 'adminManage',
+      icon: 'user'
+    },
+    children: [
+      // 會員列表
+      {
+        path: 'admin_list',
+        component: () => import('@/views/adminManage/adminList'),
+        name: 'admin_list',
+        meta: {
+          title: 'adminList'
+        }
+      }
+    ]
+  },
   {
     path: '/permission',
     component: Layout,
