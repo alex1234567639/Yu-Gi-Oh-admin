@@ -1,7 +1,11 @@
 export default {
   route: {
     dashboard: '首頁',
-    profile: '個人資料'
+    profile: '個人資料',
+    // 會員管理
+    adminManage: '會員管理',
+    adminList: '會員列表',
+    adminAdd: '新增會員'
   },
   // 登入
   login: {
@@ -19,5 +23,11 @@ export default {
     profile: '個人資料',
     dashboard: '首頁',
     logOut: '登出'
+  },
+  tagsView: {
+    refresh: '刷新',
+    close: '關閉',
+    closeOthers: '關閉其他',
+    closeAll: '關閉所有'
   }
 }
