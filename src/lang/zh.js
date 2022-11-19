@@ -29,5 +29,27 @@ export default {
     close: '關閉',
     closeOthers: '關閉其他',
     closeAll: '關閉所有'
+  },
+  // 會員管理
+  adminManage: {
+    // 會員列表
+    list: '會員列表',
+    chooseStatus: '選擇狀態',
+    normal: '使用中',
+    blocked: '停用中',
+    chooseType: '選擇類型',
+    manager: '管理者',
+    blogAdminUser: '前後台用戶',
+    blogOnlyUser: '前台用戶',
+    inputMame: '輸入用戶名',
+    inputAccount: '輸入帳號',
+    search: '搜尋',
+    no: '編號',
+    id: '會員ID',
+    name: '會員名稱',
+    account: '帳號',
+    createDate: '註冊日期',
+    type: '類型',
+    status: '狀態'
   }
 }
