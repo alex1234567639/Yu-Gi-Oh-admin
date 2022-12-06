@@ -67,6 +67,13 @@
                 <el-tag v-if="row.status === 1" type="danger">{{ $t('adminManage.blocked') }}</el-tag>
               </template>
             </el-table-column>
+            <el-table-column :label="$t('adminManage.action')" align="center" width="120" class-name="small-padding fixed-width">
+              <template slot-scope="{row}">
+                <el-button type="primary" size="mini" @click="handleEdit(row)">
+                  {{ $t('adminManage.edit') }}
+                </el-button>
+              </template>
+            </el-table-column>
           </el-table>
 
           <pagination
@@ -78,6 +85,34 @@
             :page-sizes="[20,50,100]"
             @pagination="getList"
           />
+
+          <!-- 編輯燈箱 start -->
+          <el-dialog :title="$t('adminManage.edit')" :visible.sync="editLightBoxVisible">
+            <el-form ref="dataForm" label-position="left" label-width="120px" style="width:350px; margin-left:50px;">
+              <el-form-item :label="'*' + $t('adminManage.type')">
+                <el-select v-model="edit_type" :placeholder="$t('adminManage.chooseType')" clearable>
+                  <el-option :label="$t('adminManage.manager')" :value="0" />
+                  <el-option :label="$t('adminManage.blogAdminUser')" :value="1" />
+                  <el-option :label="$t('adminManage.blogOnlyUser')" :value="2" />
+                </el-select>
+              </el-form-item>
+              <el-form-item :label="'*' + $t('adminManage.status')">
+                <el-select v-model="edit_status" :placeholder="$t('adminManage.chooseStatus')" clearable>
+                  <el-option :label="$t('adminManage.normal')" :value="0" />
+                  <el-option :label="$t('adminManage.blocked')" :value="1" />
+                </el-select>
+              </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="editLightBoxVisible = false">
+                {{ $t('lightbox.cancel') }}
+              </el-button>
+              <el-button type="primary" @click="updateAdmin">
+                {{ $t('lightbox.confirm') }}
+              </el-button>
+            </div>
+          </el-dialog>
+          <!-- 編輯燈箱 end -->
         </el-tab-pane>
 
         <!-- 新增帳號 -->
@@ -128,7 +163,12 @@ export default {
           { id: 10005, type: 1, name: '老皮', create_date: '2022-12-31 23:23:11', status: 1, account: 'pipi666' },
           { id: 10006, type: 1, name: 'Alex Wang', create_date: '2021-10-28 23:23:11', status: 0, account: 'dwighthowardabc' }
         ]
-      }
+      },
+      // 編輯會員
+      editLightBoxVisible: false,
+      edit_id: undefined,
+      edit_status: undefined,
+      edit_type: undefined
     }
   },
   mounted() {
@@ -150,6 +190,25 @@ export default {
       console.log(this.listQuery.filter)
       this.currentPage = 1
       this.getList()
+    },
+    // 編輯會員
+    handleEdit(list) {
+      this.editLightBoxVisible = true
+      this.edit_id = list.id
+      this.edit_type = list.type
+      this.edit_status = list.status
+    },
+    updateAdmin() {
+      const data = {
+        // 'token': getToken(),
+        'id': this.edit_id,
+        'type': this.edit_type,
+        'status': this.edit_status
+      }
+      console.log(data)
+      console.log('call api: /admin/edit')
+      alert(this.$t('alert.editSuccess'))
+      this.editLightBoxVisible = false
     },
     // 新增會員
     addCompleted() {

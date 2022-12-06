@@ -51,6 +51,8 @@ export default {
     createDate: '註冊日期',
     type: '類型',
     status: '狀態',
+    action: '操作',
+    edit: '編輯',
     // 新增會員
     addAccount: '新增會員',
     password: '密碼',
