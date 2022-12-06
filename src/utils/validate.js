@@ -64,6 +64,12 @@ export function validEmail(email) {
   return reg.test(email)
 }
 
+// 會員密碼格式
+export function validPlatformPassword(password) {
+  const result = /^([@$!%*?&.#')]*)[A-Za-z\d@$!%*?&.#')]{8,16}$/.test(password)
+  return result
+}
+
 /**
  * @param {string} str
  * @returns {Boolean}
