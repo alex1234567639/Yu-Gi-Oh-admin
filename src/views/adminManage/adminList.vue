@@ -16,7 +16,7 @@
             </el-select>
             <el-input
               v-model="listQuery.filter.name"
-              :placeholder="$t('adminManage.inputMame')"
+              :placeholder="$t('adminManage.inputName')"
               clearable
               type="text"
               class="filter-item input"
@@ -48,7 +48,7 @@
             </el-table-column>
             <el-table-column :label="$t('adminManage.id')" prop="id" align="center" width="130" />
             <el-table-column :label="$t('adminManage.account')" prop="account" align="center" width="160" />
-            <el-table-column :label="$t('adminManage.type')" prop="type" align="center" width="110">
+            <el-table-column :label="$t('adminManage.type')" prop="type" align="center" width="130">
               <template slot-scope="{row}">
                 <el-tag v-if="row.type === 0" type="info">{{ $t('adminManage.manager') }}</el-tag>
                 <el-tag v-if="row.type === 1">{{ $t('adminManage.blogAdminUser') }}</el-tag>
@@ -68,14 +68,37 @@
               </template>
             </el-table-column>
           </el-table>
+
+          <pagination
+            v-show="total>0"
+            :total="total"
+            :page.sync="currentPage"
+            :limit.sync="listQuery.limit"
+            style="text-align:center"
+            :page-sizes="[20,50,100]"
+            @pagination="getList"
+          />
         </el-tab-pane>
+
+        <!-- 新增帳號 -->
+        <el-tab-pane :label="$t('adminManage.addAccount')" name="add_account">
+          <AdminAdd @addCompleted="addCompleted" />
+        </el-tab-pane>
+
       </el-tabs>
     </template>
   </div>
 </template>
 
 <script>
+import AdminAdd from './adminAdd'
+import Pagination from '@/components/Pagination'
+
 export default {
+  components: {
+    AdminAdd,
+    Pagination
+  },
   data() {
     return {
       total: 0,
@@ -127,6 +150,11 @@ export default {
       console.log(this.listQuery.filter)
       this.currentPage = 1
       this.getList()
+    },
+    // 新增會員
+    addCompleted() {
+      this.getList()
+      this.tabName = 'admin_list'
     }
   }
 }
