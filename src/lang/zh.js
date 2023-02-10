@@ -5,7 +5,9 @@ export default {
     // 會員管理
     adminManage: '會員管理',
     adminList: '會員列表',
-    adminAdd: '新增會員'
+    adminAdd: '新增會員',
+    // 富文本範例
+    tinymce: '富文本範例'
   },
   // 登入
   login: {
