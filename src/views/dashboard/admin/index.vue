@@ -16,7 +16,7 @@
       </el-col>
       <el-col :xs="24" :sm="24" :lg="8">
         <div class="chart-wrapper">
-          <pie-chart />
+          <pie-chart :data-list="dataList" />
         </div>
       </el-col>
       <el-col :xs="24" :sm="24" :lg="8">
@@ -85,7 +85,14 @@ export default {
   },
   data() {
     return {
-      lineChartData: lineChartData.newVisitis
+      lineChartData: lineChartData.newVisitis,
+      dataList: [
+        { value: 320, name: 'Industries' },
+        { value: 240, name: 'Technology' },
+        { value: 149, name: 'Forex' },
+        { value: 100, name: 'Gold' },
+        { value: 59, name: 'Forecasts' }
+      ]
     }
   },
   methods: {

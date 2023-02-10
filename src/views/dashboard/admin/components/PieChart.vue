@@ -21,6 +21,10 @@ export default {
     height: {
       type: String,
       default: '300px'
+    },
+    dataList: {
+      type: Array
+      // default: '300px'
     }
   },
   data() {
@@ -61,13 +65,14 @@ export default {
             roseType: 'radius',
             radius: [15, 95],
             center: ['50%', '38%'],
-            data: [
-              { value: 320, name: 'Industries' },
-              { value: 240, name: 'Technology' },
-              { value: 149, name: 'Forex' },
-              { value: 100, name: 'Gold' },
-              { value: 59, name: 'Forecasts' }
-            ],
+            // data: [
+            //   { value: 320, name: 'Industries' },
+            //   { value: 240, name: 'Technology' },
+            //   { value: 149, name: 'Forex' },
+            //   { value: 100, name: 'Gold' },
+            //   { value: 59, name: 'Forecasts' }
+            // ],
+            data: this.dataList,
             animationEasing: 'cubicInOut',
             animationDuration: 2600
           }
