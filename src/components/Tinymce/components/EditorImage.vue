@@ -108,4 +108,7 @@ export default {
     width: 100%;
   }
 }
+.btn-box {
+  text-align: right;
+}
 </style>

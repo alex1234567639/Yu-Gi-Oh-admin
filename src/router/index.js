@@ -125,6 +125,22 @@ export const asyncRoutes = [
       }
     ]
   },
+  // 富文本範例
+  {
+    path: '/tinymce',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/tinymceDemo/index.vue'),
+        name: 'Tinymce',
+        meta: {
+          title: 'tinymce',
+          icon: 'lock'
+        }
+      }
+    ]
+  },
   {
     path: '/permission',
     component: Layout,
