@@ -135,7 +135,23 @@ export const asyncRoutes = [
         component: () => import('@/views/tinymceDemo/index.vue'),
         name: 'Tinymce',
         meta: {
-          title: 'tinymce',
+          title: '富文本範例',
+          icon: 'lock'
+        }
+      }
+    ]
+  },
+  // 日曆範例
+  {
+    path: '/Calendar',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/calendar/index.vue'),
+        name: 'Calendar',
+        meta: {
+          title: '日曆範例',
           icon: 'lock'
         }
       }

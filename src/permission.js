@@ -11,22 +11,22 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 const whiteList = ['/login', '/auth-redirect'] // no redirect whitelist
 
 router.beforeEach(async(to, from, next) => {
-  // start progress bar
+  // 開始進度條
   NProgress.start()
 
-  // set page title
+  // 設置頁面標題
   document.title = getPageTitle(to.meta.title)
 
-  // determine whether the user has logged in
+  // 判斷是否已經登入 get token from cookie
   const hasToken = getToken()
 
   if (hasToken) {
     if (to.path === '/login') {
-      // if is logged in, redirect to the home page
+      // 若是進入登入頁則不需要權限
       next({ path: '/' })
       NProgress.done() // hack: https://github.com/PanJiaChen/vue-element-admin/pull/2939
     } else {
-      // determine whether the user has obtained his permission roles through getInfo
+      // 判斷是否已經藉由getInfo()取得登入角色權限
       const hasRoles = store.getters.roles && store.getters.roles.length > 0
       if (hasRoles) {
         next()
@@ -36,7 +36,7 @@ router.beforeEach(async(to, from, next) => {
           // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
           const { roles } = await store.dispatch('user/getInfo')
 
-          // generate accessible routes map based on roles
+          // 按照權限生成路由表
           const accessRoutes = await store.dispatch('permission/generateRoutes', roles)
 
           // dynamically add accessible routes
