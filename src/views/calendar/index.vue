@@ -1,6 +1,6 @@
 <template>
   <div class="calendar-wrapper">
-    <el-calendar>
+    <el-calendar v-model="calendarValue">
       <template #dateCell="{ data }">
         <div class="calendar-item">
           <div class="calendar-time">
@@ -21,6 +21,7 @@
 export default {
   data() {
     return {
+      calendarValue: '',
       resDate: [
         { date: '2023-02-08', content: '放假' },
         { date: '2023-02-09', content: '放假' },
@@ -31,6 +32,11 @@ export default {
         { date: '2023-02-14', content: '打牌' },
         { date: '2023-02-15', content: '打牌' }
       ]
+    }
+  },
+  watch: {
+    calendarValue(val) {
+      console.log(val)
     }
   },
   methods: {
