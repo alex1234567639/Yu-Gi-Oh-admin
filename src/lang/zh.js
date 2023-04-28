@@ -3,9 +3,42 @@ export default {
     dashboard: '首頁',
     profile: '個人資料',
     // 會員管理
-    adminManage: '會員管理',
-    adminList: '會員列表',
-    adminAdd: '新增會員'
+    member: '會員管理',
+    memberList: '會員列表',
+    // banner管理
+    banner: 'Banner 管理',
+    // 文章列表-系列介紹
+    seriesIntroduction: '系列介紹',
+    theme: '主題牌組',
+    plugins: '外掛',
+    // 文章列表-泛用卡介紹
+    usefulCardIntroduction: '泛用卡介紹',
+    singleCard: '單卡介紹',
+    strategy: '戰術分析',
+    // 文章列表-上位卡表
+    metaDeck: '上位卡表',
+    // 文章列表-泛用卡介紹
+    productionInformation: '泛用卡介紹',
+    pack: '補充包',
+    deck: '預組',
+    // 文章列表-規則相關
+    rules: '規則相關',
+    precedent: '判例',
+    forbiddenList: '禁卡表',
+    // 文章列表-卡片故事
+    seriesStory: '卡片故事',
+    // 戰報管理
+    battlePaper: '戰報管理',
+    // 行事曆
+    calendar: '行事曆',
+    // 卡片
+    card: '卡片',
+    // Tag管理
+    tag: 'Tag 管理',
+    // 包裝分類管理
+    packType: '包裝分類管理',
+    // 權限管理
+    permit: '權限管理'
   },
   // 登入
   login: {
@@ -31,7 +64,7 @@ export default {
     closeAll: '關閉所有'
   },
   // 會員管理
-  adminManage: {
+  memberManage: {
     // 會員列表
     list: '會員列表',
     chooseStatus: '選擇狀態',
