@@ -3,9 +3,26 @@ export default {
     dashboard: '首頁',
     profile: '個人資料',
     // 會員管理
-    adminManage: '會員管理',
-    adminList: '會員列表',
-    adminAdd: '新增會員'
+    member: '會員管理',
+    memberList: '會員列表',
+    // banner管理
+    banner: 'banner管理',
+    bannerList: 'banner',
+    // 文章列表-系列介紹
+    seriesIntroduction: '系列介紹',
+    theme: '主題牌組',
+    plugins: '外掛',
+    // 文章列表-泛用卡介紹
+    usefulCardIntroduction: '泛用卡介紹',
+    singleCard: '單卡介紹',
+    strategy: '戰術分析',
+    // 文章列表-上位卡表
+    metaDeck: '上位卡表',
+    metaDeckList: '上位卡表',
+    // 文章列表-泛用卡介紹
+    productionInformation: '泛用卡介紹',
+    pack: '補充包',
+    deck: '預組'
   },
   // 登入
   login: {
@@ -31,7 +48,7 @@ export default {
     closeAll: '關閉所有'
   },
   // 會員管理
-  adminManage: {
+  memberManage: {
     // 會員列表
     list: '會員列表',
     chooseStatus: '選擇狀態',

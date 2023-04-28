@@ -59,31 +59,6 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/documentation',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/documentation/index'),
-        name: 'Documentation',
-        meta: { title: 'Documentation', icon: 'documentation', affix: true }
-      }
-    ]
-  },
-  {
-    path: '/guide',
-    component: Layout,
-    redirect: '/guide/index',
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/guide/index'),
-        name: 'Guide',
-        meta: { title: 'Guide', icon: 'guide', noCache: true }
-      }
-    ]
-  },
-  {
     path: '/profile',
     component: Layout,
     redirect: '/profile/index',
@@ -103,24 +78,170 @@ export const constantRoutes = [
 export const asyncRoutes = [
   // 會員管理
   {
-    path: '/admin_manage',
+    path: '/member',
     component: Layout,
-    redirect: '/admin_manage/admin_list',
+    redirect: '/member/list',
     hidden: false,
     alwaysShow: true,
-    name: 'admin_manage',
+    name: 'member',
     meta: {
-      title: 'adminManage',
+      title: 'member',
       icon: 'user'
     },
     children: [
       // 會員列表
       {
-        path: 'admin_list',
-        component: () => import('@/views/adminManage/adminList'),
-        name: 'admin_list',
+        path: 'list',
+        component: () => import('@/views/memberManage/memberList'),
+        name: 'member_list',
         meta: {
-          title: 'adminList'
+          title: 'memberList' // 給i18n用
+        }
+      }
+    ]
+  },
+  // banner管理
+  {
+    path: '/banner',
+    component: Layout,
+    redirect: '/banner/list',
+    hidden: false,
+    alwaysShow: true,
+    name: 'banner',
+    meta: {
+      title: 'banner',
+      icon: 'star'
+    },
+    children: [
+      // banner列表
+      {
+        path: 'list',
+        component: () => import('@/views/bannerManage/bannerList'),
+        name: 'banner_list',
+        meta: {
+          title: 'bannerList' // 給i18n用
+        }
+      }
+    ]
+  },
+  // 文章列表-系列介紹
+  {
+    path: '/series_introduction',
+    component: Layout,
+    redirect: '/series_introduction/theme',
+    hidden: false,
+    alwaysShow: true,
+    name: 'series_introduction',
+    meta: {
+      title: 'seriesIntroduction',
+      icon: 'excel'
+    },
+    children: [
+      // 主題牌組
+      {
+        path: 'theme',
+        component: () => import('@/views/seriesIntroduction/theme'),
+        name: 'theme',
+        meta: {
+          title: 'theme'
+        }
+      },
+      // 外掛
+      {
+        path: 'plugins',
+        component: () => import('@/views/seriesIntroduction/plugins'),
+        name: 'plugins',
+        meta: {
+          title: 'plugins'
+        }
+      }
+    ]
+  },
+  // 文章列表-泛用卡介紹
+  {
+    path: '/useful_card_introduction',
+    component: Layout,
+    redirect: '/useful_card_introduction/single_card',
+    hidden: false,
+    alwaysShow: true,
+    name: 'useful_card_introduction',
+    meta: {
+      title: 'usefulCardIntroduction',
+      icon: 'excel'
+    },
+    children: [
+      // 單卡介紹
+      {
+        path: 'single_card',
+        component: () => import('@/views/usefulCardIntroduction/singleCard'),
+        name: 'single_card',
+        meta: {
+          title: 'singleCard'
+        }
+      },
+      // 戰術分析
+      {
+        path: 'strategy',
+        component: () => import('@/views/usefulCardIntroduction/strategy'),
+        name: 'strategy',
+        meta: {
+          title: 'strategy'
+        }
+      }
+    ]
+  },
+  // 文章列表-上位卡表
+  {
+    path: '/meta_deck',
+    component: Layout,
+    redirect: '/meta_deck/index',
+    hidden: false,
+    alwaysShow: true,
+    name: 'meta_deck',
+    meta: {
+      title: 'metaDeck',
+      icon: 'excel'
+    },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/metaDeck/index'),
+        name: 'meta_deck_list',
+        meta: {
+          title: 'metaDeckList'
+        }
+      }
+    ]
+  },
+  // 文章列表-泛用卡介紹
+  {
+    path: '/production_information',
+    component: Layout,
+    redirect: '/production_information/pack',
+    hidden: false,
+    alwaysShow: true,
+    name: 'production_information',
+    meta: {
+      title: 'productionInformation',
+      icon: 'excel'
+    },
+    children: [
+      // 補充包
+      {
+        path: 'pack',
+        component: () => import('@/views/productionInformation/pack'),
+        name: 'pack',
+        meta: {
+          title: 'pack'
+        }
+      },
+      // 預組
+      {
+        path: 'deck',
+        component: () => import('@/views/productionInformation/deck'),
+        name: 'deck',
+        meta: {
+          title: 'deck'
         }
       }
     ]
@@ -198,20 +319,6 @@ export const asyncRoutes = [
       }
     ]
   },
-
-  {
-    path: '/icon',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/icons/index'),
-        name: 'Icons',
-        meta: { title: 'Icons', icon: 'icon', noCache: true }
-      }
-    ]
-  },
-
   /** when your routing map is too long, you can split it into small modules **/
   componentsRouter,
   chartsRouter,
@@ -287,20 +394,6 @@ export const asyncRoutes = [
       }
     ]
   },
-
-  {
-    path: '/error-log',
-    component: Layout,
-    children: [
-      {
-        path: 'log',
-        component: () => import('@/views/error-log/index'),
-        name: 'ErrorLog',
-        meta: { title: 'Error Log', icon: 'bug' }
-      }
-    ]
-  },
-
   {
     path: '/excel',
     component: Layout,
@@ -399,18 +492,6 @@ export const asyncRoutes = [
       }
     ]
   },
-
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://github.com/PanJiaChen/vue-element-admin',
-        meta: { title: 'External Link', icon: 'link' }
-      }
-    ]
-  },
-
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]

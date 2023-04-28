@@ -1,49 +1,49 @@
 <template>
   <div class="admin-add-wrapper">
     <el-form label-width="120px" label-position="left">
-      <el-form-item :label="'*' + $t('adminManage.type')">
-        <el-select v-model="add_type" :placeholder="$t('adminManage.chooseType')">
-          <el-option :label="$t('adminManage.manager')" :value="0" />
-          <el-option :label="$t('adminManage.blogAdminUser')" :value="1" />
-          <el-option :label="$t('adminManage.blogOnlyUser')" :value="2" />
+      <el-form-item :label="'*' + $t('memberManage.type')">
+        <el-select v-model="add_type" :placeholder="$t('memberManage.chooseType')">
+          <el-option :label="$t('memberManage.manager')" :value="0" />
+          <el-option :label="$t('memberManage.blogAdminUser')" :value="1" />
+          <el-option :label="$t('memberManage.blogOnlyUser')" :value="2" />
         </el-select>
       </el-form-item>
-      <el-form-item :label="'*' + $t('adminManage.name')">
+      <el-form-item :label="'*' + $t('memberManage.name')">
         <el-input
           v-model="add_name"
           autocomplete="off"
-          :placeholder="$t('adminManage.inputName')"
+          :placeholder="$t('memberManage.inputName')"
           type="text"
           maxlength="30"
           class="input"
         />
       </el-form-item>
-      <el-form-item :label="'*' + $t('adminManage.account')">
+      <el-form-item :label="'*' + $t('memberManage.account')">
         <el-input
           v-model="add_account"
           autocomplete="off"
-          :placeholder="$t('adminManage.inputAccount')"
+          :placeholder="$t('memberManage.inputAccount')"
           type="text"
           maxlength="30"
           class="input"
         />
       </el-form-item>
-      <el-form-item :label="'*' + $t('adminManage.password')">
+      <el-form-item :label="'*' + $t('memberManage.password')">
         <div class="remind-content">{{ '*' + $t('login.password6Digits') }}</div>
         <el-input
           v-model="add_password"
           autocomplete="new-password"
-          :placeholder="$t('adminManage.inputPassword')"
+          :placeholder="$t('memberManage.inputPassword')"
           type="password"
           maxlength="30"
           class="input"
         />
       </el-form-item>
-      <el-form-item :label="'*' + $t('adminManage.passwordConfirm')">
+      <el-form-item :label="'*' + $t('memberManage.passwordConfirm')">
         <el-input
           v-model="add_passwordConfirm"
           autocomplete="new-password"
-          :placeholder="$t('adminManage.inputPasswordConfirm')"
+          :placeholder="$t('memberManage.inputPasswordConfirm')"
           type="password"
           maxlength="30"
           class="input"
@@ -77,15 +77,15 @@ export default {
   methods: {
     handleAddUser() {
       if (this.add_type === '' || this.add_type === undefined) {
-        alert(this.$t('adminManage.chooseType'))
+        alert(this.$t('memberManage.chooseType'))
       } else if (this.add_name === '') {
-        alert(this.$t('adminManage.inputName'))
+        alert(this.$t('memberManage.inputName'))
       } else if (this.add_account === '') {
-        alert(this.$t('adminManage.inputAccount'))
+        alert(this.$t('memberManage.inputAccount'))
       } else if (validPlatformPassword(this.add_password) === false) {
-        alert(this.$t('adminManage.inputValidPassword'))
+        alert(this.$t('memberManage.inputValidPassword'))
       } else if (this.add_password !== this.add_passwordConfirm) {
-        alert(this.$t('adminManage.differentPassword'))
+        alert(this.$t('memberManage.differentPassword'))
       } else {
         const data = {
           // 'token': getToken(),

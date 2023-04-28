@@ -2,34 +2,34 @@
   <div class="components-container">
     <template>
       <el-tabs v-model="tabName">
-        <el-tab-pane :label="$t('adminManage.list')" name="admin_list">
+        <el-tab-pane :label="$t('memberManage.list')" name="admin_list">
           <!-- 搜尋Bar -->
           <div class="filter-container">
-            <el-select v-model="listQuery.filter.status" :placeholder="$t('adminManage.chooseStatus')" clearable class="filter-item select">
-              <el-option :label="$t('adminManage.normal')" :value="0" />
-              <el-option :label="$t('adminManage.blocked')" :value="1" />
+            <el-select v-model="listQuery.filter.status" :placeholder="$t('memberManage.chooseStatus')" clearable class="filter-item select">
+              <el-option :label="$t('memberManage.normal')" :value="0" />
+              <el-option :label="$t('memberManage.blocked')" :value="1" />
             </el-select>
-            <el-select v-model="listQuery.filter.type" :placeholder="$t('adminManage.chooseType')" clearable class="filter-item select">
-              <el-option :label="$t('adminManage.manager')" :value="0" />
-              <el-option :label="$t('adminManage.blogAdminUser')" :value="1" />
-              <el-option :label="$t('adminManage.blogOnlyUser')" :value="2" />
+            <el-select v-model="listQuery.filter.type" :placeholder="$t('memberManage.chooseType')" clearable class="filter-item select">
+              <el-option :label="$t('memberManage.manager')" :value="0" />
+              <el-option :label="$t('memberManage.blogAdminUser')" :value="1" />
+              <el-option :label="$t('memberManage.blogOnlyUser')" :value="2" />
             </el-select>
             <el-input
               v-model="listQuery.filter.name"
-              :placeholder="$t('adminManage.inputName')"
+              :placeholder="$t('memberManage.inputName')"
               clearable
               type="text"
               class="filter-item input"
             />
             <el-input
               v-model="listQuery.filter.name"
-              :placeholder="$t('adminManage.inputAccount')"
+              :placeholder="$t('memberManage.inputAccount')"
               clearable
               type="text"
               class="filter-item input"
             />
             <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
-              {{ $t('adminManage.search') }}
+              {{ $t('memberManage.search') }}
             </el-button>
           </div>
 
@@ -41,36 +41,36 @@
             highlight-current-row
             class="table-list"
           >
-            <el-table-column :label="$t('adminManage.no')" align="center" width="60">
+            <el-table-column :label="$t('memberManage.no')" align="center" width="60">
               <template slot-scope="row">
                 {{ row.$index + 1 + listQuery.page*listQuery.limit }}
               </template>
             </el-table-column>
-            <el-table-column :label="$t('adminManage.id')" prop="id" align="center" width="130" />
-            <el-table-column :label="$t('adminManage.account')" prop="account" align="center" width="160" />
-            <el-table-column :label="$t('adminManage.type')" prop="type" align="center" width="130">
+            <el-table-column :label="$t('memberManage.id')" prop="id" align="center" width="130" />
+            <el-table-column :label="$t('memberManage.account')" prop="account" align="center" width="160" />
+            <el-table-column :label="$t('memberManage.type')" prop="type" align="center" width="130">
               <template slot-scope="{row}">
-                <el-tag v-if="row.type === 0" type="info">{{ $t('adminManage.manager') }}</el-tag>
-                <el-tag v-if="row.type === 1">{{ $t('adminManage.blogAdminUser') }}</el-tag>
-                <el-tag v-if="row.type === 2" type="warning">{{ $t('adminManage.blogOnlyUser') }}</el-tag>
+                <el-tag v-if="row.type === 0" type="info">{{ $t('memberManage.manager') }}</el-tag>
+                <el-tag v-if="row.type === 1">{{ $t('memberManage.blogAdminUser') }}</el-tag>
+                <el-tag v-if="row.type === 2" type="warning">{{ $t('memberManage.blogOnlyUser') }}</el-tag>
               </template>
             </el-table-column>
-            <el-table-column :label="$t('adminManage.name')" prop="name" align="center" width="150" />
-            <el-table-column :label="$t('adminManage.createDate')" prop="create_date" align="center" width="140">
+            <el-table-column :label="$t('memberManage.name')" prop="name" align="center" width="150" />
+            <el-table-column :label="$t('memberManage.createDate')" prop="create_date" align="center" width="140">
               <template slot-scope="{row}">
                 <span>{{ row.create_date | parseTime('{y}-{m}-{d}') }}</span>
               </template>
             </el-table-column>
-            <el-table-column :label="$t('adminManage.status')" prop="status" align="center" width="100">
+            <el-table-column :label="$t('memberManage.status')" prop="status" align="center" width="100">
               <template slot-scope="{row}">
-                <el-tag v-if="row.status === 0" type="success">{{ $t('adminManage.normal') }}</el-tag>
-                <el-tag v-if="row.status === 1" type="danger">{{ $t('adminManage.blocked') }}</el-tag>
+                <el-tag v-if="row.status === 0" type="success">{{ $t('memberManage.normal') }}</el-tag>
+                <el-tag v-if="row.status === 1" type="danger">{{ $t('memberManage.blocked') }}</el-tag>
               </template>
             </el-table-column>
-            <el-table-column :label="$t('adminManage.action')" align="center" width="120" class-name="small-padding fixed-width">
+            <el-table-column :label="$t('memberManage.action')" align="center" width="120" class-name="small-padding fixed-width">
               <template slot-scope="{row}">
                 <el-button type="primary" size="mini" @click="handleEdit(row)">
-                  {{ $t('adminManage.edit') }}
+                  {{ $t('memberManage.edit') }}
                 </el-button>
               </template>
             </el-table-column>
@@ -87,19 +87,19 @@
           />
 
           <!-- 編輯燈箱 start -->
-          <el-dialog :title="$t('adminManage.edit')" :visible.sync="editLightBoxVisible">
+          <el-dialog :title="$t('memberManage.edit')" :visible.sync="editLightBoxVisible">
             <el-form ref="dataForm" label-position="left" label-width="120px" style="width:350px; margin-left:50px;">
-              <el-form-item :label="'*' + $t('adminManage.type')">
-                <el-select v-model="edit_type" :placeholder="$t('adminManage.chooseType')" clearable>
-                  <el-option :label="$t('adminManage.manager')" :value="0" />
-                  <el-option :label="$t('adminManage.blogAdminUser')" :value="1" />
-                  <el-option :label="$t('adminManage.blogOnlyUser')" :value="2" />
+              <el-form-item :label="'*' + $t('memberManage.type')">
+                <el-select v-model="edit_type" :placeholder="$t('memberManage.chooseType')" clearable>
+                  <el-option :label="$t('memberManage.manager')" :value="0" />
+                  <el-option :label="$t('memberManage.blogAdminUser')" :value="1" />
+                  <el-option :label="$t('memberManage.blogOnlyUser')" :value="2" />
                 </el-select>
               </el-form-item>
-              <el-form-item :label="'*' + $t('adminManage.status')">
-                <el-select v-model="edit_status" :placeholder="$t('adminManage.chooseStatus')" clearable>
-                  <el-option :label="$t('adminManage.normal')" :value="0" />
-                  <el-option :label="$t('adminManage.blocked')" :value="1" />
+              <el-form-item :label="'*' + $t('memberManage.status')">
+                <el-select v-model="edit_status" :placeholder="$t('memberManage.chooseStatus')" clearable>
+                  <el-option :label="$t('memberManage.normal')" :value="0" />
+                  <el-option :label="$t('memberManage.blocked')" :value="1" />
                 </el-select>
               </el-form-item>
             </el-form>
@@ -116,8 +116,8 @@
         </el-tab-pane>
 
         <!-- 新增帳號 -->
-        <el-tab-pane :label="$t('adminManage.addAccount')" name="add_account">
-          <AdminAdd @addCompleted="addCompleted" />
+        <el-tab-pane :label="$t('memberManage.addAccount')" name="add_account">
+          <MemberAdd @addCompleted="addCompleted" />
         </el-tab-pane>
 
       </el-tabs>
@@ -126,12 +126,12 @@
 </template>
 
 <script>
-import AdminAdd from './adminAdd'
+import MemberAdd from './memberAdd'
 import Pagination from '@/components/Pagination'
 
 export default {
   components: {
-    AdminAdd,
+    MemberAdd,
     Pagination
   },
   data() {
