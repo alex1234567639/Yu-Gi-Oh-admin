@@ -104,22 +104,14 @@ export const asyncRoutes = [
   {
     path: '/banner',
     component: Layout,
-    redirect: '/banner/list',
-    hidden: false,
-    alwaysShow: true,
-    name: 'banner',
-    meta: {
-      title: 'banner',
-      icon: 'star'
-    },
     children: [
-      // banner列表
       {
         path: 'list',
         component: () => import('@/views/bannerManage/bannerList'),
         name: 'banner_list',
         meta: {
-          title: 'bannerList' // 給i18n用
+          title: 'banner', // 給i18n用
+          icon: 'star'
         }
       }
     ]
@@ -194,21 +186,14 @@ export const asyncRoutes = [
   {
     path: '/meta_deck',
     component: Layout,
-    redirect: '/meta_deck/index',
-    hidden: false,
-    alwaysShow: true,
-    name: 'meta_deck',
-    meta: {
-      title: 'metaDeck',
-      icon: 'excel'
-    },
     children: [
       {
         path: 'index',
         component: () => import('@/views/metaDeck/index'),
-        name: 'meta_deck_list',
+        name: 'meta_deck',
         meta: {
-          title: 'metaDeckList'
+          title: 'metaDeck',
+          icon: 'excel'
         }
       }
     ]
@@ -246,6 +231,151 @@ export const asyncRoutes = [
       }
     ]
   },
+  // 文章列表-規則相關
+  {
+    path: '/rules',
+    component: Layout,
+    redirect: '/rules/precedent',
+    hidden: false,
+    alwaysShow: true,
+    name: 'rules',
+    meta: {
+      title: 'rules',
+      icon: 'excel'
+    },
+    children: [
+      // 判例
+      {
+        path: 'precedent',
+        component: () => import('@/views/rules/precedent'),
+        name: 'precedent',
+        meta: {
+          title: 'precedent'
+        }
+      },
+      // 禁卡表
+      {
+        path: 'forbidden_list',
+        component: () => import('@/views/rules/forbiddenList'),
+        name: 'forbidden_list',
+        meta: {
+          title: 'forbiddenList'
+        }
+      }
+    ]
+  },
+  // 文章列表-卡片故事
+  {
+    path: '/series_story',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/seriesStory/index'),
+        name: 'series_story',
+        meta: {
+          title: 'seriesStory',
+          icon: 'excel'
+        }
+      }
+    ]
+  },
+  // 戰報管理
+  {
+    path: '/battle_paper',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/battlePaper/index'),
+        name: 'battle_paper',
+        meta: {
+          title: 'battlePaper',
+          icon: 'excel'
+        }
+      }
+    ]
+  },
+  // 行事曆
+  {
+    path: '/calendar',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/calendar/index.vue'),
+        name: 'calendar',
+        meta: {
+          title: 'calendar',
+          icon: 'form'
+        }
+      }
+    ]
+  },
+  // 卡片
+  {
+    path: '/card',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/card/index.vue'),
+        name: 'card',
+        meta: {
+          title: 'card',
+          icon: 'list'
+        }
+      }
+    ]
+  },
+  // Tag管理
+  {
+    path: '/tag',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/tag/index.vue'),
+        name: 'tag',
+        meta: {
+          title: 'tag',
+          icon: 'table'
+        }
+      }
+    ]
+  },
+  // 包裝分類管理
+  {
+    path: '/pack_type',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/packType/index.vue'),
+        name: 'pack_type',
+        meta: {
+          title: 'packType',
+          icon: 'tree'
+        }
+      }
+    ]
+  },
+  // 權限管理
+  {
+    path: '/permit',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/permit/index.vue'),
+        name: 'permit',
+        meta: {
+          title: 'permit',
+          icon: 'lock'
+        }
+      }
+    ]
+  },
   // 富文本範例
   {
     path: '/tinymce',
@@ -257,23 +387,7 @@ export const asyncRoutes = [
         name: 'Tinymce',
         meta: {
           title: '富文本範例',
-          icon: 'lock'
-        }
-      }
-    ]
-  },
-  // 日曆範例
-  {
-    path: '/Calendar',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/calendar/index.vue'),
-        name: 'Calendar',
-        meta: {
-          title: '日曆範例',
-          icon: 'lock'
+          icon: 'documentation'
         }
       }
     ]

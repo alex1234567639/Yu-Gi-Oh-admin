@@ -6,8 +6,7 @@ export default {
     member: '會員管理',
     memberList: '會員列表',
     // banner管理
-    banner: 'banner管理',
-    bannerList: 'banner',
+    banner: 'Banner 管理',
     // 文章列表-系列介紹
     seriesIntroduction: '系列介紹',
     theme: '主題牌組',
@@ -18,11 +17,28 @@ export default {
     strategy: '戰術分析',
     // 文章列表-上位卡表
     metaDeck: '上位卡表',
-    metaDeckList: '上位卡表',
     // 文章列表-泛用卡介紹
     productionInformation: '泛用卡介紹',
     pack: '補充包',
-    deck: '預組'
+    deck: '預組',
+    // 文章列表-規則相關
+    rules: '規則相關',
+    precedent: '判例',
+    forbiddenList: '禁卡表',
+    // 文章列表-卡片故事
+    seriesStory: '卡片故事',
+    // 戰報管理
+    battlePaper: '戰報管理',
+    // 行事曆
+    calendar: '行事曆',
+    // 卡片
+    card: '卡片',
+    // Tag管理
+    tag: 'Tag 管理',
+    // 包裝分類管理
+    packType: '包裝分類管理',
+    // 權限管理
+    permit: '權限管理'
   },
   // 登入
   login: {
