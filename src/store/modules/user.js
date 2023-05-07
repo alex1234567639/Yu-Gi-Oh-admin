@@ -1,13 +1,17 @@
 import { login, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
+import { decode, encode } from '@/utils/decode'
+import { getPermit } from '@/api/permission.js'
 
 const state = {
   token: getToken(),
   name: '',
   avatar: '',
   introduction: '',
-  roles: []
+  roles: [],
+  account: {},
+  accountInfo: {}
 }
 
 const mutations = {
@@ -25,76 +29,100 @@ const mutations = {
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
+  },
+  SET_ACCOUNT: (state, account) => {
+    state.account = account
+  },
+  SET_ACCOUNTINFO: (state, info) => {
+    state.accountInfo = info
   }
 }
 
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
+      login({ data: encode(userInfo) })
+        .then((response) => {
+          const res = decode(response.data)
+          commit('SET_TOKEN', res.token)
+          commit('SET_ACCOUNT', userInfo.account)
+          setToken(res.token)
+          resolve(true)
+        })
+        .catch((error) => {
+          reject(error)
+        })
     })
   },
 
   // get user info
   getInfo({ commit, state }) {
+    const obj = encode({
+      token: state.token,
+      tokenReq: state.account,
+      page: 0,
+      limit: 1,
+      filter: {
+        account: state.account
+      }
+    })
     return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
-        const { data } = response
+      getInfo({ data: obj })
+        .then(async(response) => {
+          const data = decode(response.data).list[0]
+          const { status: adminStatus, account, ...other } = data
+          const permit = decode(
+            (
+              await getPermit({
+                data: encode({
+                  token: state.token,
+                  tokenReq: account,
+                  page: 0,
+                  limit: 1,
+                  filter: {
+                    type: adminStatus
+                  }
+                })
+              })
+            ).data
+          ).list[0]['permission']
 
-        if (!data) {
-          reject('Verification failed, please Login again.')
-        }
-
-        const { roles, name, avatar, introduction } = data
-
-        // roles must be a non-empty array
-        if (!roles || roles.length <= 0) {
-          reject('getInfo: roles must be a non-null array!')
-        }
-
-        commit('SET_ROLES', roles)
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
-        commit('SET_INTRODUCTION', introduction)
-        resolve(data)
-      }).catch(error => {
-        reject(error)
-      })
+          commit('SET_ROLES', permit[0])
+          commit('SET_ACCOUNTINFO', other)
+          resolve(true)
+        })
+        .catch((error) => {
+          reject(error)
+        })
     })
   },
 
   // user logout
   logout({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
-        commit('SET_TOKEN', '')
-        commit('SET_ROLES', [])
-        removeToken()
-        resetRouter()
+      logout(state.token)
+        .then(() => {
+          commit('SET_TOKEN', '')
+          commit('SET_ROLES', [])
+          removeToken()
+          resetRouter()
 
-        // reset visited views and cached views
-        // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
-        dispatch('tagsView/delAllViews', null, { root: true })
+          // reset visited views and cached views
+          // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
+          dispatch('tagsView/delAllViews', null, { root: true })
 
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
+          resolve()
+        })
+        .catch((error) => {
+          reject(error)
+        })
     })
   },
 
   // remove token
   resetToken({ commit }) {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       commit('SET_TOKEN', '')
       commit('SET_ROLES', [])
       removeToken()
@@ -114,7 +142,9 @@ const actions = {
     resetRouter()
 
     // generate accessible routes map based on roles
-    const accessRoutes = await dispatch('permission/generateRoutes', roles, { root: true })
+    const accessRoutes = await dispatch('permission/generateRoutes', roles, {
+      root: true
+    })
     // dynamically add accessible routes
     router.addRoutes(accessRoutes)
 

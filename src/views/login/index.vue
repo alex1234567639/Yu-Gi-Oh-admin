@@ -1,9 +1,15 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
-
+    <el-form
+      ref="loginForm"
+      :model="loginForm"
+      :rules="loginRules"
+      class="login-form"
+      autocomplete="on"
+      label-position="left"
+    >
       <div class="title-container">
-        <h3 class="title">{{ $t('login.title') }}</h3>
+        <h3 class="title">{{ $t("login.title") }}</h3>
         <lang-select class="set-language" />
       </div>
 
@@ -22,7 +28,12 @@
         />
       </el-form-item>
 
-      <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
+      <el-tooltip
+        v-model="capsTooltip"
+        content="Caps lock is On"
+        placement="right"
+        manual
+      >
         <el-form-item prop="password">
           <span class="svg-container">
             <svg-icon icon-class="password" />
@@ -41,7 +52,9 @@
             @keyup.enter.native="handleLogin"
           />
           <span class="show-pwd" @click="showPwd">
-            <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+            <svg-icon
+              :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
+            />
           </span>
         </el-form-item>
       </el-tooltip>
@@ -54,15 +67,29 @@
           name="captcha"
           type="text"
           maxlength="8"
-          @input="loginForm.captcha = loginForm.captcha.replace(/[\u4E00-\u9FA5]|[\s]/g,'')"
+          @input="
+            loginForm.captcha = loginForm.captcha.replace(
+              /[\u4E00-\u9FA5]|[\s]/g,
+              ''
+            )
+          "
         />
       </el-form-item>
-      <Captcha ref="child" class="captcha" @getCaptcha="captcha = $event" @refreshCode="updateCode = $event" />
+      <Captcha
+        ref="child"
+        class="captcha"
+        @getCaptcha="captcha = $event"
+        @refreshCode="updateCode = $event"
+      />
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">
-        {{ $t('login.logIn') }}
+      <el-button
+        :loading="loading"
+        type="primary"
+        style="width: 100%; margin-bottom: 30px"
+        @click.native.prevent="handleLogin"
+      >
+        {{ $t("login.logIn") }}
       </el-button>
-
     </el-form>
   </div>
 </template>
@@ -89,7 +116,9 @@ export default {
         captcha: ''
       },
       loginRules: {
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        password: [
+          { required: true, trigger: 'blur', validator: validatePassword }
+        ]
       },
       passwordType: 'password',
       capsTooltip: false,
@@ -121,7 +150,7 @@ export default {
   methods: {
     checkCapslock(e) {
       const { key } = e
-      this.capsTooltip = key && key.length === 1 && (key >= 'A' && key <= 'Z')
+      this.capsTooltip = key && key.length === 1 && key >= 'A' && key <= 'Z'
     },
     showPwd() {
       if (this.passwordType === 'password') {
@@ -133,19 +162,33 @@ export default {
         this.$refs.password.focus()
       })
     },
-    handleLogin() {
+    async handleLogin() {
+      const data = {
+        account: 'alex2223',
+        password: 'alex2223'
+      }
+      // Login
+      if (!(await this.$store.dispatch('user/login', data))) return
+      // GetInfo
+      console.log(await this.$store.dispatch('user/getInfo'))
+      const x = true
+      if (x) return
       if (this.loginForm.captcha.toUpperCase() !== this.captcha) {
         // 檢查驗證碼
         this.$message.error(this.$t('login.wrongCaptcha'))
         this.$refs.child.refreshCode()
         return false
       } else {
-        this.$refs.loginForm.validate(valid => {
+        this.$refs.loginForm.validate((valid) => {
           if (valid) {
             this.loading = true
-            this.$store.dispatch('user/login', this.loginForm)
+            this.$store
+              .dispatch('user/login', this.loginForm)
               .then(() => {
-                this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+                this.$router.push({
+                  path: this.redirect || '/',
+                  query: this.otherQuery
+                })
                 this.loading = false
               })
               .catch(() => {
@@ -171,8 +214,8 @@ export default {
 </script>
 
 <style lang="scss">
-$bg:#283443;
-$light_gray:#fff;
+$bg: #283443;
+$light_gray: #fff;
 $cursor: #fff;
 
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
@@ -215,9 +258,9 @@ $cursor: #fff;
 </style>
 
 <style lang="scss" scoped>
-$bg:#2d3a4b;
-$dark_gray:#889aa4;
-$light_gray:#eee;
+$bg: #2d3a4b;
+$dark_gray: #889aa4;
+$light_gray: #eee;
 
 .login-container {
   min-height: 100%;
