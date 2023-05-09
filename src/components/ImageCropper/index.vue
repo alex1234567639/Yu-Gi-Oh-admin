@@ -20,8 +20,16 @@
             <i class="vicp-icon1-bottom" />
           </i>
           <span v-show="loading !== 1" class="vicp-hint">{{ lang.hint }}</span>
-          <span v-show="!isSupported" class="vicp-no-supported-hint">{{ lang.noSupported }}</span>
-          <input v-show="false" v-if="step == 1" ref="fileinput" type="file" @change="handleChange">
+          <span v-show="!isSupported" class="vicp-no-supported-hint">{{
+            lang.noSupported
+          }}</span>
+          <input
+            v-show="false"
+            v-if="step == 1"
+            ref="fileinput"
+            type="file"
+            @change="handleChange"
+          >
         </div>
         <div v-show="hasError" class="vicp-error">
           <i class="vicp-icon2" />
@@ -58,8 +66,14 @@
                 @mouseup="createImg"
                 @mouseout="createImg"
               >
-              <div :style="sourceImgShadeStyle" class="vicp-img-shade vicp-img-shade-1" />
-              <div :style="sourceImgShadeStyle" class="vicp-img-shade vicp-img-shade-2" />
+              <div
+                :style="sourceImgShadeStyle"
+                class="vicp-img-shade vicp-img-shade-1"
+              />
+              <div
+                :style="sourceImgShadeStyle"
+                class="vicp-img-shade vicp-img-shade-2"
+              />
             </div>
 
             <div class="vicp-range">
@@ -86,8 +100,16 @@
             </div>
 
             <div v-if="!noRotate" class="vicp-rotate">
-              <i @mousedown="startRotateLeft" @mouseout="endRotate" @mouseup="endRotate">↺</i>
-              <i @mousedown="startRotateRight" @mouseout="endRotate" @mouseup="endRotate">↻</i>
+              <i
+                @mousedown="startRotateLeft"
+                @mouseout="endRotate"
+                @mouseup="endRotate"
+              >↺</i>
+              <i
+                @mousedown="startRotateRight"
+                @mouseout="endRotate"
+                @mouseup="endRotate"
+              >↻</i>
             </div>
           </div>
           <div v-show="true" class="vicp-crop-right">
@@ -96,7 +118,10 @@
                 <img :src="createImgUrl" :style="previewStyle">
                 <span>{{ lang.preview }}</span>
               </div>
-              <div v-if="!noCircle" class="vicp-preview-item vicp-preview-item-circle">
+              <div
+                v-if="!noCircle"
+                class="vicp-preview-item vicp-preview-item-circle"
+              >
                 <img :src="createImgUrl" :style="previewStyle">
                 <span>{{ lang.preview }}</span>
               </div>
@@ -105,15 +130,25 @@
         </div>
         <div class="vicp-operate">
           <a @click="setStep(1)" @mousedown="ripple">{{ lang.btn.back }}</a>
-          <a class="vicp-operate-btn" @click="prepareUpload" @mousedown="ripple">{{ lang.btn.save }}</a>
+          <a
+            class="vicp-operate-btn"
+            @click="prepareUpload"
+            @mousedown="ripple"
+          >{{ lang.btn.save }}</a>
         </div>
       </div>
 
       <div v-if="step == 3" class="vicp-step3">
         <div class="vicp-upload">
-          <span v-show="loading === 1" class="vicp-loading">{{ lang.loading }}</span>
+          <span v-show="loading === 1" class="vicp-loading">{{
+            lang.loading
+          }}</span>
           <div class="vicp-progress-wrap">
-            <span v-show="loading === 1" :style="progressStyle" class="vicp-progress" />
+            <span
+              v-show="loading === 1"
+              :style="progressStyle"
+              class="vicp-progress"
+            />
           </div>
           <div v-show="hasError" class="vicp-error">
             <i class="vicp-icon2" />
@@ -136,7 +171,7 @@
 
 <script>
 'use strict'
-import request from '@/utils/request'
+import request from '@/utils/request.js'
 import language from './utils/language.js'
 import mimes from './utils/mimes.js'
 import data2blob from './utils/data2blob.js'
@@ -479,7 +514,7 @@ export default {
     // 设置图片源
     setSourceImg(file) {
       const fr = new FileReader()
-      fr.onload = e => {
+      fr.onload = (e) => {
         this.sourceImgUrl = fr.result
         this.startCrop()
       }
@@ -671,16 +706,8 @@ export default {
     // 缩放原图
     zoomImg(newRange) {
       const { sourceImgMasking, scale } = this
-      const {
-        maxWidth,
-        maxHeight,
-        minWidth,
-        minHeight,
-        width,
-        height,
-        x,
-        y
-      } = scale
+      const { maxWidth, maxHeight, minWidth, minHeight, width, height, x, y } =
+        scale
       const sim = sourceImgMasking
       // 蒙版宽高
       const sWidth = sim.width
@@ -759,16 +786,8 @@ export default {
     },
     // 上传图片
     upload() {
-      const {
-        lang,
-        imgFormat,
-        mime,
-        url,
-        params,
-        field,
-        ki,
-        createImgUrl
-      } = this
+      const { lang, imgFormat, mime, url, params, field, ki, createImgUrl } =
+        this
       const fmData = new FormData()
       fmData.append(
         field,
@@ -777,7 +796,7 @@ export default {
       )
       // 添加其他参数
       if (typeof params === 'object' && params) {
-        Object.keys(params).forEach(k => {
+        Object.keys(params).forEach((k) => {
           fmData.append(k, params[k])
         })
       }
@@ -796,11 +815,11 @@ export default {
         method: 'post',
         data: fmData
       })
-        .then(resData => {
+        .then((resData) => {
           this.loading = 2
           this.$emit('crop-upload-success', resData.data)
         })
-        .catch(err => {
+        .catch((err) => {
           if (this.value) {
             this.loading = 3
             this.hasError = true
