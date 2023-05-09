@@ -3,7 +3,7 @@ import store from './store'
 import { Message } from 'element-ui'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
-import { getToken } from '@/utils/auth' // get token from cookie
+import { getToken, getAccount } from '@/utils/auth' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
@@ -19,8 +19,9 @@ router.beforeEach(async(to, from, next) => {
 
   // 判斷是否已經登入 get token from cookie
   const hasToken = getToken()
+  const hasAccount = getAccount()
 
-  if (hasToken) {
+  if (hasToken && hasAccount) {
     if (to.path === '/login') {
       // 若是進入登入頁則不需要權限
       next({ path: '/' })
@@ -48,7 +49,6 @@ router.beforeEach(async(to, from, next) => {
           // set the replace: true, so the navigation will not leave a history record
           next({ ...to, replace: true })
         } catch (error) {
-          console.log(error)
           // remove token and go to login page to re-login
           await store.dispatch('user/resetToken')
           Message.error(error || 'Has Error')

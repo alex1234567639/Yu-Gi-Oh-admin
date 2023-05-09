@@ -111,8 +111,8 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111',
+        username: 'alex2223',
+        password: 'alex2223',
         captcha: ''
       },
       loginRules: {
@@ -163,16 +163,6 @@ export default {
       })
     },
     async handleLogin() {
-      const data = {
-        account: 'alex2223',
-        password: 'alex2223'
-      }
-      // Login
-      if (!(await this.$store.dispatch('user/login', data))) return
-      // GetInfo
-      console.log(await this.$store.dispatch('user/getInfo'))
-      const x = true
-      if (x) return
       if (this.loginForm.captcha.toUpperCase() !== this.captcha) {
         // 檢查驗證碼
         this.$message.error(this.$t('login.wrongCaptcha'))
@@ -184,11 +174,13 @@ export default {
             this.loading = true
             this.$store
               .dispatch('user/login', this.loginForm)
-              .then(() => {
-                this.$router.push({
-                  path: this.redirect || '/',
-                  query: this.otherQuery
-                })
+              .then(async() => {
+                if (await this.$store.dispatch('user/getInfo')) {
+                  await this.$router.push({
+                    path: this.redirect || '/',
+                    query: this.otherQuery
+                  })
+                }
                 this.loading = false
               })
               .catch(() => {

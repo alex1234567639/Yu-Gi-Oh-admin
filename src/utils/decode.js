@@ -5,3 +5,6 @@ export const encode = (str) =>
 
 export const decode = (str) =>
   JSON.parse(CryptoJS.AES.decrypt(str, 'C8763').toString(CryptoJS.enc.Utf8))
+
+export const transPermitToArray = (permit) =>
+  Object.keys(permit).filter((el) => permit[el])

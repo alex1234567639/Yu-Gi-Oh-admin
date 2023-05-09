@@ -1,7 +1,14 @@
 import { login, logout, getInfo } from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import {
+  getToken,
+  setToken,
+  removeToken,
+  getAccount,
+  setAccount,
+  removeAccount
+} from '@/utils/auth'
 import router, { resetRouter } from '@/router'
-import { decode, encode } from '@/utils/decode'
+import { decode, encode, transPermitToArray } from '@/utils/decode'
 import { getPermit } from '@/api/permission.js'
 
 const state = {
@@ -10,7 +17,7 @@ const state = {
   avatar: '',
   introduction: '',
   roles: [],
-  account: {},
+  account: getAccount(),
   accountInfo: {}
 }
 
@@ -42,12 +49,14 @@ const actions = {
   // user login
   login({ commit }, userInfo) {
     return new Promise((resolve, reject) => {
-      login({ data: encode(userInfo) })
+      const { username, password } = userInfo
+      login({ data: encode({ account: username, password }) })
         .then((response) => {
           const res = decode(response.data)
           commit('SET_TOKEN', res.token)
-          commit('SET_ACCOUNT', userInfo.account)
+          commit('SET_ACCOUNT', username)
           setToken(res.token)
+          setAccount(username)
           resolve(true)
         })
         .catch((error) => {
@@ -75,25 +84,26 @@ const actions = {
         .then(async(response) => {
           const data = decode(response.data).list[0]
           const { status: adminStatus, account, ...other } = data
-          const permit = decode(
-            (
-              await getPermit({
-                data: encode({
-                  token: state.token,
-                  tokenReq: account,
-                  page: 0,
-                  limit: 1,
-                  filter: {
-                    type: adminStatus
-                  }
+          const permit = transPermitToArray(
+            decode(
+              (
+                await getPermit({
+                  data: encode({
+                    token: state.token,
+                    tokenReq: account,
+                    page: 0,
+                    limit: 1,
+                    filter: {
+                      type: adminStatus
+                    }
+                  })
                 })
-              })
-            ).data
-          ).list[0]['permission']
-
-          commit('SET_ROLES', permit[0])
+              ).data
+            ).list[0]['permission'][0]
+          )
+          commit('SET_ROLES', permit)
           commit('SET_ACCOUNTINFO', other)
-          resolve(permit[0])
+          resolve(permit)
         })
         .catch((error) => {
           reject(error)
@@ -104,11 +114,14 @@ const actions = {
   // user logout
   logout({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
-      logout(state.token)
+      logout({ data: encode({ token: state.token, tokenReq: state.account }) })
         .then(() => {
           commit('SET_TOKEN', '')
           commit('SET_ROLES', [])
+          commit('SET_ACCOUNTINFO', {})
+          commit('SET_ACCOUNT', '')
           removeToken()
+          removeAccount()
           resetRouter()
 
           // reset visited views and cached views
