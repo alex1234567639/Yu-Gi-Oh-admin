@@ -175,12 +175,10 @@ export default {
             this.$store
               .dispatch('user/login', this.loginForm)
               .then(async() => {
-                if (await this.$store.dispatch('user/getInfo')) {
-                  await this.$router.push({
-                    path: this.redirect || '/',
-                    query: this.otherQuery
-                  })
-                }
+                await this.$router.push({
+                  path: this.redirect || '/',
+                  query: this.otherQuery
+                })
                 this.loading = false
               })
               .catch(() => {

@@ -1,4 +1,5 @@
 import { login, logout, getInfo } from '@/api/user'
+import store from '@/store'
 import {
   getToken,
   setToken,
@@ -83,7 +84,8 @@ const actions = {
       getInfo({ data: obj })
         .then(async(response) => {
           const data = decode(response.data).list[0]
-          const { status: adminStatus, account, ...other } = data
+          console.log(data)
+          const { type: adminStatus, account, ...other } = data
           const permit = transPermitToArray(
             decode(
               (
@@ -103,6 +105,7 @@ const actions = {
           )
           commit('SET_ROLES', permit)
           commit('SET_ACCOUNTINFO', other)
+          await store.dispatch('permission/generateRoutes', permit)
           resolve(permit)
         })
         .catch((error) => {
