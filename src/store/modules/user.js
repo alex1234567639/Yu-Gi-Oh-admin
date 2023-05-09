@@ -58,6 +58,9 @@ const actions = {
 
   // get user info
   getInfo({ commit, state }) {
+    console.log(state.token, state.account)
+    if (typeof state.account !== 'string') return {}
+
     const obj = encode({
       token: state.token,
       tokenReq: state.account,
@@ -90,7 +93,7 @@ const actions = {
 
           commit('SET_ROLES', permit[0])
           commit('SET_ACCOUNTINFO', other)
-          resolve(true)
+          resolve(permit[0])
         })
         .catch((error) => {
           reject(error)

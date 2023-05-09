@@ -86,7 +86,8 @@ export const asyncRoutes = [
     name: 'member',
     meta: {
       title: 'member',
-      icon: 'user'
+      icon: 'user',
+      roles: ['member']
     },
     children: [
       // 會員列表
@@ -111,7 +112,8 @@ export const asyncRoutes = [
         name: 'banner_list',
         meta: {
           title: 'banner', // 給i18n用
-          icon: 'star'
+          icon: 'star',
+          roles: ['banner']
         }
       }
     ]
@@ -126,7 +128,8 @@ export const asyncRoutes = [
     name: 'series_introduction',
     meta: {
       title: 'seriesIntroduction',
-      icon: 'excel'
+      icon: 'excel',
+      roles: ['series_introduction']
     },
     children: [
       // 主題牌組
@@ -159,7 +162,8 @@ export const asyncRoutes = [
     name: 'useful_card_introduction',
     meta: {
       title: 'usefulCardIntroduction',
-      icon: 'excel'
+      icon: 'excel',
+      roles: ['useful_card_introduction']
     },
     children: [
       // 單卡介紹
@@ -193,7 +197,8 @@ export const asyncRoutes = [
         name: 'meta_deck',
         meta: {
           title: 'metaDeck',
-          icon: 'excel'
+          icon: 'excel',
+          roles: ['meta_deck']
         }
       }
     ]
@@ -208,7 +213,8 @@ export const asyncRoutes = [
     name: 'production_information',
     meta: {
       title: 'productionInformation',
-      icon: 'excel'
+      icon: 'excel',
+      roles: ['production_information']
     },
     children: [
       // 補充包
@@ -241,7 +247,8 @@ export const asyncRoutes = [
     name: 'rules',
     meta: {
       title: 'rules',
-      icon: 'excel'
+      icon: 'excel',
+      roles: ['rules']
     },
     children: [
       // 判例
@@ -275,7 +282,8 @@ export const asyncRoutes = [
         name: 'series_story',
         meta: {
           title: 'seriesStory',
-          icon: 'excel'
+          icon: 'excel',
+          roles: ['series_story']
         }
       }
     ]
@@ -291,7 +299,8 @@ export const asyncRoutes = [
         name: 'battle_paper',
         meta: {
           title: 'battlePaper',
-          icon: 'excel'
+          icon: 'excel',
+          roles: ['battle_paper']
         }
       }
     ]
@@ -307,7 +316,8 @@ export const asyncRoutes = [
         name: 'calendar',
         meta: {
           title: 'calendar',
-          icon: 'form'
+          icon: 'form',
+          roles: ['calendar']
         }
       }
     ]
@@ -323,7 +333,8 @@ export const asyncRoutes = [
         name: 'card',
         meta: {
           title: 'card',
-          icon: 'list'
+          icon: 'list',
+          roles: ['card']
         }
       }
     ]
@@ -339,7 +350,8 @@ export const asyncRoutes = [
         name: 'tag',
         meta: {
           title: 'tag',
-          icon: 'table'
+          icon: 'table',
+          roles: ['tag']
         }
       }
     ]
@@ -355,7 +367,8 @@ export const asyncRoutes = [
         name: 'pack_type',
         meta: {
           title: 'packType',
-          icon: 'tree'
+          icon: 'tree',
+          roles: ['pack_type']
         }
       }
     ]
@@ -371,7 +384,8 @@ export const asyncRoutes = [
         name: 'permit',
         meta: {
           title: 'permit',
-          icon: 'lock'
+          icon: 'lock',
+          roles: ['permit']
         }
       }
     ]
