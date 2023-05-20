@@ -114,5 +114,10 @@ export default {
     reLogin: '重新登入',
     reLoginTitle: '重新登入提示',
     reLoginContent: '此帳號已閒置過久或已從其他地方登入，請選擇重新登入或是留在此頁。'
+  },
+  form: {
+    pleaseInput: '請輸入',
+    pleaseChoose: '請選擇',
+    choosePhoto: '選擇圖片'
   }
 }
