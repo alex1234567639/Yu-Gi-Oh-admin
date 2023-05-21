@@ -48,6 +48,7 @@ export default {
           { label: '上架中', value: 0 },
           { label: '下架中', value: 1 }
         ] },
+        to_top: { type: 'checkbox', label: '置頂', preset: true },
         photo: { type: 'photo', label: '文章封面圖', preset: '' },
         tag: { type: 'tag', label: 'Tag', preset: [] },
         content: { type: 'tinymce', label: '內容', preset: '' }
@@ -62,6 +63,7 @@ export default {
           { label: '上架中', value: 0 },
           { label: '下架中', value: 1 }
         ] },
+        to_top: { type: 'checkbox', label: '置頂', preset: false },
         photo: { type: 'photo', label: '文章封面圖', preset: '' },
         tag: { type: 'tag', label: 'Tag', preset: [
           { _id: '1', tag: 'Hero' },
