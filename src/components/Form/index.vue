@@ -23,14 +23,17 @@
             />
           </el-select>
         </el-form-item>
+        <!-- checkbox -->
+        <el-form-item v-if="item.type === 'checkbox'" :label="item.label">
+          <el-checkbox v-model="item.preset" />
+        </el-form-item>
         <!-- 圖片 -->
-        <div v-if="item.type === 'photo'">
-          <div class="item-title">{{ item.label }}</div>
+        <el-form-item v-if="item.type === 'photo'" :label="item.label">
           <label class="photo-container">
             <input class="photo-btn" type="file" accept="image/*" @change="chooseFile($event)">
             {{ formData.photo.preset ? photoName : $t('form.choosePhoto') }}
           </label>
-        </div>
+        </el-form-item>
         <!-- 副文本 -->
         <tinymce
           v-if="item.type === 'tinymce'"
@@ -186,8 +189,7 @@ export default {
   & .photo-container {
     display: inline-block;
     max-width: 130px;
-    padding: 8px 18px 8px 16px;
-    margin: 0 20px 10px 0;
+    padding: 0 14px 0 11px;
     color: #FFFFFF;
     background-color: #1890ff;
     border-color: #1890ff;
