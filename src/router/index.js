@@ -98,6 +98,15 @@ export const asyncRoutes = [
         meta: {
           title: 'memberList' // 給i18n用
         }
+      },
+      // Form測試
+      {
+        path: 'form_test',
+        component: () => import('@/views/memberManage/formTest'),
+        name: 'form_test',
+        meta: {
+          title: 'Form測試'
+        }
       }
     ]
   },

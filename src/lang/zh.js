@@ -133,5 +133,10 @@ export default {
     11002: '密碼錯誤',
     11003: '註冊帳號重複',
     11004: '帳號尚未申請後台使用權限'
+  },
+  form: {
+    pleaseInput: '請輸入',
+    pleaseChoose: '請選擇',
+    choosePhoto: '選擇圖片'
   }
 }
