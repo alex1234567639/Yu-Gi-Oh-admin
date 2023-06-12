@@ -2,7 +2,7 @@ import request from '@/utils/request'
 import { getAccount, getToken } from '@/utils/auth'
 import { encode } from '@/utils/decode'
 
-export function api_add(path, method = 'add' || 'list' || 'edit', data) {
+export function callApi(path, method = 'add' || 'list' || 'edit', data) {
   return request({
     url: `/api/${path}/${method}`,
     method: 'post',
