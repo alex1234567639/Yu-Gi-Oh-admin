@@ -33,17 +33,8 @@ service.interceptors.request.use(
 
 // response interceptor
 service.interceptors.response.use(
-  /**
-   * If you want to get http information such as headers or status
-   * Please return  response => response
-   */
-
-  /**
-   * Determine the request status by custom code
-   * Here is just an example
-   * You can also judge the status by HTTP Status Code
-   */
   (response) => {
+    console.log(response)
     const res = response.data
     if (res.error_code && res.error_code !== 10009) {
       Message({
