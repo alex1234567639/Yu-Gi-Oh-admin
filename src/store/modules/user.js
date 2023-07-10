@@ -84,7 +84,6 @@ const actions = {
       getInfo({ data: obj })
         .then(async(response) => {
           const data = decode(response.data).list[0]
-          console.log(data)
           const { type: adminStatus, account, ...other } = data
           const permit = transPermitToArray(
             decode(

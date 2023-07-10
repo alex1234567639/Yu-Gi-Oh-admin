@@ -4,16 +4,13 @@
 
 <script>
 import { callApi } from '@/api/api'
-// import { getPermit } from '@/api/permission'
+import { decode } from '@/utils/decode'
 
 export default {
   mounted() {
     callApi('permission', 'list').then((res) => {
-      console.log(res)
+      console.log(decode(res.data))
     })
-    // getPermit().then(res => {
-    //   console.log(res)
-    // })
   }
 }
 </script>
