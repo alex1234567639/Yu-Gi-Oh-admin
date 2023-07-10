@@ -1,7 +1,5 @@
 <template>
-  <div class="permit-wrapper">
-    permit-wrapper
-  </div>
+  <div class="permit-wrapper">permit-wrapper</div>
 </template>
 
 <script>
@@ -10,7 +8,7 @@ import { callApi } from '@/api/api'
 
 export default {
   mounted() {
-    callApi('cards', 'list').then((res) => {
+    callApi('permission', 'list').then((res) => {
       console.log(res)
     })
     // getPermit().then(res => {
