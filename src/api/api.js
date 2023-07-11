@@ -2,7 +2,8 @@ import request from '@/utils/request'
 import { getAccount, getToken } from '@/utils/auth'
 import { encode } from '@/utils/decode'
 
-export function callApi(path, method = 'add' || 'list' || 'edit', datas = {}) {
+export function callApi(path, method = 'add' || 'list' || 'edit', req = {}) {
+  if (method === 'list' && !req.filter) req['filter'] = {}
   return request({
     url: `/api/${path}/${method}`,
     method: 'post',
@@ -10,7 +11,7 @@ export function callApi(path, method = 'add' || 'list' || 'edit', datas = {}) {
       data: encode({
         token: getToken(),
         tokenReq: getAccount(),
-        ...datas
+        ...req
       })
     }
   })

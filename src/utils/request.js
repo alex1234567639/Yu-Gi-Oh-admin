@@ -34,18 +34,19 @@ service.interceptors.response.use(
     // 測試環境顯示 request、response 的 console
     if (store.state.settings.showLog) {
       console.log({
-        'url': response.config.url.replace(response.config.baseURL, ''),
-        'requestData': decode(JSON.parse(response.config.data).data)
+        url: response.config.url.replace(response.config.baseURL, ''),
+        requestData: decode(JSON.parse(response.config.data).data)
       })
       console.log({
-        'error_code': response.data.error_code,
-        'responseData': decode(response.data.data),
-        'status': response.status
+        error_code: response.data.error_code,
+        responseData: decode(response.data.data),
+        status: response.status
       })
     }
 
     const res = response.data
-    if (res.error_code && res.error_code !== 10009) {
+    if (!res.error_code) return decode(res.data)
+    else if (res.error_code && res.error_code !== 10009) {
       Message({
         message: i18n.t(`errorCode.${res.error_code}`),
         type: 'error',
@@ -53,15 +54,13 @@ service.interceptors.response.use(
       })
       return Promise.reject(new Error(res.message || 'Error'))
     } else {
-      if (res.error_code) {
-        Message({
-          message: i18n.t(`errorCode.${res.error_code}`),
-          type: 'warning',
-          duration: 5 * 1000
-        })
-      }
+      Message({
+        message: i18n.t(`errorCode.${res.error_code}`),
+        type: 'warning',
+        duration: 5 * 1000
+      })
 
-      return res
+      return decode(res.data)
     }
   },
   (error) => {

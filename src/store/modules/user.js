@@ -9,7 +9,7 @@ import {
   removeAccount
 } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
-import { decode, encode, transPermitToArray } from '@/utils/decode'
+import { encode, transPermitToArray } from '@/utils/decode'
 import { getPermit } from '@/api/permission.js'
 
 const state = {
@@ -53,10 +53,10 @@ const actions = {
       const { username, password } = userInfo
       login({ data: encode({ account: username, password }) })
         .then((response) => {
-          const res = decode(response.data)
-          commit('SET_TOKEN', res.token)
+          // const res = decode(response.data)
+          commit('SET_TOKEN', response.token)
           commit('SET_ACCOUNT', username)
-          setToken(res.token)
+          setToken(response.token)
           setAccount(username)
           resolve(true)
         })
@@ -68,7 +68,7 @@ const actions = {
 
   // get user info
   getInfo({ commit, state }) {
-    console.log(state.token, state.account)
+    // console.log(state.token, state.account);
     if (typeof state.account !== 'string') return {}
 
     const obj = encode({
@@ -83,23 +83,22 @@ const actions = {
     return new Promise((resolve, reject) => {
       getInfo({ data: obj })
         .then(async(response) => {
-          const data = decode(response.data).list[0]
+          // const data = decode(response.data).list[0]
+          const data = response.list[0]
           const { type: adminStatus, account, ...other } = data
           const permit = transPermitToArray(
-            decode(
-              (
-                await getPermit({
-                  data: encode({
-                    token: state.token,
-                    tokenReq: account,
-                    page: 0,
-                    limit: 1,
-                    filter: {
-                      type: adminStatus
-                    }
-                  })
+            (
+              await getPermit({
+                data: encode({
+                  token: state.token,
+                  tokenReq: account,
+                  page: 0,
+                  limit: 1,
+                  filter: {
+                    type: adminStatus
+                  }
                 })
-              ).data
+              })
             ).list[0]['permission'][0]
           )
           commit('SET_ROLES', permit)
