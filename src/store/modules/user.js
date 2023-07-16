@@ -8,6 +8,7 @@ import {
   setAccount,
   removeAccount
 } from '@/utils/auth'
+import { removePermitList } from '@/utils/permitsList'
 import router, { resetRouter } from '@/router'
 import { encode, transPermitToArray } from '@/utils/decode'
 import { getPermit } from '@/api/permission.js'
@@ -124,9 +125,8 @@ const actions = {
           removeToken()
           removeAccount()
           resetRouter()
+          removePermitList()
 
-          // reset visited views and cached views
-          // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
           dispatch('tagsView/delAllViews', null, { root: true })
 
           resolve()

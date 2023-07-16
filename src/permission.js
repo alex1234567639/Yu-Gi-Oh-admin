@@ -4,6 +4,7 @@ import { Message } from 'element-ui'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import { getToken, getAccount } from '@/utils/auth' // get token from cookie
+import { setPermitList } from '@/utils/permitsList'
 import getPageTitle from '@/utils/get-page-title'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
@@ -36,7 +37,9 @@ router.beforeEach(async(to, from, next) => {
           // get user info
           // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
           const roles = await store.dispatch('user/getInfo')
-          // console.log(roles)
+          console.log(roles)
+          setPermitList(roles)
+
           // 按照權限生成路由表
           const accessRoutes = await store.dispatch(
             'permission/generateRoutes',

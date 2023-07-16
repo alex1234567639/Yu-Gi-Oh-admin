@@ -46,15 +46,14 @@
   }
 }
 
-// to fixed https://github.com/ElemeFE/element/issues/2461
 .el-dialog {
   transform: none;
   left: 0;
   position: relative;
-  margin: 0 auto;
+  margin: 10vh auto 5vh !important;
+  width: 700px;
 }
 
-// refine element ui upload
 .upload-container {
   .el-upload {
     width: 100%;
