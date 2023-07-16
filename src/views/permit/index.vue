@@ -163,6 +163,7 @@ export default {
             permission: this.permission
           }
           callApi('permission', 'edit', data).then(() => {
+            alert(this.$t('alert.editSuccess'))
             this.dialogVisible = false
             this.clearForm()
             this.getList()
