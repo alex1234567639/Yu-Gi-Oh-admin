@@ -39,7 +39,7 @@ service.interceptors.response.use(
       })
       console.log({
         error_code: response.data.error_code,
-        responseData: decode(response.data.data),
+        responseData: JSON.stringify(response.data.data) === '{}' ? response.data.data : decode(response.data.data),
         status: response.status
       })
     }
