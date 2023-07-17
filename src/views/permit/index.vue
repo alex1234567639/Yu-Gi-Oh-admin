@@ -1,5 +1,10 @@
 <template>
   <div class="components-container">
+    <!--新增權限-->
+    <el-button type="primary" icon="el-icon-plus" @click="handleAddPermit">
+      {{ $t('permits.permit_add') }}
+    </el-button>
+
     <!--權限列表-->
     <el-table
       :data="list"
@@ -118,7 +123,14 @@ export default {
     isChecked(data, checked) {
       this.checked = checked
     },
-    // 編輯、新增
+    // 新增
+    handleAddPermit() {
+      this.dialogType = 'add'
+      this.dialogVisible = true
+      this.name = ''
+      this.permission = Object.assign({}, permitOption.list)
+    },
+    // 編輯
     handleUpdatePermit(list) {
       console.log(list.permission[0])
       this.dialogType = 'edit'
@@ -164,6 +176,30 @@ export default {
           }
           callApi('permission', 'edit', data).then(() => {
             alert(this.$t('alert.editSuccess'))
+            this.dialogVisible = false
+            this.clearForm()
+            this.getList()
+          })
+        }
+      } else {
+        // 判斷為新增動作
+        if (this.name === '') {
+          alert(this.$t('permits.inputName'))
+        } else {
+          // 取得勾選為true的選項
+          this.trueOption = this.$refs.tree.getCheckedKeys()
+          if (this.$store.state.settings.showLog) {
+            console.log(this.trueOption)
+          }
+          for (let i = 0; i < this.trueOption.length; i++) {
+            this.permission[this.trueOption[i]] = true
+          }
+          const data = {
+            name: this.name,
+            permission: this.permission
+          }
+          callApi('permission', 'add', data).then(() => {
+            alert(this.$t('alert.addSuccess'))
             this.dialogVisible = false
             this.clearForm()
             this.getList()
