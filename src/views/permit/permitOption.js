@@ -101,14 +101,24 @@ export default {
         { id: 'calendar_edit', label: i18n.t('permits.calendar_edit'), disabled: true }
       ]
     },
+    // 牌組列表
+    {
+      id: 'deck',
+      label: i18n.t('permits.deck'),
+      disabled: true,
+      children: [
+        { id: 'deck_add', label: i18n.t('permits.deck_add'), disabled: true },
+        { id: 'deck_edit', label: i18n.t('permits.deck_edit'), disabled: true }
+      ]
+    },
     // 卡片管理
     {
       id: 'cards',
       label: i18n.t('permits.cards'),
       disabled: true,
       children: [
-        { id: 'card_add', label: i18n.t('card_add'), disabled: true },
-        { id: 'card_edit', label: i18n.t('card_edit'), disabled: true }
+        { id: 'card_add', label: i18n.t('permits.card_add'), disabled: true },
+        { id: 'card_edit', label: i18n.t('permits.card_edit'), disabled: true }
       ]
     },
     // Tag管理
@@ -173,6 +183,9 @@ export default {
     calendar: false,
     calendar_add: false,
     calendar_edit: false,
+    deck: false,
+    deck_add: false,
+    deck_edit: false,
     cards: false,
     card_add: false,
     card_edit: false,
