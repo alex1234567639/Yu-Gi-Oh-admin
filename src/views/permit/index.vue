@@ -132,7 +132,6 @@ export default {
     },
     // 編輯
     handleUpdatePermit(list) {
-      console.log(list.permission[0])
       this.dialogType = 'edit'
       this.dialogVisible = true
       this.permission = Object.assign({}, permitOption.list)

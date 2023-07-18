@@ -31,8 +31,8 @@ export default {
     battlePaper: '戰報管理',
     // 行事曆
     calendar: '行事曆',
-    // 卡片
-    card: '卡片',
+    // 卡片管理
+    cards: '卡片管理',
     // Tag管理
     tag: 'Tag 管理',
     // 包裝分類管理
