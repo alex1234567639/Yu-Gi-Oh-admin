@@ -331,7 +331,7 @@ export const asyncRoutes = [
       }
     ]
   },
-  // 卡片
+  // 卡片管理
   {
     path: '/card',
     component: Layout,
@@ -339,11 +339,11 @@ export const asyncRoutes = [
       {
         path: 'index',
         component: () => import('@/views/card/index.vue'),
-        name: 'card',
+        name: 'cards',
         meta: {
-          title: 'card',
+          title: 'cards',
           icon: 'list',
-          roles: ['card']
+          roles: ['cards']
         }
       }
     ]
