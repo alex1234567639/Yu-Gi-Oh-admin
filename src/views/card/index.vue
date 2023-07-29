@@ -6,6 +6,7 @@
 
 <script>
 import { callApi } from '@/api/api'
+import { removeNullAndEmptyString } from '@/utils/index.js'
 
 export default {
   data() {
@@ -38,7 +39,7 @@ export default {
   },
   methods: {
     getList() {
-      callApi('cards', 'list', this.listQuery).then((res) => {
+      callApi('cards', 'list', removeNullAndEmptyString(this.listQuery)).then((res) => {
         console.log(res)
       })
     }
