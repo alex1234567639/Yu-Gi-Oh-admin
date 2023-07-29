@@ -369,7 +369,7 @@ export function removeNullAndEmptyString(obj) {
     const value = obj[key]
 
     // 使用遞迴處理多層物件
-    const filteredValue = this.removeNullAndZeroValues(value)
+    const filteredValue = removeNullAndEmptyString(value)
 
     // 檢查處理後的值是否為 null 或 ''，如果不是就加入新的物件或陣列中
     if (filteredValue !== null && filteredValue !== '') {
