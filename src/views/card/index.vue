@@ -23,11 +23,11 @@ export default {
           type: '',
           star: '等級8',
           attribute: '光',
-          // rarity: '',
-          atk_t: 2800,
-          atk_l: 3500,
-          def_t: 2000,
-          def_l: 2600,
+          rarity: '',
+          atk_t: 3500,
+          atk_l: 2800,
+          def_t: 2600,
+          def_l: 2000,
           product_information_type: ''
         }
       },
