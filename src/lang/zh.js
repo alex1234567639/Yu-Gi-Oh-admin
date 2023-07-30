@@ -95,6 +95,22 @@ export default {
     inputValidPassword: '請輸入正確密碼格式',
     differentPassword: '密碼不一致'
   },
+  // 卡片管理
+  card: {
+    list: '卡片列表',
+    id: '卡號',
+    name: '卡片名稱',
+    type: '種類',
+    star: '星數',
+    attribute: '屬性',
+    race: '種族',
+    atk: '攻擊力',
+    def: '守備力',
+    number: '卡片密碼',
+    effect: '效果',
+    product_information_type: '包裝分類',
+    rarity: '稀有度'
+  },
   // 權限管理
   permits: {
     permits: 'permits',
@@ -149,7 +165,8 @@ export default {
   common: {
     id: '編號',
     action: '操作',
-    edit: '編輯'
+    edit: '編輯',
+    search: '搜尋'
   },
   alert: {
     alert: '提醒',
