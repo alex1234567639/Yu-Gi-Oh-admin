@@ -4,7 +4,6 @@ import store from '@/store'
 import { getToken } from '@/utils/auth'
 import { decode } from '@/utils/decode'
 import i18n from '@/lang'
-
 // create an axios instance
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
@@ -39,7 +38,10 @@ service.interceptors.response.use(
       })
       console.log({
         error_code: response.data.error_code,
-        responseData: JSON.stringify(response.data.data) === '{}' ? response.data.data : decode(response.data.data),
+        responseData:
+          JSON.stringify(response.data.data) === '{}'
+            ? response.data.data
+            : decode(response.data.data),
         status: response.status
       })
     }
@@ -52,6 +54,9 @@ service.interceptors.response.use(
         type: 'error',
         duration: 5 * 1000
       })
+      if (res.error_code === 10005) {
+        store.dispatch('errorLog/goToLogin', true)
+      }
       return Promise.reject(new Error(res.message || 'Error'))
     } else {
       Message({

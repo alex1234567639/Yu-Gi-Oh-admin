@@ -5,7 +5,21 @@
 </template>
 
 <script>
+import store from '@/store/modules/errorLog'
 export default {
-  name: 'App'
+  name: 'App',
+  computed: {
+    goToLogin() {
+      return store.state.goToLogin
+    }
+  },
+  watch: {
+    async goToLogin(newIndex) {
+      if (newIndex) this.$router.push('/login')
+      await this.$store.dispatch('user/logout')
+      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      this.$store.dispatch('errorLog/goToLoginPage', false)
+    }
+  }
 }
 </script>

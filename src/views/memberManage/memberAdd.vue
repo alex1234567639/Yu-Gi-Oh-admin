@@ -2,7 +2,10 @@
   <div class="admin-add-wrapper">
     <el-form label-width="120px" label-position="left">
       <el-form-item :label="'*' + $t('memberManage.type')">
-        <el-select v-model="add_type" :placeholder="$t('memberManage.chooseType')">
+        <el-select
+          v-model="add_type"
+          :placeholder="$t('memberManage.chooseType')"
+        >
           <el-option :label="$t('memberManage.manager')" :value="0" />
           <el-option :label="$t('memberManage.blogAdminUser')" :value="1" />
           <el-option :label="$t('memberManage.blogOnlyUser')" :value="2" />
@@ -29,7 +32,9 @@
         />
       </el-form-item>
       <el-form-item :label="'*' + $t('memberManage.password')">
-        <div class="remind-content">{{ '*' + $t('login.password6Digits') }}</div>
+        <div class="remind-content">
+          {{ "*" + $t("login.password6Digits") }}
+        </div>
         <el-input
           v-model="add_password"
           autocomplete="new-password"
@@ -52,10 +57,10 @@
     </el-form>
     <div class="btn-box">
       <el-button @click="clearAddUser">
-        {{ $t('lightbox.cancel') }}
+        {{ $t("lightbox.cancel") }}
       </el-button>
       <el-button type="primary" @click="handleAddUser">
-        {{ $t('lightbox.add') }}
+        {{ $t("lightbox.add") }}
       </el-button>
     </div>
   </div>
@@ -63,6 +68,7 @@
 
 <script>
 import { validPlatformPassword } from '@/utils/validate'
+import { callApi } from '@/api/api'
 
 export default {
   data() {
@@ -89,16 +95,17 @@ export default {
       } else {
         const data = {
           // 'token': getToken(),
-          'type': this.add_type,
-          'name': this.add_name,
-          'account': this.add_account,
-          'password': this.add_password
+          type: this.add_type,
+          name: this.add_name,
+          account: this.add_account,
+          password: this.add_password
         }
         console.log(data)
-        console.log('call api: /admin/add')
-        alert(this.$t('alert.addSuccess'))
-        this.clearAddUser()
-        this.$emit('addCompleted')
+        callApi('admin', 'add', data).then((res) => {
+          alert(this.$t('alert.addSuccess'))
+          this.clearAddUser()
+          this.$emit('addCompleted')
+        })
       }
     },
     clearAddUser() {
@@ -123,8 +130,8 @@ export default {
   width: 300px;
 }
 .remind-content {
-  font-size:12px;
-  color:red;
+  font-size: 12px;
+  color: red;
 }
 .btn-box {
   text-align: right;

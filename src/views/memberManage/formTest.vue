@@ -2,7 +2,6 @@
   <div class="form-test">
     <template>
       <el-tabs v-model="tabName">
-
         <el-tab-pane label="新增表格" name="add">
           <Form
             class="form-container"
@@ -20,11 +19,10 @@
             <Form
               :form-data="editFormData"
               @emitData="getEditData"
-              @cancel="editVisible=false"
+              @cancel="editVisible = false"
             />
           </el-dialog>
         </el-tab-pane>
-
       </el-tabs>
     </template>
   </div>
@@ -44,10 +42,15 @@ export default {
       addData: undefined,
       addFormData: {
         title: { type: 'input', label: '文章標題', preset: '' },
-        type: { type: 'select', label: '狀態', preset: undefined, options: [
-          { label: '上架中', value: 0 },
-          { label: '下架中', value: 1 }
-        ] },
+        type: {
+          type: 'select',
+          label: '狀態',
+          preset: undefined,
+          options: [
+            { label: '上架中', value: 0 },
+            { label: '下架中', value: 1 }
+          ]
+        },
         to_top: { type: 'checkbox', label: '置頂', preset: true },
         photo: { type: 'photo', label: '文章封面圖', preset: '' },
         tag: { type: 'tag', label: 'Tag', preset: [] },
@@ -59,16 +62,25 @@ export default {
       editFormData: {},
       editFakeData: {
         title: { type: 'input', label: '文章標題', preset: '123' },
-        type: { type: 'select', label: '狀態', preset: 0, options: [
-          { label: '上架中', value: 0 },
-          { label: '下架中', value: 1 }
-        ] },
+        type: {
+          type: 'select',
+          label: '狀態',
+          preset: 0,
+          options: [
+            { label: '上架中', value: 0 },
+            { label: '下架中', value: 1 }
+          ]
+        },
         to_top: { type: 'checkbox', label: '置頂', preset: false },
         photo: { type: 'photo', label: '文章封面圖', preset: '' },
-        tag: { type: 'tag', label: 'Tag', preset: [
-          { _id: '1', tag: 'Hero' },
-          { _id: '2', tag: '主流牌組' }
-        ] },
+        tag: {
+          type: 'tag',
+          label: 'Tag',
+          preset: [
+            { _id: '1', tag: 'Hero' },
+            { _id: '2', tag: '主流牌組' }
+          ]
+        },
         content: { type: 'tinymce', label: '內容', preset: '文章內容' }
       }
     }
