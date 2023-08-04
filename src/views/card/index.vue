@@ -378,10 +378,18 @@ export default {
   },
   methods: {
     getList() {
-      if (this.listQuery.filter.atk_l) { this.listQuery.filter.atk_l = parseInt(this.listQuery.filter.atk_l) }
-      if (this.listQuery.filter.atk_t) { this.listQuery.filter.atk_t = parseInt(this.listQuery.filter.atk_t) }
-      if (this.listQuery.filter.def_l) { this.listQuery.filter.def_l = parseInt(this.listQuery.filter.def_l) }
-      if (this.listQuery.filter.def_t) { this.listQuery.filter.def_t = parseInt(this.listQuery.filter.def_t) }
+      if (this.listQuery.filter.atk_l) {
+        this.listQuery.filter.atk_l = parseInt(this.listQuery.filter.atk_l)
+      }
+      if (this.listQuery.filter.atk_t) {
+        this.listQuery.filter.atk_t = parseInt(this.listQuery.filter.atk_t)
+      }
+      if (this.listQuery.filter.def_l) {
+        this.listQuery.filter.def_l = parseInt(this.listQuery.filter.def_l)
+      }
+      if (this.listQuery.filter.def_t) {
+        this.listQuery.filter.def_t = parseInt(this.listQuery.filter.def_t)
+      }
 
       this.listQuery.page = this.currentPage - 1
       callApi('cards', 'list', removeNullAndEmptyString(this.listQuery)).then(
@@ -393,6 +401,7 @@ export default {
     },
     handleFilter() {
       this.currentPage = 1
+      this.listQuery.filter.id = this.listQuery.filter.id.toUpperCase()
       this.getList()
     },
     getPackList() {

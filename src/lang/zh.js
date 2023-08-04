@@ -18,7 +18,7 @@ export default {
     // 文章列表-上位卡表
     metaDeck: '上位卡表',
     // 文章列表-泛用卡介紹
-    productionInformation: '泛用卡介紹',
+    productionInformation: '產品包介紹',
     pack: '補充包',
     deck: '預組',
     // 文章列表-規則相關
