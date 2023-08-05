@@ -233,7 +233,7 @@
               <el-form label-position="left" inline class="demo-table-expand">
                 <el-row>
                   <el-form-item :label="$t('card.effect')">
-                    <span v-html="props.row.effect" />
+                    <span style="white-space: pre-wrap" v-html="props.row.effect" />
                   </el-form-item>
                 </el-row>
                 <el-row>
@@ -309,6 +309,13 @@
             align="center"
             width="100"
           />
+          <el-table-column :label="$t('common.action')" width="100" align="center">
+            <template slot-scope="{row}">
+              <el-button type="primary" size="mini" @click="handleEdit(row)">
+                {{ $t('common.edit') }}
+              </el-button>
+            </template>
+          </el-table-column>
         </el-table>
 
         <pagination
@@ -323,18 +330,29 @@
         />
       </el-tab-pane>
     </el-tabs>
+
+    <!-- 編輯 -->
+    <el-dialog title="編輯" :visible.sync="editVisible">
+      <Form
+        :form-data="editFormData"
+        @emitData="getEditData"
+        @cancel="editVisible = false"
+      />
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import Pagination from '@/components/Pagination'
+import Form from '@/components/Form/index'
 import { ygoOptions } from '@/config/ygo.config'
 import { callApi } from '@/api/api'
 import { removeNullAndEmptyString } from '@/utils/index.js'
 
 export default {
   components: {
-    Pagination
+    Pagination,
+    Form
   },
   data() {
     return {
@@ -369,12 +387,61 @@ export default {
           status: 0
         }
       },
-      packList: null
+      packList: null,
+      // 編輯
+      editVisible: false,
+      editFormData: {},
+      editData: {
+        id: { type: 'input', label: this.$t('card.id'), preset: '' },
+        name: { type: 'input', label: this.$t('card.name'), preset: '' },
+        type: {
+          type: 'select',
+          label: this.$t('card.type'),
+          preset: 0,
+          options: []
+        },
+        star: {
+          type: 'select',
+          label: this.$t('card.star'),
+          preset: 0,
+          options: []
+        },
+        attribute: {
+          type: 'select',
+          label: this.$t('card.attribute'),
+          preset: 0,
+          options: []
+        },
+        race: {
+          type: 'select',
+          label: this.$t('card.race'),
+          preset: 0,
+          options: []
+        },
+        atk: { type: 'input', label: this.$t('card.atk'), preset: '' },
+        def: { type: 'input', label: this.$t('card.def'), preset: '' },
+        product_information_type: {
+          type: 'select',
+          label: this.$t('card.product_information_type'),
+          preset: 0,
+          options: []
+        },
+        number: { type: 'input', label: this.$t('card.number'), preset: '' }
+      },
+      typeOption: [],
+      starOption: [],
+      attributeOption: [],
+      raceOption: [],
+      productInfoOption: []
     }
   },
   mounted() {
     this.getList()
     this.getPackList()
+    this.typeOption = this.arrayTransfer(this.ygoOptions.type)
+    this.starOption = this.arrayTransfer(this.ygoOptions.star)
+    this.attributeOption = this.arrayTransfer(this.ygoOptions.attribute)
+    this.raceOption = this.arrayTransfer(this.ygoOptions.race)
   },
   methods: {
     getList() {
@@ -407,7 +474,38 @@ export default {
     getPackList() {
       callApi('packType', 'list', this.packListQuery).then((res) => {
         this.packList = res.list
+        for (let i = 0; i < this.packList.length; i++) {
+          this.productInfoOption.push({ label: this.packList[i].name, value: this.packList[i].packType })
+        }
       })
+    },
+    // 編輯
+    arrayTransfer(arr) {
+      // 將陣列調整為 [{ label: '', value: 0 }, ...] 的形式
+      const result = []
+      for (let i = 0; i < arr.length; i++) {
+        result.push({ label: arr[i], value: arr[i] })
+      }
+      return result
+    },
+    handleEdit(row) {
+      this.editVisible = true
+      this.editData.type.options = this.typeOption
+      this.editData.star.options = this.starOption
+      this.editData.attribute.options = this.attributeOption
+      this.editData.race.options = this.raceOption
+      this.editData.product_information_type.options = this.productInfoOption
+
+      // 帶入預設值
+      Object.keys(this.editData).forEach((key) => {
+        this.editData[key].preset = row[key]
+      })
+
+      this.editFormData = this.editData
+    },
+    getEditData(data) {
+      console.log(data)
+      this.editVisible = false
     }
   }
 }
