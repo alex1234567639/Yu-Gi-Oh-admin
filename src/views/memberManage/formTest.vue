@@ -54,6 +54,7 @@ export default {
         to_top: { type: 'checkbox', label: '置頂', preset: true },
         photo: { type: 'photo', label: '文章封面圖', preset: '' },
         tag: { type: 'tag', label: 'Tag', preset: [] },
+        rarity: { type: 'rarity', label: '稀有度', preset: [] },
         content: { type: 'tinymce', label: '內容', preset: '' }
       },
       // 編輯
@@ -80,6 +81,11 @@ export default {
             { _id: '1', tag: 'Hero' },
             { _id: '2', tag: '主流牌組' }
           ]
+        },
+        rarity: {
+          type: 'rarity',
+          label: '稀有度',
+          preset: ['金亮', '半鑽']
         },
         content: { type: 'tinymce', label: '內容', preset: '文章內容' }
       }

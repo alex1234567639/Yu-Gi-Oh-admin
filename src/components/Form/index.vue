@@ -64,6 +64,28 @@
             </div>
           </el-card>
         </div>
+        <!-- 稀有度 -->
+        <div v-if="item.type === 'rarity'" class="tag-container">
+          <div>
+            <div slot="header" class="item-title tag-title">{{ $t('card.rarity') }}</div>
+            <el-tag
+              v-for="(rarity, rarityIndex) in item.preset"
+              :key="rarity"
+              closable
+              :disable-transitions="false"
+              class="tag"
+              @close="handleCloseRarity(rarityIndex)"
+            >
+              {{ rarity }}
+            </el-tag>
+          </div>
+
+          <el-card class="tag-selection-box">
+            <div v-for="item in ygoOptions.rare" :key="item" class="tag-selection" @click="addRarity(item)">
+              {{ item }}
+            </div>
+          </el-card>
+        </div>
       </div>
     </el-form>
 
@@ -82,6 +104,7 @@
 import Tinymce from '@/components/Tinymce/index'
 import { uploadImage } from '@/utils/image'
 import { height_limit, KB_limit, width_limit } from '@/config/main'
+import { ygoOptions } from '@/config/ygo.config'
 
 export default {
   components: {
@@ -101,6 +124,7 @@ export default {
   },
   data() {
     return {
+      ygoOptions,
       tagList: [
         { _id: '1', tag: 'Hero' },
         { _id: '2', tag: '主流牌組' },
@@ -164,6 +188,19 @@ export default {
     },
     handleClose(tagIndex) {
       this.formData.tag.preset.splice(tagIndex, 1)
+    },
+    // 稀有度
+    checkDuplicateRarity(rarity) {
+      return this.formData.rarity.preset.find(e => e === rarity)
+    },
+    handleCloseRarity(rarityIndex) {
+      this.formData.rarity.preset.splice(rarityIndex, 1)
+    },
+    addRarity(item) {
+      // 檢查被點擊的稀有度是否已經加入
+      if (!this.checkDuplicateRarity(item)) {
+        this.formData.rarity.preset.push(item)
+      }
     }
   }
 }
