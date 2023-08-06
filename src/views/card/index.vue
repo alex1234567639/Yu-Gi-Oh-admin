@@ -1,7 +1,7 @@
 <template>
   <div class="components-container">
     <el-tabs v-model="tabName">
-      <el-tab-pane :label="$t('card.list')" name="card_list">
+      <el-tab-pane :label="$t('route.cardsList')" name="card_list">
         <!--搜尋Bar-->
         <div class="filter-container">
           <!-- 卡號 -->
@@ -491,7 +491,7 @@ export default {
       })
     },
     // 編輯
-    arrayTransfer(arr, isRarity = false) {
+    arrayTransfer(arr) {
       // 將陣列調整為 [{ label: '', value: 0 }, ...] 的形式
       const result = []
       for (let i = 0; i < arr.length; i++) {
