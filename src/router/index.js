@@ -212,7 +212,7 @@ export const asyncRoutes = [
       }
     ]
   },
-  // 文章列表-泛用卡介紹
+  // 文章列表-產品介紹
   {
     path: '/production_information',
     component: Layout,
