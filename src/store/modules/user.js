@@ -9,6 +9,7 @@ import {
   removeAccount
 } from '@/utils/auth'
 import { removePermitList } from '@/utils/permitsList'
+import { removePackTypeList } from '@/utils/packTypeList'
 import router, { resetRouter } from '@/router'
 import { encode, transPermitToArray } from '@/utils/decode'
 import { getPermit } from '@/api/permission.js'
@@ -126,6 +127,7 @@ const actions = {
           removeAccount()
           resetRouter()
           removePermitList()
+          removePackTypeList()
 
           dispatch('tagsView/delAllViews', null, { root: true })
 
