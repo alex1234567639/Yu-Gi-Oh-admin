@@ -12,6 +12,17 @@
             :placeholder="$t('form.pleaseInput')"
           />
         </el-form-item>
+        <!-- textarea -->
+        <el-form-item v-if="item.type === 'textarea'" :label="item.label">
+          <el-input
+            v-model="item.preset"
+            type="textarea"
+            class="textarea"
+            :placeholder="$t('form.pleaseInput')"
+            :autosize="{ minRows: 2, maxRows: 8 }"
+            resize="none"
+          />
+        </el-form-item>
         <!-- select -->
         <el-form-item v-if="item.type === 'select'" :label="item.label">
           <el-select v-model="item.preset" :placeholder="$t('form.pleaseChoose')" clearable>
@@ -211,6 +222,9 @@ export default {
   padding: 0 20px;
   & .input {
     width: 198px;
+  }
+  & .textarea {
+    width: 500px;
   }
   & .item-title {
     width: 90px;

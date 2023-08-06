@@ -42,6 +42,7 @@ export default {
       addData: undefined,
       addFormData: {
         title: { type: 'input', label: '文章標題', preset: '' },
+        textarea: { type: 'textarea', label: '文字匡', preset: '' },
         type: {
           type: 'select',
           label: '狀態',
@@ -63,6 +64,7 @@ export default {
       editFormData: {},
       editFakeData: {
         title: { type: 'input', label: '文章標題', preset: '123' },
+        textarea: { type: 'textarea', label: '文字匡', preset: '測試文字\n測試文字' },
         type: {
           type: 'select',
           label: '狀態',
