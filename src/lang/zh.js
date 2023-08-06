@@ -33,6 +33,8 @@ export default {
     calendar: '行事曆',
     // 卡片管理
     cards: '卡片管理',
+    cardsList: '卡片列表',
+    cardsAdd: '卡片新增',
     // Tag管理
     tag: 'Tag 管理',
     // 包裝分類管理
@@ -97,7 +99,6 @@ export default {
   },
   // 卡片管理
   card: {
-    list: '卡片列表',
     id: '卡號',
     name: '卡片名稱',
     type: '種類',
