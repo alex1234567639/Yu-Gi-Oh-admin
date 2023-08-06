@@ -97,6 +97,8 @@
 <script>
 import LangSelect from '@/components/LangSelect'
 import Captcha from '@/components/Captcha/index'
+import { callApi } from '@/api/api'
+import { setPackTypeList } from '@/utils/packTypeList'
 
 export default {
   name: 'Login',
@@ -125,7 +127,17 @@ export default {
       loading: false,
       showDialog: false,
       redirect: undefined,
-      otherQuery: {}
+      otherQuery: {},
+      // 產品包裝列表
+      packListQuery: {
+        page: 0,
+        limit: 0,
+        filter: {
+          status: 0
+        }
+      },
+      packList: null,
+      productInfoArr: []
     }
   },
   watch: {
@@ -180,6 +192,8 @@ export default {
                   query: this.otherQuery
                 })
                 this.loading = false
+
+                this.fetchPackTypeList()
               })
               .catch(() => {
                 this.loading = false
@@ -198,6 +212,16 @@ export default {
         }
         return acc
       }, {})
+    },
+    // 取得產品包裝列表後存進 localStorage
+    fetchPackTypeList() {
+      callApi('packType', 'list', this.packListQuery).then((res) => {
+        this.packList = res.list
+        for (let i = 0; i < this.packList.length; i++) {
+          this.productInfoArr.push({ label: this.packList[i].name, value: this.packList[i].packType })
+        }
+        setPackTypeList(this.productInfoArr)
+      })
     }
   }
 }

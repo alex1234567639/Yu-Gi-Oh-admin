@@ -335,15 +335,30 @@ export const asyncRoutes = [
   {
     path: '/card',
     component: Layout,
+    redirect: '/card/index',
+    hidden: false,
+    alwaysShow: true,
+    name: 'cards',
+    meta: {
+      title: 'cards',
+      icon: 'list',
+      roles: ['cards']
+    },
     children: [
       {
-        path: 'index',
+        path: 'list',
         component: () => import('@/views/card/index.vue'),
-        name: 'cards',
+        name: 'cards_list',
         meta: {
-          title: 'cards',
-          icon: 'list',
-          roles: ['cards']
+          title: 'cardsList'
+        }
+      },
+      {
+        path: 'add',
+        component: () => import('@/views/card/cardAdd.vue'),
+        name: 'cards_add',
+        meta: {
+          title: 'cardsAdd'
         }
       }
     ]
