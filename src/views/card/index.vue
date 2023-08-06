@@ -335,7 +335,7 @@
     <el-dialog title="編輯" :visible.sync="editVisible">
       <Form
         :form-data="editFormData"
-        @emitData="getEditData"
+        @emitData="confirmEdit"
         @cancel="editVisible = false"
       />
     </el-dialog>
@@ -418,8 +418,18 @@ export default {
           preset: 0,
           options: []
         },
+        rarity: {
+          type: 'rarity',
+          label: this.$t('card.rarity'),
+          preset: []
+        },
         atk: { type: 'input', label: this.$t('card.atk'), preset: '' },
         def: { type: 'input', label: this.$t('card.def'), preset: '' },
+        effect: {
+          type: 'textarea',
+          label: this.$t('card.effect'),
+          preset: ''
+        },
         product_information_type: {
           type: 'select',
           label: this.$t('card.product_information_type'),
@@ -480,7 +490,7 @@ export default {
       })
     },
     // 編輯
-    arrayTransfer(arr) {
+    arrayTransfer(arr, isRarity = false) {
       // 將陣列調整為 [{ label: '', value: 0 }, ...] 的形式
       const result = []
       for (let i = 0; i < arr.length; i++) {
@@ -503,9 +513,15 @@ export default {
 
       this.editFormData = this.editData
     },
-    getEditData(data) {
+    confirmEdit(data) {
+      data.atk = parseInt(data.atk)
+      data.def = parseInt(data.def)
       console.log(data)
-      this.editVisible = false
+      callApi('cards', 'edit', removeNullAndEmptyString(data)).then(() => {
+        alert(this.$t('alert.editSuccess'))
+        this.getList()
+        this.editVisible = false
+      })
     }
   }
 }
