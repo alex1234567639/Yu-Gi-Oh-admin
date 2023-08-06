@@ -194,9 +194,9 @@
             >
               <el-option
                 v-for="item in packList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.packType"
+                :key="item.label"
+                :label="item.label"
+                :value="item.value"
               />
             </el-select>
           </div>
@@ -348,6 +348,8 @@ import Form from '@/components/Form/index'
 import { ygoOptions } from '@/config/ygo.config'
 import { callApi } from '@/api/api'
 import { removeNullAndEmptyString } from '@/utils/index.js'
+import { getPackTypeList } from '@/utils/packTypeList'
+import store from '@/store'
 
 export default {
   components: {
@@ -398,25 +400,25 @@ export default {
         type: {
           type: 'select',
           label: this.$t('card.type'),
-          preset: 0,
+          preset: '',
           options: []
         },
         star: {
           type: 'select',
           label: this.$t('card.star'),
-          preset: 0,
+          preset: '',
           options: []
         },
         attribute: {
           type: 'select',
           label: this.$t('card.attribute'),
-          preset: 0,
+          preset: '',
           options: []
         },
         race: {
           type: 'select',
           label: this.$t('card.race'),
-          preset: 0,
+          preset: '',
           options: []
         },
         rarity: {
@@ -434,7 +436,7 @@ export default {
         product_information_type: {
           type: 'select',
           label: this.$t('card.product_information_type'),
-          preset: 0,
+          preset: '',
           options: []
         },
         number: { type: 'input', label: this.$t('card.number'), preset: '' }
@@ -442,17 +444,16 @@ export default {
       typeOption: [],
       starOption: [],
       attributeOption: [],
-      raceOption: [],
-      productInfoOption: []
+      raceOption: []
     }
   },
   mounted() {
     this.getList()
-    this.getPackList()
     this.typeOption = this.arrayTransfer(this.ygoOptions.type)
     this.starOption = this.arrayTransfer(this.ygoOptions.star)
     this.attributeOption = this.arrayTransfer(this.ygoOptions.attribute)
     this.raceOption = this.arrayTransfer(this.ygoOptions.race)
+    this.packList = getPackTypeList()
   },
   methods: {
     getList() {
@@ -482,14 +483,6 @@ export default {
       this.listQuery.filter.id = this.listQuery.filter.id.toUpperCase()
       this.getList()
     },
-    getPackList() {
-      callApi('packType', 'list', this.packListQuery).then((res) => {
-        this.packList = res.list
-        for (let i = 0; i < this.packList.length; i++) {
-          this.productInfoOption.push({ label: this.packList[i].name, value: this.packList[i].packType })
-        }
-      })
-    },
     // 編輯
     arrayTransfer(arr) {
       // 將陣列調整為 [{ label: '', value: 0 }, ...] 的形式
@@ -505,7 +498,7 @@ export default {
       this.editData.star.options = this.starOption
       this.editData.attribute.options = this.attributeOption
       this.editData.race.options = this.raceOption
-      this.editData.product_information_type.options = this.productInfoOption
+      this.editData.product_information_type.options = this.packList
 
       // 帶入預設值
       Object.keys(this.editData).forEach((key) => {
@@ -517,7 +510,9 @@ export default {
     confirmEdit(data) {
       data.atk = parseInt(data.atk)
       data.def = parseInt(data.def)
-      console.log(data)
+      if (store.state.settings.showLog) {
+        console.log(data)
+      }
       callApi('cards', 'edit', removeNullAndEmptyString(data)).then(() => {
         alert(this.$t('alert.editSuccess'))
         this.getList()
