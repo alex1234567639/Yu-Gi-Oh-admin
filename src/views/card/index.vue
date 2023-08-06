@@ -392,6 +392,7 @@ export default {
       editVisible: false,
       editFormData: {},
       editData: {
+        _id: { preset: '' },
         id: { type: 'input', label: this.$t('card.id'), preset: '' },
         name: { type: 'input', label: this.$t('card.name'), preset: '' },
         type: {
