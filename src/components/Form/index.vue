@@ -12,6 +12,17 @@
             :placeholder="$t('form.pleaseInput')"
           />
         </el-form-item>
+        <!-- log input -->
+        <el-form-item v-if="item.type === 'long-input'" :label="item.label">
+          <el-input
+            v-model="item.preset"
+            type="text"
+            maxlength="120"
+            style="width: 500px"
+            class="input"
+            :placeholder="$t('form.pleaseInput')"
+          />
+        </el-form-item>
         <!-- textarea -->
         <el-form-item v-if="item.type === 'textarea'" :label="item.label">
           <el-input
@@ -25,7 +36,11 @@
         </el-form-item>
         <!-- select -->
         <el-form-item v-if="item.type === 'select'" :label="item.label">
-          <el-select v-model="item.preset" :placeholder="$t('form.pleaseChoose')" clearable>
+          <el-select
+            v-model="item.preset"
+            :placeholder="$t('form.pleaseChoose')"
+            clearable
+          >
             <el-option
               v-for="(option, optionIndex) in item.options"
               :key="optionIndex"
@@ -41,8 +56,13 @@
         <!-- 圖片 -->
         <el-form-item v-if="item.type === 'photo'" :label="item.label">
           <label class="photo-container">
-            <input class="photo-btn" type="file" accept="image/*" @change="chooseFile($event)">
-            {{ formData.photo.preset ? photoName : $t('form.choosePhoto') }}
+            <input
+              class="photo-btn"
+              type="file"
+              accept="image/*"
+              @change="chooseFile($event)"
+            >
+            {{ formData.photo.preset ? photoName : $t("form.choosePhoto") }}
           </label>
         </el-form-item>
         <!-- 副文本 -->
@@ -56,7 +76,9 @@
         <!-- Tag -->
         <div v-if="item.type === 'tag'" class="tag-container">
           <div>
-            <div slot="header" class="item-title tag-title">{{ `選擇要加入的Tag（${formData.tag.preset.length}/3）` }}</div>
+            <div slot="header" class="item-title tag-title">
+              {{ `選擇要加入的Tag（${formData.tag.preset.length}/3）` }}
+            </div>
             <el-tag
               v-for="(tag, tagIndex) in item.preset"
               :key="tag._id"
@@ -70,7 +92,12 @@
           </div>
 
           <el-card class="tag-selection-box">
-            <div v-for="(item, index) in tagList" :key="item._id" class="tag-selection" @click="addTag(item, index)">
+            <div
+              v-for="(item, index) in tagList"
+              :key="item._id"
+              class="tag-selection"
+              @click="addTag(item, index)"
+            >
               {{ item.tag }}
             </div>
           </el-card>
@@ -78,7 +105,9 @@
         <!-- 稀有度 -->
         <div v-if="item.type === 'rarity'" class="tag-container">
           <div>
-            <div slot="header" class="item-title tag-title">{{ $t('card.rarity') }}</div>
+            <div slot="header" class="item-title tag-title">
+              {{ $t("card.rarity") }}
+            </div>
             <el-tag
               v-for="(rarity, rarityIndex) in item.preset"
               :key="rarity"
@@ -92,7 +121,12 @@
           </div>
 
           <el-card class="tag-selection-box">
-            <div v-for="item in ygoOptions.rare" :key="item" class="tag-selection" @click="addRarity(item)">
+            <div
+              v-for="item in ygoOptions.rare"
+              :key="item"
+              class="tag-selection"
+              @click="addRarity(item)"
+            >
               {{ item }}
             </div>
           </el-card>
@@ -102,7 +136,7 @@
 
     <div class="btn-box">
       <el-button @click="handleCancel">
-        {{ $t('lightbox.cancel') }}
+        {{ $t("lightbox.cancel") }}
       </el-button>
       <el-button type="primary" @click="emitData">
         {{ confirmText }}
@@ -171,22 +205,28 @@ export default {
       const sizeKB = size / 1024
       // 檢查photo不大於1M
       if (sizeKB >= KB_limit) {
-        this.$alert(this.$t('alert.fileTooLarge'), this.$t('alert.alert'), { confirmButtonText: this.$t('alert.confirm') })
+        this.$alert(this.$t('alert.fileTooLarge'), this.$t('alert.alert'), {
+          confirmButtonText: this.$t('alert.confirm')
+        })
       } else {
         const vm = this
-        uploadImage(event,
+        uploadImage(
+          event,
           function(result) {
             vm.formData.photo.preset = result.result
             vm.photoName = result.name
           },
           function(err) {
             alert(vm.$t('alert.' + err))
-          }, width_limit, height_limit)
+          },
+          width_limit,
+          height_limit
+        )
       }
     },
     // tag
     checkDuplicateTag(tagObj) {
-      return this.formData.tag.preset.find(e => e._id === tagObj._id)
+      return this.formData.tag.preset.find((e) => e._id === tagObj._id)
     },
     addTag(tagObj, index) {
       // tag上限為三個
@@ -202,7 +242,7 @@ export default {
     },
     // 稀有度
     checkDuplicateRarity(rarity) {
-      return this.formData.rarity.preset.find(e => e === rarity)
+      return this.formData.rarity.preset.find((e) => e === rarity)
     },
     handleCloseRarity(rarityIndex) {
       this.formData.rarity.preset.splice(rarityIndex, 1)
@@ -241,17 +281,17 @@ export default {
     display: inline-block;
     max-width: 130px;
     padding: 0 14px 0 11px;
-    color: #FFFFFF;
+    color: #ffffff;
     background-color: #1890ff;
     border-color: #1890ff;
     border-radius: 4px;
     font-size: 14px;
     font-weight: 400;
     outline: none;
-    transition-duration: .2s;
-    overflow : hidden;
-    text-overflow : ellipsis;
-    white-space : nowrap;
+    transition-duration: 0.2s;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     vertical-align: middle;
     cursor: pointer;
     &:hover {
@@ -262,7 +302,7 @@ export default {
       height: 1px;
       opacity: 0;
       overflow: hidden;
-      z-index: -1
+      z-index: -1;
     }
   }
   & .tinymce {

@@ -243,6 +243,33 @@ export const asyncRoutes = [
         meta: {
           title: 'deck'
         }
+      },
+      // RD
+      {
+        path: 'rushDuel',
+        component: () => import('@/views/productionInformation/rushDuel'),
+        name: 'rushDuel',
+        meta: {
+          title: 'rushDuel'
+        }
+      },
+      // Box
+      {
+        path: 'box',
+        component: () => import('@/views/productionInformation/box'),
+        name: 'box',
+        meta: {
+          title: 'box'
+        }
+      },
+      // Other
+      {
+        path: 'other',
+        component: () => import('@/views/productionInformation/other'),
+        name: 'other',
+        meta: {
+          title: 'other'
+        }
       }
     ]
   },

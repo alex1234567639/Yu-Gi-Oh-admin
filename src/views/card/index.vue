@@ -233,7 +233,10 @@
               <el-form label-position="left" inline class="demo-table-expand">
                 <el-row>
                   <el-form-item :label="$t('card.effect')">
-                    <span style="white-space: pre-wrap" v-html="props.row.effect" />
+                    <span
+                      style="white-space: pre-wrap"
+                      v-html="props.row.effect"
+                    />
                   </el-form-item>
                 </el-row>
                 <el-row>
@@ -309,10 +312,14 @@
             align="center"
             width="100"
           />
-          <el-table-column :label="$t('common.action')" width="100" align="center">
-            <template slot-scope="{row}">
+          <el-table-column
+            :label="$t('common.action')"
+            width="100"
+            align="center"
+          >
+            <template slot-scope="{ row }">
               <el-button type="primary" size="mini" @click="handleEdit(row)">
-                {{ $t('common.edit') }}
+                {{ $t("common.edit") }}
               </el-button>
             </template>
           </el-table-column>

@@ -104,7 +104,7 @@ const actions = {
             ).list[0]['permission'][0]
           )
           commit('SET_ROLES', permit)
-          commit('SET_ACCOUNTINFO', other)
+          commit('SET_ACCOUNTINFO', { permit: adminStatus, ...other })
           await store.dispatch('permission/generateRoutes', permit)
           resolve(permit)
         })

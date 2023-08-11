@@ -15,6 +15,7 @@ export default {
   },
   watch: {
     async goToLogin(newIndex) {
+      console.log(newIndex)
       if (newIndex) this.$router.push('/login')
       await this.$store.dispatch('user/logout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)

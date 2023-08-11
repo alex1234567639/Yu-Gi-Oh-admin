@@ -21,6 +21,9 @@ export default {
     productionInformation: '產品介紹',
     pack: '補充包',
     deck: '預組',
+    rushDuel: 'Rush Duel',
+    box: '禮盒',
+    other: '其他產品',
     // 文章列表-規則相關
     rules: '規則相關',
     precedent: '判例',
@@ -162,6 +165,26 @@ export default {
     permit: '權限管理',
     permit_add: '新增權限',
     permit_edit: '編輯權限'
+  },
+  // 產品介紹
+  productionInformation: {
+    deckList: '預組列表',
+    deckAdd: '新增預組',
+    packList: '產品包列表',
+    packAdd: '新增產品包',
+    // 列表
+    no: '編號',
+    id: '文章ID',
+    title: '文章名稱',
+    publish_date: '最後編輯時間',
+    status: '狀態',
+    action: '操作',
+    edit: '編輯',
+    // 編輯
+    photo: '文章封面圖',
+    tag: 'Tag',
+    content: '內容',
+    to_top: '置頂'
   },
   common: {
     id: '編號',

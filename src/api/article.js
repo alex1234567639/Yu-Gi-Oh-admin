@@ -1,4 +1,6 @@
 import request from '@/utils/request'
+import store from '@/store'
+import { callApi } from './api'
 
 export function fetchList(query) {
   return request({
@@ -38,4 +40,13 @@ export function updateArticle(data) {
     method: 'post',
     data
   })
+}
+
+export function checkTagList(list) {
+  if (!Array.isArray(list)) return
+  if (!list.length) {
+    callApi('tag', 'list', {}).then((res) => {
+      store.dispatch('article/addTagList', res.list)
+    })
+  }
 }
