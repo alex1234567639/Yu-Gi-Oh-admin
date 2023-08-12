@@ -230,7 +230,7 @@
           <!-- 展開內容 -->
           <el-table-column type="expand">
             <template slot-scope="props">
-              <el-form label-position="left" inline class="demo-table-expand">
+              <el-form label-width="90px" label-position="left" inline class="demo-table-expand">
                 <el-row>
                   <el-form-item :label="$t('card.effect')">
                     <span
@@ -339,7 +339,21 @@
     </el-tabs>
 
     <!-- 編輯 -->
-    <el-dialog title="編輯" :visible.sync="editVisible">
+    <el-dialog :title="$t('permits.card_edit')" class="edit-dialog" :visible.sync="editVisible">
+      <div class="photo-upload">
+        <div>
+          <label class="photo-container">
+            <input
+              class="photo-btn"
+              type="file"
+              accept="image/*"
+              @change="chooseFile($event)"
+            >
+            {{ photoName ? photoName : $t("form.changePhoto") }}
+          </label>
+        </div>
+        <img v-if="photoBase64" class="img" :src="photoBase64" alt="">
+      </div>
       <Form
         :form-data="editFormData"
         @emitData="confirmEdit"
@@ -357,6 +371,8 @@ import { callApi } from '@/api/api'
 import { removeNullAndEmptyString } from '@/utils/index.js'
 import { getPackTypeList } from '@/utils/packTypeList'
 import store from '@/store'
+import { height_limit, KB_limit, width_limit } from '@/config/main'
+import { uploadImage } from '@/utils/image'
 
 export default {
   components: {
@@ -451,7 +467,11 @@ export default {
       typeOption: [],
       starOption: [],
       attributeOption: [],
-      raceOption: []
+      raceOption: [],
+      // 圖片
+      photoId: '',
+      photoName: '',
+      photoBase64: ''
     }
   },
   mounted() {
@@ -500,6 +520,10 @@ export default {
       return result
     },
     handleEdit(row) {
+      this.photoId = ''
+      this.photoName = ''
+      this.photoBase64 = ''
+      this.getImage(row.number)
       this.editVisible = true
       this.editData.type.options = this.typeOption
       this.editData.star.options = this.starOption
@@ -521,10 +545,65 @@ export default {
         console.log(data)
       }
       callApi('cards', 'edit', removeNullAndEmptyString(data)).then(() => {
+        // 判斷是否有更換圖片
+        if (this.photoName && data.number) {
+          const imageUploadData = {
+            _id: this.photoId,
+            number: data.number,
+            photo: this.photoBase64
+          }
+          return callApi('cardsImage', 'edit', imageUploadData)
+        } else {
+          return Promise.resolve()
+        }
+      }).then(() => {
         alert(this.$t('alert.editSuccess'))
         this.getList()
         this.editVisible = false
       })
+    },
+    // 查看圖片
+    getImage(number) {
+      callApi('cardsImage', 'list', { filter: { number: number }}).then(res => {
+        if (res.list.length > 0) {
+          this.photoBase64 = res.list[0].photo
+          this.photoId = res.list[0]['_id']
+        }
+      })
+    },
+    chooseFile(event) {
+      if (event.target.files.length === 0) {
+        return
+      }
+      const size = event.target.files[0].size
+      const sizeKB = size / 1024
+      // 檢查photo不大於1M
+      if (sizeKB >= KB_limit) {
+        this.$alert(this.$t('alert.fileTooLarge'), this.$t('alert.alert'), {
+          confirmButtonText: this.$t('alert.confirm')
+        })
+      } else {
+        const vm = this
+        uploadImage(
+          event,
+          function(result) {
+            vm.photoBase64 = result.result
+            vm.photoName = result.name
+
+            // 將檔名填入卡片密碼欄位
+            const fileName = result.name
+            const indexOfLastDot = fileName.lastIndexOf('.')
+            if (indexOfLastDot !== -1) {
+              vm.editData.number.preset = fileName.substring(0, indexOfLastDot)
+            }
+          },
+          function(err) {
+            alert(vm.$t('alert.' + err))
+          },
+          width_limit,
+          height_limit
+        )
+      }
     }
   }
 }
@@ -561,5 +640,44 @@ export default {
 .pagination {
   max-width: 1100px;
   text-align: center;
+}
+.edit-dialog {
+  & .photo-upload {
+    position: absolute;
+    right: 40px;
+    top: 90px;
+    z-index: 10;
+    text-align: right;
+    & .photo-container {
+      padding: 10px 20px;
+      color: #ffffff;
+      background-color: #1890ff;
+      border-color: #1890ff;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 400;
+      outline: none;
+      transition-duration: 0.2s;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      &:hover {
+        background-color: #51a6f6;
+      }
+      & .photo-btn {
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+        overflow: hidden;
+        z-index: -1;
+      }
+    }
+    & .img {
+      margin-top: 20px;
+      width: 150px;
+    }
+  }
 }
 </style>

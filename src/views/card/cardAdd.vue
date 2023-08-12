@@ -131,6 +131,17 @@ export default {
       }
       if (this.formValidate(data)) {
         callApi('cards', 'add', removeNullAndEmptyString(data)).then(() => {
+          // 判斷是否有上傳圖片
+          if (this.photoName && data.number) {
+            const imageUploadData = {
+              number: data.number,
+              photo: this.photoBase64
+            }
+            return callApi('cardsImage', 'add', imageUploadData)
+          } else {
+            return Promise.resolve()
+          }
+        }).then(() => {
           alert(this.$t('alert.addSuccess'))
           this.clearAdd()
         })
