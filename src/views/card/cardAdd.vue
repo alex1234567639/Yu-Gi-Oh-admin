@@ -222,7 +222,7 @@ export default {
     z-index: 10;
     text-align: right;
     & .photo-container {
-      padding: 10px 20px;
+      padding: 10px 21px 10px 20px;
       color: #ffffff;
       background-color: #1890ff;
       border-color: #1890ff;
