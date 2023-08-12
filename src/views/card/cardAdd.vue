@@ -1,5 +1,19 @@
 <template>
   <div class="components-container">
+    <div class="photo-upload">
+      <div>
+        <label class="photo-container">
+          <input
+            class="photo-btn"
+            type="file"
+            accept="image/*"
+            @change="chooseFile($event)"
+          >
+          {{ photoName ? photoName : $t("form.choosePhoto") }}
+        </label>
+      </div>
+      <img v-if="photoBase64" class="img" :src="photoBase64" alt="">
+    </div>
     <el-tabs v-model="tabName">
       <el-tab-pane :label="$t('route.cardsAdd')" name="card_add">
         <Form
@@ -16,11 +30,13 @@
 
 <script>
 import Form from '@/components/Form/index'
-import { ygoOptions } from '@/config/ygo.config'
-import { callApi } from '@/api/api'
 import store from '@/store'
+import { callApi } from '@/api/api'
 import { removeNullAndEmptyString } from '@/utils'
 import { getPackTypeList } from '@/utils/packTypeList'
+import { uploadImage } from '@/utils/image'
+import { height_limit, KB_limit, width_limit } from '@/config/main'
+import { ygoOptions } from '@/config/ygo.config'
 
 export default {
   components: {
@@ -84,7 +100,10 @@ export default {
           options: []
         },
         number: { type: 'input', label: this.$t('card.number'), preset: '' }
-      }
+      },
+      // 圖片
+      photoName: '',
+      photoBase64: ''
     }
   },
   mounted() {
@@ -95,7 +114,7 @@ export default {
     this.addFormData.product_information_type.options = getPackTypeList()
   },
   methods: {
-    arrayTransfer(arr, isRarity = false) {
+    arrayTransfer(arr) {
       // 將陣列調整為 [{ label: '', value: 0 }, ...] 的形式
       const result = []
       for (let i = 0; i < arr.length; i++) {
@@ -105,20 +124,78 @@ export default {
     },
     confirmAdd(data) {
       data.id = data.id.toUpperCase()
-      data.atk = parseInt(data.atk)
-      data.def = parseInt(data.def)
+      data.atk = data.atk ? parseInt(data.atk) : ''
+      data.def = data.def ? parseInt(data.def) : ''
       if (store.state.settings.showLog) {
         console.log(data)
       }
-      callApi('cards', 'add', removeNullAndEmptyString(data)).then(() => {
-        alert(this.$t('alert.addSuccess'))
-        this.clearAdd()
-      })
+      if (this.formValidate(data)) {
+        callApi('cards', 'add', removeNullAndEmptyString(data)).then(() => {
+          alert(this.$t('alert.addSuccess'))
+          this.clearAdd()
+        })
+      }
     },
     clearAdd() {
       Object.keys(this.addFormData).forEach((key) => {
         this.addFormData[key].preset = key === 'rarity' ? [] : ''
       })
+      this.photoName = ''
+      this.photoBase64 = ''
+    },
+    // 表單驗證
+    formValidate(form) {
+      const validationRules = [
+        { field: 'id', condition: !form.id, message: 'card.inputId' },
+        { field: 'name', condition: !form.name, message: 'card.inputName' },
+        { field: 'type', condition: !form.type, message: 'card.chooseType' },
+        { field: 'attribute', condition: !form.attribute, message: 'card.chooseAttribute' },
+        { field: 'rarity', condition: form.rarity.length < 1, message: 'card.chooseRarity' },
+        { field: 'effect', condition: !form.effect, message: 'card.inputEffect' },
+        { field: 'product_information_type', condition: !form.product_information_type, message: 'card.chooseProductType' }
+      ]
+      for (const rule of validationRules) {
+        if (rule.condition) {
+          alert(this.$t(rule.message))
+          return false
+        }
+      }
+      return true
+    },
+    // 圖片
+    chooseFile(event) {
+      if (event.target.files.length === 0) {
+        return
+      }
+      const size = event.target.files[0].size
+      const sizeKB = size / 1024
+      // 檢查photo不大於1M
+      if (sizeKB >= KB_limit) {
+        this.$alert(this.$t('alert.fileTooLarge'), this.$t('alert.alert'), {
+          confirmButtonText: this.$t('alert.confirm')
+        })
+      } else {
+        const vm = this
+        uploadImage(
+          event,
+          function(result) {
+            vm.photoBase64 = result.result
+            vm.photoName = result.name
+
+            // 將檔名填入卡片密碼欄位
+            const fileName = result.name
+            const indexOfLastDot = fileName.lastIndexOf('.')
+            if (indexOfLastDot !== -1) {
+              vm.addFormData.number.preset = fileName.substring(0, indexOfLastDot)
+            }
+          },
+          function(err) {
+            alert(vm.$t('alert.' + err))
+          },
+          width_limit,
+          height_limit
+        )
+      }
     }
   }
 }
@@ -127,5 +204,42 @@ export default {
 <style lang="scss" scoped>
 .components-container {
   width: 1000px;
+  & .photo-upload {
+    position: absolute;
+    right: 20px;
+    top: 55px;
+    z-index: 10;
+    text-align: right;
+    & .photo-container {
+      padding: 10px 20px;
+      color: #ffffff;
+      background-color: #1890ff;
+      border-color: #1890ff;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 400;
+      outline: none;
+      transition-duration: 0.2s;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      &:hover {
+        background-color: #51a6f6;
+      }
+      & .photo-btn {
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+        overflow: hidden;
+        z-index: -1;
+      }
+    }
+    & .img {
+      margin-top: 30px;
+      width: 200px;
+    }
+  }
 }
 </style>
