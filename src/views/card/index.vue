@@ -544,23 +544,45 @@ export default {
       if (store.state.settings.showLog) {
         console.log(data)
       }
-      callApi('cards', 'edit', removeNullAndEmptyString(data)).then(() => {
-        // 判斷是否有更換圖片
-        if (this.photoName && data.number) {
-          const imageUploadData = {
-            _id: this.photoId,
-            number: data.number,
-            photo: this.photoBase64
+      if (this.formValidate(data)) {
+        callApi('cards', 'edit', removeNullAndEmptyString(data)).then(() => {
+          // 判斷是否有更換圖片
+          if (this.photoName && data.number) {
+            const imageUploadData = {
+              _id: this.photoId,
+              number: data.number,
+              photo: this.photoBase64
+            }
+            return callApi('cardsImage', 'edit', imageUploadData)
+          } else {
+            return Promise.resolve()
           }
-          return callApi('cardsImage', 'edit', imageUploadData)
-        } else {
-          return Promise.resolve()
+        }).then(() => {
+          alert(this.$t('alert.editSuccess'))
+          this.getList()
+          this.editVisible = false
+        })
+      }
+    },
+    // 表單驗證
+    formValidate(form) {
+      const validationRules = [
+        { field: 'id', condition: !form.id, message: 'card.inputId' },
+        { field: 'name', condition: !form.name, message: 'card.inputName' },
+        { field: 'type', condition: !form.type, message: 'card.chooseType' },
+        { field: 'attribute', condition: !form.attribute, message: 'card.chooseAttribute' },
+        { field: 'rarity', condition: form.rarity.length < 1, message: 'card.chooseRarity' },
+        { field: 'effect', condition: !form.effect, message: 'card.inputEffect' },
+        { field: 'product_information_type', condition: !form.product_information_type, message: 'card.chooseProductType' },
+        { field: 'number', condition: !form.number, message: 'card.inputNumber' }
+      ]
+      for (const rule of validationRules) {
+        if (rule.condition) {
+          alert(this.$t(rule.message))
+          return false
         }
-      }).then(() => {
-        alert(this.$t('alert.editSuccess'))
-        this.getList()
-        this.editVisible = false
-      })
+      }
+      return true
     },
     // 查看圖片
     getImage(number) {
@@ -649,7 +671,7 @@ export default {
     z-index: 10;
     text-align: right;
     & .photo-container {
-      padding: 10px 20px;
+      padding: 10px 21px 10px 20px;
       color: #ffffff;
       background-color: #1890ff;
       border-color: #1890ff;

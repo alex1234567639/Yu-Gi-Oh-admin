@@ -122,7 +122,8 @@ export default {
     chooseAttribute: '請選擇屬性',
     chooseRarity: '請選擇稀有度',
     inputEffect: '請輸入效果',
-    chooseProductType: '請選擇包裝分類'
+    chooseProductType: '請選擇包裝分類',
+    inputNumber: '請輸入卡片密碼'
   },
   // 權限管理
   permits: {
