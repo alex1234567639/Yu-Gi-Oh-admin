@@ -76,8 +76,8 @@
         <!-- Tag -->
         <div v-if="item.type === 'tag'" class="tag-container">
           <div>
-            <div slot="header" class="item-title tag-title">
-              {{ `選擇要加入的Tag（${formData.tag.preset.length}/3）` }}
+            <div slot="header" class="item-title">
+              {{ `Tag（${formData.tag.preset.length}/3）` }}
             </div>
             <el-tag
               v-for="(tag, tagIndex) in item.preset"
@@ -105,7 +105,7 @@
         <!-- 稀有度 -->
         <div v-if="item.type === 'rarity'" class="tag-container">
           <div>
-            <div slot="header" class="item-title tag-title">
+            <div slot="header" class="item-title">
               {{ $t("card.rarity") }}
             </div>
             <el-tag
@@ -314,10 +314,6 @@ export default {
     & .tag {
       margin-right: 10px;
     }
-    & .tag-title {
-      display: block !important;
-      width: auto !important;
-    }
     & .tag-selection-box {
       margin-top: 10px;
       width: 400px;
@@ -325,7 +321,7 @@ export default {
       overflow-y: scroll;
       background-color: #eef5ff;
       ::v-deep .el-card__body {
-        padding: 10px 20px !important;
+        padding: 5px 15px !important;
       }
       & .tag-selection {
         margin: 5px 0;

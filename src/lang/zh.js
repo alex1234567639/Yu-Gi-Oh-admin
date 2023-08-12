@@ -113,11 +113,20 @@ export default {
     number: '卡片密碼',
     effect: '效果',
     product_information_type: '包裝分類',
-    rarity: '稀有度'
+    rarity: '稀有度',
+    image: '卡圖',
+    checkImage: '查看卡圖',
+    inputId: '請輸入卡號',
+    inputName: '請輸入卡片名稱',
+    chooseType: '請選擇種類',
+    chooseAttribute: '請選擇屬性',
+    chooseRarity: '請選擇稀有度',
+    inputEffect: '請輸入效果',
+    chooseProductType: '請選擇包裝分類',
+    inputNumber: '請輸入卡片密碼'
   },
   // 權限管理
   permits: {
-    permits: 'permits',
     name: '類型名稱',
     inputName: '輸入類型名稱',
     member: '會員管理',
@@ -234,6 +243,7 @@ export default {
   form: {
     pleaseInput: '請輸入',
     pleaseChoose: '請選擇',
-    choosePhoto: '選擇圖片'
+    choosePhoto: '選擇圖片',
+    changePhoto: '更換圖片'
   }
 }
