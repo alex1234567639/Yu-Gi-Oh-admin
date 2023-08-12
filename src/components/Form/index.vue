@@ -325,7 +325,7 @@ export default {
       overflow-y: scroll;
       background-color: #eef5ff;
       ::v-deep .el-card__body {
-        padding: 10px 20px !important;
+        padding: 5px 15px !important;
       }
       & .tag-selection {
         margin: 5px 0;
