@@ -123,7 +123,9 @@ export default {
     chooseRarity: '請選擇稀有度',
     inputEffect: '請輸入效果',
     chooseProductType: '請選擇包裝分類',
-    inputNumber: '請輸入卡片密碼'
+    inputNumber: '請輸入卡片密碼',
+    copy: '複製內容',
+    cardBtn: '複製'
   },
   // 權限管理
   permits: {
@@ -186,9 +188,6 @@ export default {
     id: '文章ID',
     title: '文章名稱',
     publish_date: '最後編輯時間',
-    status: '狀態',
-    action: '操作',
-    edit: '編輯',
     // 編輯
     photo: '文章封面圖',
     tag: 'Tag',
@@ -199,7 +198,8 @@ export default {
     id: '編號',
     action: '操作',
     edit: '編輯',
-    search: '搜尋'
+    search: '搜尋',
+    status: '狀態'
   },
   alert: {
     alert: '提醒',

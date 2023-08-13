@@ -230,7 +230,12 @@
           <!-- 展開內容 -->
           <el-table-column type="expand">
             <template slot-scope="props">
-              <el-form label-width="90px" label-position="left" inline class="demo-table-expand">
+              <el-form
+                label-width="90px"
+                label-position="left"
+                inline
+                class="demo-table-expand"
+              >
                 <el-row>
                   <el-form-item :label="$t('card.effect')">
                     <span
@@ -323,6 +328,13 @@
               </el-button>
             </template>
           </el-table-column>
+          <el-table-column :label="$t('card.copy')" width="100" align="center">
+            <template slot-scope="{ row }">
+              <el-button type="primary" size="mini" @click="handleCopy(row)">
+                {{ $t("card.cardBtn") }}
+              </el-button>
+            </template>
+          </el-table-column>
         </el-table>
 
         <pagination
@@ -339,7 +351,11 @@
     </el-tabs>
 
     <!-- 編輯 -->
-    <el-dialog :title="$t('permits.card_edit')" class="edit-dialog" :visible.sync="editVisible">
+    <el-dialog
+      :title="$t('permits.card_edit')"
+      class="edit-dialog"
+      :visible.sync="editVisible"
+    >
       <div class="photo-upload">
         <div>
           <label class="photo-container">
@@ -373,6 +389,7 @@ import { getPackTypeList } from '@/utils/packTypeList'
 import store from '@/store'
 import { height_limit, KB_limit, width_limit } from '@/config/main'
 import { uploadImage } from '@/utils/image'
+import router from '@/router'
 
 export default {
   components: {
@@ -545,23 +562,25 @@ export default {
         console.log(data)
       }
       if (this.formValidate(data)) {
-        callApi('cards', 'edit', removeNullAndEmptyString(data)).then(() => {
-          // 判斷是否有更換圖片
-          if (this.photoName && data.number) {
-            const imageUploadData = {
-              _id: this.photoId,
-              number: data.number,
-              photo: this.photoBase64
+        callApi('cards', 'edit', removeNullAndEmptyString(data))
+          .then(() => {
+            // 判斷是否有更換圖片
+            if (this.photoName && data.number) {
+              const imageUploadData = {
+                _id: this.photoId,
+                number: data.number,
+                photo: this.photoBase64
+              }
+              return callApi('cardsImage', 'edit', imageUploadData)
+            } else {
+              return Promise.resolve()
             }
-            return callApi('cardsImage', 'edit', imageUploadData)
-          } else {
-            return Promise.resolve()
-          }
-        }).then(() => {
-          alert(this.$t('alert.editSuccess'))
-          this.getList()
-          this.editVisible = false
-        })
+          })
+          .then(() => {
+            alert(this.$t('alert.editSuccess'))
+            this.getList()
+            this.editVisible = false
+          })
       }
     },
     // 表單驗證
@@ -570,11 +589,31 @@ export default {
         { field: 'id', condition: !form.id, message: 'card.inputId' },
         { field: 'name', condition: !form.name, message: 'card.inputName' },
         { field: 'type', condition: !form.type, message: 'card.chooseType' },
-        { field: 'attribute', condition: !form.attribute, message: 'card.chooseAttribute' },
-        { field: 'rarity', condition: form.rarity.length < 1, message: 'card.chooseRarity' },
-        { field: 'effect', condition: !form.effect, message: 'card.inputEffect' },
-        { field: 'product_information_type', condition: !form.product_information_type, message: 'card.chooseProductType' },
-        { field: 'number', condition: !form.number, message: 'card.inputNumber' }
+        {
+          field: 'attribute',
+          condition: !form.attribute,
+          message: 'card.chooseAttribute'
+        },
+        {
+          field: 'rarity',
+          condition: form.rarity.length < 1,
+          message: 'card.chooseRarity'
+        },
+        {
+          field: 'effect',
+          condition: !form.effect,
+          message: 'card.inputEffect'
+        },
+        {
+          field: 'product_information_type',
+          condition: !form.product_information_type,
+          message: 'card.chooseProductType'
+        },
+        {
+          field: 'number',
+          condition: !form.number,
+          message: 'card.inputNumber'
+        }
       ]
       for (const rule of validationRules) {
         if (rule.condition) {
@@ -586,12 +625,14 @@ export default {
     },
     // 查看圖片
     getImage(number) {
-      callApi('cardsImage', 'list', { filter: { number: number }}).then(res => {
-        if (res.list.length > 0) {
-          this.photoBase64 = res.list[0].photo
-          this.photoId = res.list[0]['_id']
+      callApi('cardsImage', 'list', { filter: { number: number }}).then(
+        (res) => {
+          if (res.list.length > 0) {
+            this.photoBase64 = res.list[0].photo
+            this.photoId = res.list[0]['_id']
+          }
         }
-      })
+      )
     },
     chooseFile(event) {
       if (event.target.files.length === 0) {
@@ -626,6 +667,14 @@ export default {
           height_limit
         )
       }
+    },
+    handleCopy(row) {
+      delete row['_id']
+      console.log(row)
+      row.id = ''
+      row.rarity = []
+      sessionStorage.setItem('copyCardInfo', JSON.stringify(row))
+      router.push('/card/add')
     }
   }
 }

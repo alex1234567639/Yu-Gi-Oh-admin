@@ -77,7 +77,7 @@
               </template>
             </el-table-column>
             <el-table-column
-              :label="$t('productionInformation.status')"
+              :label="$t('common.status')"
               prop="status"
               align="center"
               width="100"
@@ -92,14 +92,14 @@
               </template>
             </el-table-column>
             <el-table-column
-              :label="$t('productionInformation.action')"
+              :label="$t('common.action')"
               align="center"
               width="120"
               class-name="small-padding fixed-width"
             >
               <template slot-scope="{ row }">
                 <el-button type="primary" size="mini" @click="handleEdit(row)">
-                  {{ $t("productionInformation.edit") }}
+                  {{ $t("common.edit") }}
                 </el-button>
               </template>
             </el-table-column>

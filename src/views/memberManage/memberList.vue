@@ -114,7 +114,7 @@
               </template>
             </el-table-column>
             <el-table-column
-              :label="$t('memberManage.status')"
+              :label="$t('common.status')"
               prop="status"
               align="center"
               width="100"
@@ -180,7 +180,7 @@
                   />
                 </el-select>
               </el-form-item>
-              <el-form-item :label="'*' + $t('memberManage.status')">
+              <el-form-item :label="'*' + $t('common.status')">
                 <el-select
                   v-model="edit_status"
                   :placeholder="$t('memberManage.chooseStatus')"
@@ -263,6 +263,7 @@ export default {
       // console.log("call api: /admin/list");
       callApi('admin', 'list', removeNullAndEmptyString(this.listQuery)).then(
         (res) => {
+          console.log(res)
           this.list = res.list
           this.total = res.total
         }

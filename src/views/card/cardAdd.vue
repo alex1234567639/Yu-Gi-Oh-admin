@@ -109,9 +109,20 @@ export default {
   mounted() {
     this.addFormData.type.options = this.arrayTransfer(this.ygoOptions.type)
     this.addFormData.star.options = this.arrayTransfer(this.ygoOptions.star)
-    this.addFormData.attribute.options = this.arrayTransfer(this.ygoOptions.attribute)
+    this.addFormData.attribute.options = this.arrayTransfer(
+      this.ygoOptions.attribute
+    )
     this.addFormData.race.options = this.arrayTransfer(this.ygoOptions.race)
     this.addFormData.product_information_type.options = getPackTypeList()
+    if (sessionStorage.getItem('copyCardInfo')) {
+      const copyCardsInfo = JSON.parse(sessionStorage.getItem('copyCardInfo'))
+      sessionStorage.removeItem('copyCardInfo')
+      for (const key in copyCardsInfo) {
+        if (this.addFormData[key]) {
+          this.addFormData[key].preset = copyCardsInfo[key]
+        }
+      }
+    }
   },
   methods: {
     arrayTransfer(arr) {
@@ -130,21 +141,23 @@ export default {
         console.log(data)
       }
       if (this.formValidate(data)) {
-        callApi('cards', 'add', removeNullAndEmptyString(data)).then(() => {
-          // 判斷是否有上傳圖片
-          if (this.photoName && data.number) {
-            const imageUploadData = {
-              number: data.number,
-              photo: this.photoBase64
+        callApi('cards', 'add', removeNullAndEmptyString(data))
+          .then(() => {
+            // 判斷是否有上傳圖片
+            if (this.photoName && data.number) {
+              const imageUploadData = {
+                number: data.number,
+                photo: this.photoBase64
+              }
+              return callApi('cardsImage', 'add', imageUploadData)
+            } else {
+              return Promise.resolve()
             }
-            return callApi('cardsImage', 'add', imageUploadData)
-          } else {
-            return Promise.resolve()
-          }
-        }).then(() => {
-          alert(this.$t('alert.addSuccess'))
-          this.clearAdd()
-        })
+          })
+          .then(() => {
+            alert(this.$t('alert.addSuccess'))
+            this.clearAdd()
+          })
       }
     },
     clearAdd() {
@@ -160,10 +173,26 @@ export default {
         { field: 'id', condition: !form.id, message: 'card.inputId' },
         { field: 'name', condition: !form.name, message: 'card.inputName' },
         { field: 'type', condition: !form.type, message: 'card.chooseType' },
-        { field: 'attribute', condition: !form.attribute, message: 'card.chooseAttribute' },
-        { field: 'rarity', condition: form.rarity.length < 1, message: 'card.chooseRarity' },
-        { field: 'effect', condition: !form.effect, message: 'card.inputEffect' },
-        { field: 'product_information_type', condition: !form.product_information_type, message: 'card.chooseProductType' }
+        {
+          field: 'attribute',
+          condition: !form.attribute,
+          message: 'card.chooseAttribute'
+        },
+        {
+          field: 'rarity',
+          condition: form.rarity.length < 1,
+          message: 'card.chooseRarity'
+        },
+        {
+          field: 'effect',
+          condition: !form.effect,
+          message: 'card.inputEffect'
+        },
+        {
+          field: 'product_information_type',
+          condition: !form.product_information_type,
+          message: 'card.chooseProductType'
+        }
       ]
       for (const rule of validationRules) {
         if (rule.condition) {
@@ -197,7 +226,10 @@ export default {
             const fileName = result.name
             const indexOfLastDot = fileName.lastIndexOf('.')
             if (indexOfLastDot !== -1) {
-              vm.addFormData.number.preset = fileName.substring(0, indexOfLastDot)
+              vm.addFormData.number.preset = fileName.substring(
+                0,
+                indexOfLastDot
+              )
             }
           },
           function(err) {
