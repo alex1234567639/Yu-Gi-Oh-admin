@@ -183,16 +183,27 @@ export default {
     deckAdd: '新增預組',
     packList: '產品包列表',
     packAdd: '新增產品包',
+    boxList: '禮盒列表',
+    boxAdd: '新增禮盒',
+    otherList: '其他分類列表',
+    otherAdd: '新增其他分類',
+    rushDuelList: 'Rush Duel列表',
+    rushDuelAdd: '新增Rush Duel',
     // 列表
     no: '編號',
     id: '文章ID',
+    photo: '文章圖',
     title: '文章名稱',
     publish_date: '最後編輯時間',
     // 編輯
-    photo: '文章封面圖',
     tag: 'Tag',
     content: '內容',
-    to_top: '置頂'
+    to_top: '置頂',
+    admin_id: '作者',
+    // 警語
+    inputContent: '內容不得為空',
+    inputPhoto: '請上傳封面圖',
+    inputTitle: '請輸入文章標題'
   },
   common: {
     id: '編號',

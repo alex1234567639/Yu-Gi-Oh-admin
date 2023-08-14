@@ -64,6 +64,11 @@
             >
             {{ formData.photo.preset ? photoName : $t("form.choosePhoto") }}
           </label>
+          <img
+            :src="formData.photo.preset"
+            alt=""
+            style="width: 150px; height: auto"
+          >
         </el-form-item>
         <!-- 副文本 -->
         <tinymce
@@ -150,6 +155,8 @@ import Tinymce from '@/components/Tinymce/index'
 import { uploadImage } from '@/utils/image'
 import { height_limit, KB_limit, width_limit } from '@/config/main'
 import { ygoOptions } from '@/config/ygo.config'
+import store from '@/store/modules/article'
+import { checkTagList } from '@/api/article'
 
 export default {
   components: {
@@ -170,17 +177,18 @@ export default {
   data() {
     return {
       ygoOptions,
-      tagList: [
-        { _id: '1', tag: 'Hero' },
-        { _id: '2', tag: '主流牌組' },
-        { _id: '3', tag: '粉牌' },
-        { _id: '4', tag: '水屬性' },
-        { _id: '5', tag: '風屬性' }
-      ],
       // photo
       photoName: this.$t('form.choosePhoto'),
       imgSrc: ''
     }
+  },
+  computed: {
+    tagList() {
+      return store.state.tagList
+    }
+  },
+  mounted() {
+    checkTagList(this.tagList)
   },
   methods: {
     // 資料傳回父層

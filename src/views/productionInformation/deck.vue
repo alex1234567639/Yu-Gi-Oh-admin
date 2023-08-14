@@ -2,10 +2,7 @@
   <div class="components-container">
     <template>
       <el-tabs v-model="tabName">
-        <el-tab-pane
-          :label="$t('productionInformation.deckList')"
-          name="deck_list"
-        >
+        <el-tab-pane :label="$t('productionInformation.deckList')" name="list">
           <!-- 搜尋bar -->
           <div class="filter-container">
             <el-select
@@ -53,26 +50,48 @@
               </template>
             </el-table-column>
             <el-table-column
-              :label="$t('productionInformation.id')"
-              prop="_id"
+              :label="$t('productionInformation.photo')"
               align="center"
-              width="130"
-            />
+              width="150"
+            >
+              <template slot-scope="{ row }">
+                <img
+                  :src="row.photo"
+                  alt=""
+                  style="width: 120px; height: auto"
+                >
+                <!-- {{ row.admin_id }} -->
+              </template>
+            </el-table-column>
             <el-table-column
               :label="$t('productionInformation.title')"
               prop="title"
               align="center"
-              width="500"
+              width="450"
             />
             <el-table-column
               :label="$t('productionInformation.publish_date')"
               prop="publish_date"
               align="center"
-              width="140"
+              width="120"
             >
               <template slot-scope="{ row }">
                 <span>{{
                   new Date(row.publish_date).toLocaleDateString()
+                }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('productionInformation.admin_id')"
+              prop="admin_id"
+              align="center"
+              width="120"
+            >
+              <template slot-scope="{ row }">
+                <span>{{
+                  userList.find((el) => el._id === row.admin_id)
+                    ? userList.find((el) => el._id === row.admin_id).name
+                    : ""
                 }}</span>
               </template>
             </el-table-column>
@@ -127,10 +146,15 @@
         </el-tab-pane>
 
         <!-- 新增預組 -->
-        <el-tab-pane
-          :label="$t('productionInformation.deckAdd')"
-          name="deck_add"
-        />
+        <el-tab-pane :label="$t('productionInformation.deckAdd')" name="add">
+          <Form
+            class="form-container"
+            :form-data="addFormData"
+            :confirm-text="$t('lightbox.add')"
+            @cancel="clearAdd"
+            @emitData="confirmAdd"
+          />
+        </el-tab-pane>
       </el-tabs>
     </template>
   </div>
@@ -143,7 +167,7 @@ import Form from '@/components/Form/index'
 import allStore from '@/store'
 import store from '@/store/modules/article'
 import userStore from '@/store/modules/user'
-import { checkTagList } from '@/api/article'
+import { checkUserList } from '@/api/article'
 
 import { removeNullAndEmptyString } from '@/utils/index.js'
 
@@ -156,7 +180,7 @@ export default {
     return {
       total: 0,
       list: null,
-      tabName: 'deck_list',
+      tabName: 'list',
       currentPage: 0,
       listQuery: {
         page: 0,
@@ -175,7 +199,7 @@ export default {
       editData: {
         _id: { preset: '' },
         publish_date: { preset: '' },
-        type: { preset: '' },
+        type: { preset: 3 },
         admin_id: { preset: '' },
         title: {
           type: 'long-input',
@@ -189,7 +213,44 @@ export default {
         },
         status: {
           type: 'select',
-          label: this.$t('productionInformation.status'),
+          label: this.$t('common.status'),
+          preset: 0,
+          options: [
+            { label: '上架中', value: 0 },
+            { label: '下架中', value: 1 }
+          ]
+        },
+        to_top: {},
+        tag: {
+          type: 'tag',
+          label: this.$t('productionInformation.tag'),
+          preset: []
+        },
+        content: {
+          type: 'tinymce',
+          label: this.$t('productionInformation.content'),
+          preset: ''
+        }
+      },
+      // 新增
+      addFormData: {
+        _id: { preset: '' },
+        publish_date: { preset: '' },
+        type: { preset: 3 },
+        admin_id: { preset: '' },
+        title: {
+          type: 'long-input',
+          label: this.$t('productionInformation.title'),
+          preset: ''
+        },
+        photo: {
+          type: 'photo',
+          label: this.$t('productionInformation.photo'),
+          preset: ''
+        },
+        status: {
+          type: 'select',
+          label: this.$t('common.status'),
           preset: 0,
           options: [
             { label: '上架中', value: 0 },
@@ -211,18 +272,44 @@ export default {
     }
   },
   computed: {
-    tagList() {
-      return store.state.tagList
-    },
     user() {
       return userStore.state.accountInfo
+    },
+    userList() {
+      return store.state.userList
     }
   },
-  mounted() {
+  async mounted() {
+    await checkUserList(this.userList)
+    this.checkToTop()
     this.getList()
-    checkTagList(this.tagList)
   },
   methods: {
+    checkToTop() {
+      // 最高權限才能編輯to_top
+      this.editData.to_top = !this.user.permit
+        ? {
+          type: 'select',
+          label: this.$t('productionInformation.to_top'),
+          preset: false,
+          options: [
+            { label: '置頂', value: true },
+            { label: '取消置頂', value: false }
+          ]
+        }
+        : {
+          preset: false
+        }
+
+      this.addFormData.to_top = JSON.parse(
+        JSON.stringify(this.editData.to_top)
+      )
+    },
+    makePublishTime() {
+      return `${new Date().toLocaleDateString().replaceAll('/', '-')} ${
+        new Date().toTimeString().split(' ')[0]
+      }`
+    },
     getList() {
       if (this.listQuery.filter.status === '') {
         this.listQuery.filter.status = undefined
@@ -254,37 +341,24 @@ export default {
     },
     // 編輯
     handleEdit(row) {
-      this.editVisible = true
-      this.editData.tag.preset = this.tagList.map((el) => ({
-        _id: el._id,
-        tag: el.tag
-      }))
-
-      // 最高權限才能編輯to_top
-      this.editData.to_top = !this.user.permit
-        ? {
-          type: 'select',
-          label: this.$t('productionInformation.to_top'),
-          preset: false,
-          options: [
-            { label: '置頂', value: true },
-            { label: '取消置頂', value: false }
-          ]
+      callApi('productInformation', 'articleList', {
+        page: 0,
+        limit: 1,
+        filter: {
+          _id: row._id
         }
-        : {
-          preset: false
-        }
+      }).then((res) => {
+        this.editVisible = true
 
-      // 帶入預設值
-      Object.keys(this.editData).forEach((key) => {
-        this.editData[key].preset = row[key]
+        // 帶入預設值
+        Object.keys(this.editData).forEach((key) => {
+          this.editData[key].preset = res.list[0][key]
+        })
+        this.editFormData = this.editData
       })
-      this.editFormData = this.editData
     },
     confirmEdit(data) {
-      data.publish_date = `${new Date()
-        .toLocaleDateString()
-        .replaceAll('/', '-')} ${new Date().toTimeString().split(' ')[0]}`
+      data.publish_date = this.makePublishTime()
       if (allStore.state.settings.showLog) {
         console.log(data)
       }
@@ -298,6 +372,64 @@ export default {
         this.getList()
         this.editVisible = false
       })
+    },
+    // 新增
+    clearAdd() {
+      Object.keys(this.addFormData).forEach((key) => {
+        this.addFormData[key].preset =
+          key === 'tag'
+            ? []
+            : key === 'status'
+              ? 1
+              : key === 'to_top'
+                ? false
+                : ''
+      })
+    },
+    formValidate(form) {
+      const validationRules = [
+        {
+          field: 'content',
+          condition: !form.content,
+          message: 'productionInformation.inputContent'
+        },
+        {
+          field: 'photo',
+          condition: !form.photo,
+          message: 'productionInformation.inputPhoto'
+        },
+        {
+          field: 'title',
+          condition: !form.title,
+          message: 'productionInformation.inputTitle'
+        }
+      ]
+      for (const rule of validationRules) {
+        if (rule.condition) {
+          alert(this.$t(rule.message))
+          return false
+        }
+      }
+      return true
+    },
+    confirmAdd(data) {
+      data.type = 3
+      data.publish_date = this.makePublishTime()
+      data.admin_id = this.user._id
+      if (allStore.state.settings.showLog) {
+        console.log(data)
+      }
+      if (this.formValidate(data)) {
+        callApi(
+          'productInformation',
+          'addArticle',
+          removeNullAndEmptyString(data)
+        ).then(() => {
+          alert(this.$t('alert.addSuccess'))
+          this.clearAdd()
+          this.getList()
+        })
+      }
     }
   }
 }
