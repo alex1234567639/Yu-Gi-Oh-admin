@@ -177,6 +177,18 @@ export default {
     permit_add: '新增權限',
     permit_edit: '編輯權限'
   },
+  // 系列介紹
+  serialIntroduction: {
+    plugin_list: '外掛系列列表',
+    plugin_add: '新增外掛系列',
+    theme_list: '主題牌組列表',
+    theme_add: '新增主題牌組'
+  },
+  // 戰報介紹
+  battlePaper: {
+    list: '戰報列表',
+    add: '新增戰報'
+  },
   // 產品介紹
   productionInformation: {
     deckList: '預組列表',
