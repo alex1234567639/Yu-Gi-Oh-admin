@@ -189,6 +189,30 @@ export default {
     list: '戰報列表',
     add: '新增戰報'
   },
+  // 上位卡表
+  metaDeck: {
+    list: '上位卡表列表',
+    add: '新增上位卡表'
+  },
+  // 卡片故事
+  seriesStory: {
+    list: '卡片故事列表',
+    add: '新增卡片故事'
+  },
+  // 泛用卡介紹
+  usefulCardIntroduction: {
+    singleCardList: '單卡分析列表',
+    singleCardAdd: '新增單卡分析',
+    strategyList: '戰術分析列表',
+    strategyAdd: '新增戰術分析'
+  },
+  // 規則相關
+  rules: {
+    forbiddenListList: '禁卡表列表',
+    forbiddenListAdd: '新增禁卡表',
+    precedentList: '判例列表',
+    precedentAdd: '新增判例'
+  },
   // 產品介紹
   productionInformation: {
     deckList: '預組列表',
