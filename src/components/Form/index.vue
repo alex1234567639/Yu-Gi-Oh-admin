@@ -2,6 +2,14 @@
   <div class="form-wrapper">
     <el-form class="form" label-width="90px" label-position="left">
       <div v-for="(item, key, index) in formData" :key="index">
+        <!-- time -->
+        <el-form-item v-if="item.type === 'time'" :label="item.label">
+          <el-date-picker
+            v-model="item.preset"
+            type="datetime"
+            placeholder="Select time"
+          />
+        </el-form-item>
         <!-- input -->
         <el-form-item v-if="item.type === 'input'" :label="item.label">
           <el-input

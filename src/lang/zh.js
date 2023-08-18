@@ -241,6 +241,31 @@ export default {
     inputPhoto: '請上傳封面圖',
     inputTitle: '請輸入文章標題'
   },
+  // tag
+  tag: {
+    list: '標籤列表',
+    add: '新增標籤',
+    tag: '標籤',
+    inputTag: '必須填入標籤名稱'
+  },
+  // 行事曆
+  calendar: {
+    list: '列表',
+    add: '新增',
+    title: '標題',
+    content: '內容',
+    date: '開始時間',
+    type: '種類',
+    url: '活動連結',
+    time: '選取時間',
+    optionLabel0: '賽事',
+    optionLabel1: '發售日期',
+    optionLabel2: '其他相關活動',
+    // validation
+    inputContent: '內容不得為空',
+    inputDate: '請選擇活動日期',
+    inputTitle: '請輸入文章標題'
+  },
   common: {
     id: '編號',
     action: '操作',

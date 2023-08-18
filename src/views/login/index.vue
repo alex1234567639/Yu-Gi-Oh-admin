@@ -73,6 +73,7 @@
               ''
             )
           "
+          @keyup.enter.native="handleLogin"
         />
       </el-form-item>
       <Captcha
@@ -218,7 +219,10 @@ export default {
       callApi('packType', 'list', this.packListQuery).then((res) => {
         this.packList = res.list
         for (let i = 0; i < this.packList.length; i++) {
-          this.productInfoArr.push({ label: this.packList[i].name, value: this.packList[i].packType })
+          this.productInfoArr.push({
+            label: this.packList[i].name,
+            value: this.packList[i].packType
+          })
         }
         this.productInfoArr = this.productInfoArr.sort((a, b) => {
           return a.label > b.label ? 1 : -1

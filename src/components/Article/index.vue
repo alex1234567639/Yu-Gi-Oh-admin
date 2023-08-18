@@ -239,7 +239,6 @@ export default {
       },
       // 新增
       addFormData: {
-        _id: { preset: '' },
         publish_date: { preset: '' },
         admin_id: { preset: '' },
         title: {
@@ -437,18 +436,16 @@ export default {
       return true
     },
     confirmAdd(data) {
-      if (Number.isInteger(this.detailData.type)) { data.type = this.detailData.type }
+      if (Number.isInteger(this.detailData.type)) {
+        data.type = this.detailData.type
+      }
       data.publish_date = this.makePublishTime()
       data.admin_id = this.user._id
       if (allStore.state.settings.showLog) {
         console.log(data)
       }
       if (this.formValidate(data)) {
-        callApi(
-          this.detailData.path,
-          'addArticle',
-          removeNullAndEmptyString(data)
-        ).then(() => {
+        callApi(this.detailData.path, 'addArticle', data).then(() => {
           alert(this.$t('alert.addSuccess'))
           this.clearAdd()
           this.getList()
