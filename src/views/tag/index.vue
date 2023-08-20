@@ -11,7 +11,7 @@
             class="table-list"
           >
             <el-table-column
-              :label="$t('productionInformation.no')"
+              :label="$t('common.no')"
               align="center"
               width="60"
             >
