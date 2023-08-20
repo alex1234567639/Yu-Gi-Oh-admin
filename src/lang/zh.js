@@ -20,7 +20,7 @@ export default {
     // 文章列表-產品介紹
     productionInformation: '產品介紹',
     pack: '補充包',
-    deck: '預組',
+    deck: '預組套牌',
     rushDuel: 'Rush Duel',
     box: '禮盒',
     other: '其他產品',
@@ -81,16 +81,12 @@ export default {
     blogOnlyUser: '前台用戶',
     inputName: '輸入用戶名',
     inputAccount: '輸入帳號',
-    search: '搜尋',
     no: '編號',
     id: '會員ID',
     name: '會員名稱',
     account: '帳號',
     createDate: '註冊日期',
     type: '類型',
-    status: '狀態',
-    action: '操作',
-    edit: '編輯',
     // 新增會員
     addAccount: '新增會員',
     password: '密碼',
@@ -184,6 +180,21 @@ export default {
     theme_list: '主題牌組列表',
     theme_add: '新增主題牌組'
   },
+  article: {
+    photo: '文章圖',
+    title: '文章名稱',
+    publish_date: '最後編輯時間',
+    admin_id: '作者',
+    chooseStatus: '選擇狀態',
+    published: '上架中',
+    removed: '下架中',
+    tag: 'Tag',
+    content: '內容',
+    to_top: '置頂',
+    inputContent: '內容不得為空',
+    inputPhoto: '請上傳封面圖',
+    inputTitle: '請輸入文章標題'
+  },
   // 戰報介紹
   battlePaper: {
     list: '戰報列表',
@@ -224,22 +235,7 @@ export default {
     otherList: '其他分類列表',
     otherAdd: '新增其他分類',
     rushDuelList: 'Rush Duel列表',
-    rushDuelAdd: '新增Rush Duel',
-    // 列表
-    no: '編號',
-    id: '文章ID',
-    photo: '文章圖',
-    title: '文章名稱',
-    publish_date: '最後編輯時間',
-    // 編輯
-    tag: 'Tag',
-    content: '內容',
-    to_top: '置頂',
-    admin_id: '作者',
-    // 警語
-    inputContent: '內容不得為空',
-    inputPhoto: '請上傳封面圖',
-    inputTitle: '請輸入文章標題'
+    rushDuelAdd: '新增Rush Duel'
   },
   // tag
   tag: {
@@ -264,14 +260,33 @@ export default {
     // validation
     inputContent: '內容不得為空',
     inputDate: '請選擇活動日期',
-    inputTitle: '請輸入文章標題'
+    inputTitle: '請輸入文章標題',
+    to: '至',
+    startDate: '開始日期',
+    endDate: '结束日期'
+  },
+  // 包裝分類管理
+  packType: {
+    list: '包裝分類列表',
+    add: '新增包裝分類',
+    chooseStatus: '選擇狀態',
+    published: '上架中',
+    removed: '下架中',
+    name: '產品名稱',
+    packType: '產品代號',
+    mainType: '產品分類',
+    edit: '編輯包裝分類',
+    inputName: '請輸入產品名稱',
+    inputPackType: '請輸入產品代號',
+    chooseMainType: '請選擇產品分類'
   },
   common: {
-    id: '編號',
+    no: '編號',
     action: '操作',
     edit: '編輯',
     search: '搜尋',
-    status: '狀態'
+    status: '狀態',
+    chooseStatus: '請選擇狀態'
   },
   alert: {
     alert: '提醒',
@@ -288,7 +303,6 @@ export default {
     cancel: '取消',
     confirm: '確定',
     add: '新增',
-    search: '搜尋',
     reLogin: '重新登入',
     reLoginTitle: '重新登入提示',
     reLoginContent:
