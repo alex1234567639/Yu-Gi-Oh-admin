@@ -5,6 +5,13 @@
         <el-tab-pane :label="$t('packType.list')" name="pack_list">
           <!--搜尋Bar-->
           <div class="filter-container">
+            <el-input
+              v-model="listQuery.filter.name"
+              :placeholder="$t('packType.inputName')"
+              clearable
+              type="text"
+              class="input"
+            />
             <el-select
               v-model="listQuery.filter.status"
               :placeholder="$t('packType.chooseStatus')"
@@ -143,6 +150,7 @@ export default {
         page: 0,
         limit: 20,
         filter: {
+          name: '',
           status: undefined
         }
       },
@@ -256,7 +264,12 @@ export default {
 
 <style lang="scss" scoped>
 .filter-container {
-  .select {
+  & .input {
+    width: 150px;
+    margin-right: 10px;
+    vertical-align: top;
+  }
+  & .select {
     width: 150px;
     margin-right: 10px;
   }
