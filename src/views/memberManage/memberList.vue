@@ -32,7 +32,7 @@
               class="filter-item input"
             />
             <el-input
-              v-model="listQuery.filter.name"
+              v-model="listQuery.filter.account"
               :placeholder="$t('memberManage.inputAccount')"
               clearable
               type="text"
@@ -44,7 +44,7 @@
               icon="el-icon-search"
               @click="handleFilter"
             >
-              {{ $t("memberManage.search") }}
+              {{ $t("common.search") }}
             </el-button>
           </div>
 
@@ -57,7 +57,7 @@
             class="table-list"
           >
             <el-table-column
-              :label="$t('memberManage.no')"
+              :label="$t('common.no')"
               align="center"
               width="60"
             >
@@ -129,14 +129,14 @@
               </template>
             </el-table-column>
             <el-table-column
-              :label="$t('memberManage.action')"
+              :label="$t('common.action')"
               align="center"
               width="120"
               class-name="small-padding fixed-width"
             >
               <template slot-scope="{ row }">
                 <el-button type="primary" size="mini" @click="handleEdit(row)">
-                  {{ $t("memberManage.edit") }}
+                  {{ $t("common.edit") }}
                 </el-button>
               </template>
             </el-table-column>
@@ -154,7 +154,7 @@
 
           <!-- 編輯燈箱 start -->
           <el-dialog
-            :title="$t('memberManage.edit')"
+            :title="$t('common.edit')"
             :visible.sync="editLightBoxVisible"
           >
             <el-form
@@ -260,15 +260,13 @@ export default {
       if (this.listQuery.filter.type === '') {
         this.listQuery.filter.type = undefined
       }
-      // console.log("call api: /admin/list");
+      this.listQuery.page = this.currentPage - 1
       callApi('admin', 'list', removeNullAndEmptyString(this.listQuery)).then(
         (res) => {
-          console.log(res)
           this.list = res.list
           this.total = res.total
         }
       )
-      // console.log(this.list);
     },
     handleFilter() {
       console.log(this.listQuery.filter)

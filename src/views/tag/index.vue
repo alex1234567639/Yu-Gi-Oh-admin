@@ -214,4 +214,11 @@ export default {
 .table-list {
   width: fit-content;
 }
+.form-container {
+  display: inline-block;
+  border: 1px dashed lightgray;
+  width: fit-content;
+  padding: 20px 30px;
+  border-radius: 5px;
+}
 </style>

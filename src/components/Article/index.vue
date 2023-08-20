@@ -8,20 +8,20 @@
           <div class="filter-container">
             <el-select
               v-model="listQuery.filter.status"
-              :placeholder="$t('memberManage.chooseStatus')"
+              :placeholder="$t('common.chooseStatus')"
               clearable
               class="filter-item select"
             >
-              <el-option :label="$t('memberManage.normal')" :value="0" />
-              <el-option :label="$t('memberManage.blocked')" :value="1" />
+              <el-option :label="$t('article.article')" :value="0" />
+              <el-option :label="$t('article.removed')" :value="1" />
             </el-select>
             <el-date-picker
               v-model="dateInterval"
               class=""
               type="daterange"
-              range-separator="至"
-              start-placeholder="開始日期"
-              end-placeholder="结束日期"
+              :range-separator="$t('calendar.to')"
+              :start-placeholder="$t('calendar.startDate')"
+              :end-placeholder="$t('calendar.endDate')"
             />
             <el-button
               class="filter-item"
@@ -29,7 +29,7 @@
               icon="el-icon-search"
               @click="handleFilter"
             >
-              {{ $t("memberManage.search") }}
+              {{ $t('common.search') }}
             </el-button>
           </div>
 
@@ -42,7 +42,7 @@
             class="table-list"
           >
             <el-table-column
-              :label="$t('productionInformation.no')"
+              :label="$t('common.no')"
               align="center"
               width="60"
             >
@@ -51,39 +51,32 @@
               </template>
             </el-table-column>
             <el-table-column
-              :label="$t('productionInformation.photo')"
+              :label="$t('article.photo')"
               align="center"
               width="150"
             >
               <template slot-scope="{ row }">
-                <img
-                  :src="row.photo"
-                  alt=""
-                  style="width: 120px; height: auto"
-                >
-                <!-- {{ row.admin_id }} -->
+                <img :src="row.photo" alt="" style="width: 120px; height: auto">
               </template>
             </el-table-column>
             <el-table-column
-              :label="$t('productionInformation.title')"
+              :label="$t('article.title')"
               prop="title"
               align="center"
               width="450"
             />
             <el-table-column
-              :label="$t('productionInformation.publish_date')"
+              :label="$t('article.publish_date')"
               prop="publish_date"
               align="center"
               width="120"
             >
               <template slot-scope="{ row }">
-                <span>{{
-                  new Date(row.publish_date).toLocaleDateString()
-                }}</span>
+                <span>{{ new Date(row.publish_date).toLocaleDateString() }}</span>
               </template>
             </el-table-column>
             <el-table-column
-              :label="$t('productionInformation.admin_id')"
+              :label="$t('article.admin_id')"
               prop="admin_id"
               align="center"
               width="120"
@@ -104,10 +97,10 @@
             >
               <template slot-scope="{ row }">
                 <el-tag v-if="row.status === 0" type="success">{{
-                  $t("memberManage.normal")
+                  $t("article.published")
                 }}</el-tag>
                 <el-tag v-if="row.status === 1" type="danger">{{
-                  $t("memberManage.blocked")
+                  $t("article.removed")
                 }}</el-tag>
               </template>
             </el-table-column>
@@ -137,7 +130,7 @@
           />
 
           <!-- 編輯 -->
-          <el-dialog title="編輯" :visible.sync="editVisible">
+          <el-dialog :title="$t('common.edit')" :visible.sync="editVisible" width="1100px">
             <Form
               :form-data="editFormData"
               @emitData="confirmEdit"
@@ -208,12 +201,12 @@ export default {
         admin_id: { preset: '' },
         title: {
           type: 'long-input',
-          label: this.$t('productionInformation.title'),
+          label: this.$t('article.title'),
           preset: ''
         },
         photo: {
           type: 'photo',
-          label: this.$t('productionInformation.photo'),
+          label: this.$t('article.photo'),
           preset: ''
         },
         status: {
@@ -221,19 +214,19 @@ export default {
           label: this.$t('common.status'),
           preset: 0,
           options: [
-            { label: '上架中', value: 0 },
-            { label: '下架中', value: 1 }
+            { label: this.$t('article.published'), value: 0 },
+            { label: this.$t('article.removed'), value: 1 }
           ]
         },
         to_top: {},
         tag: {
           type: 'tag',
-          label: this.$t('productionInformation.tag'),
+          label: this.$t('article.tag'),
           preset: []
         },
         content: {
           type: 'tinymce',
-          label: this.$t('productionInformation.content'),
+          label: this.$t('article.content'),
           preset: ''
         }
       },
@@ -243,12 +236,12 @@ export default {
         admin_id: { preset: '' },
         title: {
           type: 'long-input',
-          label: this.$t('productionInformation.title'),
+          label: this.$t('article.title'),
           preset: ''
         },
         photo: {
           type: 'photo',
-          label: this.$t('productionInformation.photo'),
+          label: this.$t('article.photo'),
           preset: ''
         },
         status: {
@@ -256,19 +249,19 @@ export default {
           label: this.$t('common.status'),
           preset: 0,
           options: [
-            { label: '上架中', value: 0 },
-            { label: '下架中', value: 1 }
+            { label: this.$t('article.published'), value: 0 },
+            { label: this.$t('article.removed'), value: 1 }
           ]
         },
         to_top: {},
         tag: {
           type: 'tag',
-          label: this.$t('productionInformation.tag'),
+          label: this.$t('article.tag'),
           preset: []
         },
         content: {
           type: 'tinymce',
-          label: this.$t('productionInformation.content'),
+          label: this.$t('article.content'),
           preset: ''
         }
       }
@@ -313,7 +306,7 @@ export default {
       this.editData.to_top = !this.user.permit
         ? {
           type: 'select',
-          label: this.$t('productionInformation.to_top'),
+          label: this.$t('article.to_top'),
           preset: false,
           options: [
             { label: '置頂', value: true },
@@ -414,17 +407,17 @@ export default {
         {
           field: 'content',
           condition: !form.content,
-          message: 'productionInformation.inputContent'
+          message: 'article.inputContent'
         },
         {
           field: 'photo',
           condition: !form.photo,
-          message: 'productionInformation.inputPhoto'
+          message: 'article.inputPhoto'
         },
         {
           field: 'title',
           condition: !form.title,
-          message: 'productionInformation.inputTitle'
+          message: 'article.inputTitle'
         }
       ]
       for (const rule of validationRules) {
@@ -476,5 +469,9 @@ export default {
 }
 .table-list {
   width: fit-content;
+}
+.form-container {
+  width: 1000px;
+  padding: 20px;
 }
 </style>

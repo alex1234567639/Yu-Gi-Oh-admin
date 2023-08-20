@@ -258,7 +258,7 @@
             </template>
           </el-table-column>
 
-          <el-table-column :label="$t('common.id')" align="center" width="60">
+          <el-table-column :label="$t('common.no')" align="center" width="60">
             <template slot-scope="row">
               {{ row.$index + 1 + listQuery.page * listQuery.limit }}
             </template>
@@ -382,14 +382,14 @@
 <script>
 import Pagination from '@/components/Pagination'
 import Form from '@/components/Form/index'
+import store from '@/store'
+import router from '@/router'
 import { ygoOptions } from '@/config/ygo.config'
+import { height_limit, KB_limit, width_limit } from '@/config/main'
 import { callApi } from '@/api/api'
 import { removeNullAndEmptyString } from '@/utils/index.js'
 import { getPackTypeList } from '@/utils/packTypeList'
-import store from '@/store'
-import { height_limit, KB_limit, width_limit } from '@/config/main'
 import { uploadImage } from '@/utils/image'
-import router from '@/router'
 
 export default {
   components: {
