@@ -13,7 +13,7 @@
       highlight-current-row
       class="data-list"
     >
-      <el-table-column :label="$t('common.id')" type="index" align="center" width="60" />
+      <el-table-column :label="$t('common.no')" type="index" align="center" width="60" />
       <el-table-column :label="$t('permits.name')" prop="name" align="center" width="250" />
       <el-table-column :label="$t('common.action')" align="center" width="120">
         <template slot-scope="{row}">
