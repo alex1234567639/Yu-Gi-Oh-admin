@@ -8,7 +8,7 @@ import i18n from '@/lang'
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
   withCredentials: true, // send cookies when cross-domain requests
-  timeout: 5000 // request timeout
+  timeout: 11000 // request timeout
 })
 
 // request interceptor
@@ -52,7 +52,7 @@ service.interceptors.response.use(
       Message({
         message: i18n.t(`errorCode.${res.error_code}`),
         type: 'error',
-        duration: 5 * 1000
+        duration: 11000
       })
       if (res.error_code === 10005) {
         store.dispatch('errorLog/goToLogin', true)
@@ -62,7 +62,7 @@ service.interceptors.response.use(
       Message({
         message: i18n.t(`errorCode.${res.error_code}`),
         type: 'warning',
-        duration: 5 * 1000
+        duration: 11000
       })
 
       return decode(res.data)
@@ -73,7 +73,7 @@ service.interceptors.response.use(
     Message({
       message: 'Error',
       type: 'error',
-      duration: 5 * 1000
+      duration: 11000
     })
     return Promise.reject(error)
   }

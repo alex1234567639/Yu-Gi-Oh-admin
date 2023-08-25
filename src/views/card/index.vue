@@ -608,11 +608,6 @@ export default {
           field: 'product_information_type',
           condition: !form.product_information_type,
           message: 'card.chooseProductType'
-        },
-        {
-          field: 'number',
-          condition: !form.number,
-          message: 'card.inputNumber'
         }
       ]
       for (const rule of validationRules) {

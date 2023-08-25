@@ -22,8 +22,16 @@ export default {
   data() {
     return {
       addFormData: {
-        name: { type: 'long-input', label: this.$t('packType.name'), preset: '' },
-        packType: { type: 'input', label: this.$t('packType.packType'), preset: '' },
+        name: {
+          type: 'long-input',
+          label: this.$t('packType.name'),
+          preset: ''
+        },
+        packType: {
+          type: 'input',
+          label: this.$t('packType.packType'),
+          preset: ''
+        },
         mainType: {
           type: 'select',
           label: this.$t('packType.mainType'),
@@ -55,8 +63,16 @@ export default {
     formValidate(form) {
       const validationRules = [
         { field: 'name', condition: !form.name, message: 'packType.inputId' },
-        { field: 'packType', condition: !form.packType, message: 'packType.inputName' },
-        { field: 'mainType', condition: !form.mainType, message: 'packType.mainType' }
+        {
+          field: 'packType',
+          condition: !form.packType,
+          message: 'packType.inputName'
+        },
+        {
+          field: 'mainType',
+          condition: !Number.isInteger(form.mainType),
+          message: 'packType.mainType'
+        }
       ]
       for (const rule of validationRules) {
         if (rule.condition) {
