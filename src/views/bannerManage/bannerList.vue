@@ -91,6 +91,11 @@
               </el-table-column>
             </el-table>
           </el-tab-pane>
+
+          <!-- 新增 -->
+          <el-tab-pane :label="$t('banner.add')" name="add_banner">
+            <BannerAdd @addCompleted="addCompleted" />
+          </el-tab-pane>
         </el-tabs>
 
         <!-- 編輯 -->
@@ -140,6 +145,7 @@
 
 <script>
 import Form from '@/components/Form/index'
+import BannerAdd from './bannerAdd'
 import { callApi } from '@/api/api'
 import { removeNullAndEmptyString } from '@/utils/index.js'
 import { uploadImage } from '@/utils/image'
@@ -149,7 +155,8 @@ import { height_limit, KB_limit, width_limit } from '@/config/main'
 
 export default {
   components: {
-    Form
+    Form,
+    BannerAdd
   },
   data() {
     return {
@@ -260,6 +267,11 @@ export default {
     clearPhoto() {
       this.editPcPhoto = ''
       this.editMbPhoto = ''
+    },
+    // 新增
+    addCompleted() {
+      this.getList()
+      this.tabName = 'banner_list'
     }
   }
 }
