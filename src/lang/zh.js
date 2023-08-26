@@ -96,6 +96,18 @@ export default {
     inputValidPassword: '請輸入正確密碼格式',
     differentPassword: '密碼不一致'
   },
+  // banner管理
+  banner: {
+    list: 'banner列表',
+    add: '新增banner',
+    edit: '編輯banner',
+    title: '標題',
+    subtitle: '副標題',
+    date: '最後更新日期',
+    photo_pc: 'banner(桌機版)',
+    photo_mobile: 'banner(手機版)',
+    url: '連結'
+  },
   // 卡片管理
   card: {
     id: '卡號',
@@ -294,7 +306,7 @@ export default {
     confirm: '確定',
     cancel: '取消',
     fileTooLarge: '檔案大小不得超過1M',
-    sizeTooLarge: '檔案尺寸不得超過1920*1000',
+    sizeTooLarge: '檔案尺寸不得超過3840*2000',
     addSuccess: '新增成功',
     editSuccess: '修改成功',
     deleteSuccess: '刪除成功'

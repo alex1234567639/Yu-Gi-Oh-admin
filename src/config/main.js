@@ -2,8 +2,8 @@ import i18n from '@/lang'
 
 // 上傳照片限制
 const KB_limit = 1024
-const width_limit = 1920
-const height_limit = 1000
+const width_limit = 3840
+const height_limit = 2000
 
 // 產品包裝分類
 const packMainTypeList = [
