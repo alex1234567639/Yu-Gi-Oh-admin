@@ -1,9 +1,13 @@
 import axios from 'axios'
+import router, { resetRouter } from '@/router'
 import { Message } from 'element-ui'
 import store from '@/store'
-import { getToken } from '@/utils/auth'
+import { getToken, removeToken, removeAccount } from '@/utils/auth'
+import { removePermitList } from '@/utils/permitsList'
+import { removePackTypeList } from '@/utils/packTypeList'
 import { decode } from '@/utils/decode'
 import i18n from '@/lang'
+
 // create an axios instance
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
@@ -55,7 +59,12 @@ service.interceptors.response.use(
         duration: 11000
       })
       if (res.error_code === 10005) {
-        store.dispatch('errorLog/goToLogin', true)
+        removeToken()
+        removeAccount()
+        resetRouter()
+        removePermitList()
+        removePackTypeList()
+        router.push('/login')
       }
       return Promise.reject(new Error(res.message || 'Error'))
     } else {
