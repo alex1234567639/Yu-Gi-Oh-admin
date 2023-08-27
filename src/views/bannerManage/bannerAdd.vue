@@ -64,7 +64,6 @@ export default {
     confirmAdd(data) {
       data.photo_pc = this.addPcPhoto
       data.photo_mobile = this.addMbPhoto
-      data.date = new Date()
       if (store.state.settings.showLog) {
         console.log(data)
       }
@@ -113,8 +112,8 @@ export default {
       }
     },
     clearPhoto() {
-      this.editPcPhoto = ''
-      this.editMbPhoto = ''
+      this.addPcPhoto = ''
+      this.addMbPhoto = ''
     }
   }
 }
