@@ -14,6 +14,8 @@
                 :end-placeholder="$t('calendar.endDate')"
                 class="date-picker"
                 :picker-options="calendarPastDatePicker"
+                value-format="yyyy-MM-dd HH:mm:ss"
+                :default-time="['00:00:00', '23:59:59']"
               />
               <el-button
                 class="filter-item"
@@ -193,16 +195,11 @@ export default {
   methods: {
     getList() {
       this.loading = true
-      if (this.dateInterval && this.dateInterval.length > 1) {
-        this.listQuery.filter.begin_date = new Date(
-          this.dateInterval[0]
-        ).toLocaleDateString()
-        this.listQuery.filter.end_date = new Date(
-          this.dateInterval[1]
-        ).toLocaleDateString()
-      } else {
+      if (this.dateInterval === null || this.dateInterval.length === 0) {
         this.listQuery.filter.begin_date = ''
         this.listQuery.filter.end_date = ''
+      } else {
+        [this.listQuery.filter.begin_date, this.listQuery.filter.end_date] = this.dateInterval
       }
       callApi('banner', 'list', removeNullAndEmptyString(this.listQuery)).then((res) => {
         this.list = res.list
