@@ -190,7 +190,6 @@ export default {
   },
   mounted() {
     this.getList()
-    console.log(new Date().toLocaleDateString())
   },
   methods: {
     getList() {
