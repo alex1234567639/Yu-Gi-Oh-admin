@@ -73,9 +73,9 @@
             {{ formData.photo.preset ? photoName : $t("form.choosePhoto") }}
           </label>
           <img
+            class="upload-photo"
             :src="formData.photo.preset"
             alt=""
-            style="width: 150px; height: auto"
           >
         </el-form-item>
         <!-- 副文本 -->
@@ -308,7 +308,7 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    vertical-align: middle;
+    vertical-align: top;
     cursor: pointer;
     &:hover {
       background-color: #51a6f6;
@@ -320,6 +320,10 @@ export default {
       overflow: hidden;
       z-index: -1;
     }
+  }
+  & .upload-photo {
+    width: 150px;
+    margin-left: 10px;
   }
   & .tinymce {
     width: 99%;
