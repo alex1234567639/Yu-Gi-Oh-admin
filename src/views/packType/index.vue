@@ -22,6 +22,7 @@
               <el-option :label="$t('packType.removed')" :value="1" />
             </el-select>
             <el-button
+              :loading="loading"
               class="filter-item"
               type="primary"
               icon="el-icon-search"
@@ -33,6 +34,7 @@
 
           <!-- 表格 -->
           <el-table
+            :loading="loading"
             :data="list"
             border
             fit
@@ -155,6 +157,8 @@ export default {
         }
       },
       currentPage: 0,
+      loading: false,
+      actionLoading: false,
       // 編輯
       editVisible: false,
       editFormData: {},
@@ -185,6 +189,7 @@ export default {
   },
   methods: {
     getList() {
+      this.loading = true
       if (this.listQuery.filter.status === '') {
         this.listQuery.filter.status = undefined
       }
@@ -204,10 +209,10 @@ export default {
           return a.label > b.label ? 1 : -1
         })
         setPackTypeList(this.productInfoArr)
+        this.loading = false
       })
     },
     handleFilter() {
-      console.log(this.listQuery.filter)
       this.currentPage = 1
       this.getList()
     },
@@ -225,16 +230,23 @@ export default {
       })
       this.editFormData = this.editData
     },
-    confirmEdit(data) {
+    async confirmEdit(data) {
       if (store.state.settings.showLog) {
         console.log(data)
       }
-      if (this.formValidate(data)) {
-        callApi('packType', 'edit', data).then(() => {
+      if (this.actionLoading) {
+        return
+      }
+      this.actionLoading = true
+      try {
+        if (this.formValidate(data)) {
+          await callApi('packType', 'edit', data)
           alert(this.$t('alert.editSuccess'))
           this.getList()
           this.editVisible = false
-        })
+        }
+      } finally {
+        this.actionLoading = false
       }
     },
     // 表單驗證

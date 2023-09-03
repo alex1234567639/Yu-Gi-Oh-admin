@@ -99,6 +99,7 @@ export default {
           tag: ''
         }
       },
+      actionLoading: false,
       // 編輯
       editVisible: false,
       editFormData: {},
@@ -128,7 +129,6 @@ export default {
     getList() {
       callApi('tag', 'list', removeNullAndEmptyString(this.listQuery)).then(
         (res) => {
-          // console.log(this.list);
           this.list = res.list
           this.total = res.total
           this.dateInterval = []
@@ -136,7 +136,6 @@ export default {
       )
     },
     handleEdit(row) {
-      console.log(row)
       this.editVisible = true
       // 帶入預設值
       Object.keys(this.editData).forEach((key) => {
@@ -144,16 +143,22 @@ export default {
       })
       this.editFormData = this.editData
     },
-    confirmEdit(data) {
+    async confirmEdit(data) {
       if (allStore.state.settings.showLog) {
         console.log(data)
       }
-
-      callApi('tag', 'edit', removeNullAndEmptyString(data)).then(() => {
+      if (this.actionLoading) {
+        return
+      }
+      this.actionLoading = true
+      try {
+        await callApi('tag', 'edit', removeNullAndEmptyString(data))
         alert(this.$t('alert.editSuccess'))
         this.getList()
         this.editVisible = false
-      })
+      } finally {
+        this.actionLoading = false
+      }
     },
     // 新增
     clearAdd() {
@@ -177,16 +182,24 @@ export default {
       }
       return true
     },
-    confirmAdd(data) {
+    async confirmAdd(data) {
       if (allStore.state.settings.showLog) {
         console.log(data)
       }
-      if (this.formValidate(data)) {
-        callApi('tag', 'add', removeNullAndEmptyString(data)).then(() => {
+      if (this.actionLoading) {
+        return
+      }
+      this.actionLoading = true
+      try {
+        if (this.formValidate(data)) {
+          await callApi('tag', 'add', removeNullAndEmptyString(data))
           alert(this.$t('alert.addSuccess'))
           this.clearAdd()
           this.getList()
-        })
+          this.tabName = 'list'
+        }
+      } finally {
+        this.actionLoading = false
       }
     }
   }

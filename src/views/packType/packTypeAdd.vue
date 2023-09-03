@@ -21,6 +21,7 @@ export default {
   },
   data() {
     return {
+      actionLoading: false,
       addFormData: {
         name: {
           type: 'long-input',
@@ -42,16 +43,23 @@ export default {
     }
   },
   methods: {
-    confirmAdd(data) {
+    async confirmAdd(data) {
       if (store.state.settings.showLog) {
         console.log(data)
       }
-      if (this.formValidate(data)) {
-        callApi('packType', 'add', data).then(() => {
+      if (this.actionLoading) {
+        return
+      }
+      this.actionLoading = true
+      try {
+        if (this.formValidate(data)) {
+          await callApi('packType', 'add', data)
           alert(this.$t('alert.addSuccess'))
           this.clearAdd()
           this.$emit('addCompleted')
-        })
+        }
+      } finally {
+        this.actionLoading = false
       }
     },
     clearAdd() {

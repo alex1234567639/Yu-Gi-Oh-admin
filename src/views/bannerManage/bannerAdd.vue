@@ -42,7 +42,6 @@ import Form from '@/components/Form/index'
 import { callApi } from '@/api/api'
 import { removeNullAndEmptyString } from '@/utils/index.js'
 import { uploadImage } from '@/utils/image'
-import store from '@/store'
 import { height_limit, KB_limit, width_limit } from '@/config/main'
 
 export default {
@@ -51,6 +50,7 @@ export default {
   },
   data() {
     return {
+      actionLoading: false,
       addFormData: {
         title: { type: 'long-input', label: this.$t('banner.title'), preset: '' },
         subtitle: { type: 'long-input', label: this.$t('banner.subtitle'), preset: '' },
@@ -61,17 +61,22 @@ export default {
     }
   },
   methods: {
-    confirmAdd(data) {
-      data.photo_pc = this.addPcPhoto
-      data.photo_mobile = this.addMbPhoto
-      if (store.state.settings.showLog) {
-        console.log(data)
+    async confirmAdd(data) {
+      if (this.actionLoading) {
+        return
       }
-      callApi('banner', 'add', removeNullAndEmptyString(data)).then((res) => {
-        alert(this.$t('alert.addSuccess'))
-        this.clearAdd()
-        this.$emit('addCompleted')
-      })
+      this.actionLoading = true
+      try {
+        data.photo_pc = this.addPcPhoto
+        data.photo_mobile = this.addMbPhoto
+        if (this.formValidate(data)) {
+          await callApi('banner', 'add', removeNullAndEmptyString(data))
+          this.$emit('addCompleted')
+          this.clearAdd()
+        }
+      } finally {
+        this.actionLoading = false
+      }
     },
     clearAdd() {
       Object.keys(this.addFormData).forEach((key) => {
@@ -114,6 +119,20 @@ export default {
     clearPhoto() {
       this.addPcPhoto = ''
       this.addMbPhoto = ''
+    },
+    // 表單驗證
+    formValidate(form) {
+      const validationRules = [
+        { field: 'photo_pc', condition: !form.photo_pc, message: 'banner.choosePhotoPc' },
+        { field: 'photo_mobile', condition: !form.photo_pc, message: 'banner.choosePhotoMobile' }
+      ]
+      for (const rule of validationRules) {
+        if (rule.condition) {
+          alert(this.$t(rule.message))
+          return false
+        }
+      }
+      return true
     }
   }
 }

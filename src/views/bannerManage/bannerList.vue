@@ -18,6 +18,7 @@
                 :default-time="['00:00:00', '23:59:59']"
               />
               <el-button
+                :loading="loading"
                 class="filter-item"
                 type="primary"
                 icon="el-icon-search"
@@ -29,7 +30,7 @@
 
             <!-- 表格 -->
             <el-table
-              v-loading="loading"
+              :loading="loading"
               :data="list"
               border
               fit
@@ -151,7 +152,6 @@ import BannerAdd from './bannerAdd'
 import { callApi } from '@/api/api'
 import { removeNullAndEmptyString } from '@/utils/index.js'
 import { uploadImage } from '@/utils/image'
-import store from '@/store'
 import { calendarPastDatePicker } from '@/utils/calendarPick.js'
 import { height_limit, KB_limit, width_limit } from '@/config/main'
 
@@ -175,6 +175,7 @@ export default {
         }
       },
       loading: false,
+      actionLoading: false,
       // 編輯
       editVisible: false,
       editFormData: {},
@@ -216,17 +217,21 @@ export default {
       })
       this.editFormData = this.editData
     },
-    confirmEdit(data) {
-      data.photo_pc = this.editPcPhoto
-      data.photo_mobile = this.editMbPhoto
-      if (store.state.settings.showLog) {
-        console.log(data)
+    async confirmEdit(data) {
+      if (this.actionLoading) {
+        return
       }
-      callApi('banner', 'edit', removeNullAndEmptyString(data)).then(() => {
+      this.actionLoading = true
+      try {
+        data.photo_pc = this.editPcPhoto
+        data.photo_mobile = this.editMbPhoto
+        await callApi('banner', 'edit', removeNullAndEmptyString(data))
         alert(this.$t('alert.editSuccess'))
         this.getList()
         this.editVisible = false
-      })
+      } finally {
+        this.actionLoading = false
+      }
     },
     // 圖片
     chooseFile(event, type) {

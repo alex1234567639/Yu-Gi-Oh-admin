@@ -59,7 +59,7 @@
       <el-button @click="clearAddUser">
         {{ $t("lightbox.cancel") }}
       </el-button>
-      <el-button type="primary" @click="handleAddUser">
+      <el-button :loading="actionLoading" type="primary" @click="handleAddUser">
         {{ $t("lightbox.add") }}
       </el-button>
     </div>
@@ -73,6 +73,7 @@ import { callApi } from '@/api/api'
 export default {
   data() {
     return {
+      actionLoading: false,
       add_type: undefined,
       add_name: '',
       add_account: '',
@@ -81,31 +82,26 @@ export default {
     }
   },
   methods: {
-    handleAddUser() {
-      if (this.add_type === '' || this.add_type === undefined) {
-        alert(this.$t('memberManage.chooseType'))
-      } else if (this.add_name === '') {
-        alert(this.$t('memberManage.inputName'))
-      } else if (this.add_account === '') {
-        alert(this.$t('memberManage.inputAccount'))
-      } else if (validPlatformPassword(this.add_password) === false) {
-        alert(this.$t('memberManage.inputValidPassword'))
-      } else if (this.add_password !== this.add_passwordConfirm) {
-        alert(this.$t('memberManage.differentPassword'))
-      } else {
+    async handleAddUser() {
+      if (this.actionLoading) {
+        return
+      }
+      this.actionLoading = true
+      try {
         const data = {
-          // 'token': getToken(),
           type: this.add_type,
           name: this.add_name,
           account: this.add_account,
           password: this.add_password
         }
-        console.log(data)
-        callApi('admin', 'add', data).then((res) => {
+        if (this.formValidate(data)) {
+          await callApi('admin', 'add', data)
           alert(this.$t('alert.addSuccess'))
           this.clearAddUser()
           this.$emit('addCompleted')
-        })
+        }
+      } finally {
+        this.actionLoading = false
       }
     },
     clearAddUser() {
@@ -114,6 +110,23 @@ export default {
       this.add_account = ''
       this.add_password = ''
       this.add_passwordConfirm = ''
+    },
+    // 表單驗證
+    formValidate(form) {
+      const validationRules = [
+        { field: 'type', condition: !form.type, message: 'memberManage.chooseType' },
+        { field: 'name', condition: !form.name, message: 'memberManage.inputName' },
+        { field: 'account', condition: !form.account, message: 'memberManage.inputAccount' },
+        { field: 'password', condition: validPlatformPassword(form.password), message: 'memberManage.inputValidPassword' },
+        { field: 'passwordConfirm', condition: form.password !== this.add_passwordConfirm, message: 'memberManage.differentPassword' }
+      ]
+      for (const rule of validationRules) {
+        if (rule.condition) {
+          alert(this.$t(rule.message))
+          return false
+        }
+      }
+      return true
     }
   }
 }
