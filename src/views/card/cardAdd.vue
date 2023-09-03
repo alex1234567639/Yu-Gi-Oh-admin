@@ -162,7 +162,10 @@ export default {
     },
     clearAdd() {
       Object.keys(this.addFormData).forEach((key) => {
-        this.addFormData[key].preset = key === 'rarity' ? [] : ''
+        // 不清除packType
+        if (key !== 'product_information_type') {
+          this.addFormData[key].preset = key === 'rarity' ? [] : ''
+        }
       })
       this.photoName = ''
       this.photoBase64 = ''
