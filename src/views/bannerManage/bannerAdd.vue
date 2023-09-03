@@ -67,11 +67,13 @@ export default {
       if (store.state.settings.showLog) {
         console.log(data)
       }
-      callApi('banner', 'add', removeNullAndEmptyString(data)).then((res) => {
-        alert(this.$t('alert.addSuccess'))
-        this.clearAdd()
-        this.$emit('addCompleted')
-      })
+      if (this.formValidate(data)) {
+        callApi('banner', 'add', removeNullAndEmptyString(data)).then((res) => {
+          alert(this.$t('alert.addSuccess'))
+          this.clearAdd()
+          this.$emit('addCompleted')
+        })
+      }
     },
     clearAdd() {
       Object.keys(this.addFormData).forEach((key) => {
@@ -114,6 +116,20 @@ export default {
     clearPhoto() {
       this.addPcPhoto = ''
       this.addMbPhoto = ''
+    },
+    // 表單驗證
+    formValidate(form) {
+      const validationRules = [
+        { field: 'photo_pc', condition: !form.photo_pc, message: 'banner.choosePhotoPc' },
+        { field: 'photo_mobile', condition: !form.photo_pc, message: 'banner.choosePhotoMobile' }
+      ]
+      for (const rule of validationRules) {
+        if (rule.condition) {
+          alert(this.$t(rule.message))
+          return false
+        }
+      }
+      return true
     }
   }
 }
