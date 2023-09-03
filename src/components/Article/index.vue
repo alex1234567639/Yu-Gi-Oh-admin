@@ -12,16 +12,18 @@
               clearable
               class="filter-item select"
             >
-              <el-option :label="$t('article.article')" :value="0" />
+              <el-option :label="$t('article.published')" :value="0" />
               <el-option :label="$t('article.removed')" :value="1" />
             </el-select>
             <el-date-picker
               v-model="dateInterval"
-              class=""
               type="daterange"
               :range-separator="$t('calendar.to')"
               :start-placeholder="$t('calendar.startDate')"
               :end-placeholder="$t('calendar.endDate')"
+              :picker-options="calendarPastDatePicker"
+              value-format="yyyy-MM-dd HH:mm:ss"
+              :default-time="['00:00:00', '23:59:59']"
             />
             <el-button
               class="filter-item"
@@ -72,7 +74,7 @@
               width="120"
             >
               <template slot-scope="{ row }">
-                <span>{{ new Date(row.publish_date).toLocaleDateString() }}</span>
+                <span>{{ row.publish_date | parseTime('{y}-{m}-{d}') }}</span>
               </template>
             </el-table-column>
             <el-table-column
@@ -163,6 +165,7 @@ import store from '@/store/modules/article'
 import userStore from '@/store/modules/user'
 import { checkUserList } from '@/api/article'
 import { removeNullAndEmptyString } from '@/utils/index.js'
+import { calendarPastDatePicker } from '@/utils/calendarPick'
 
 export default {
   components: {
@@ -180,7 +183,8 @@ export default {
       total: 0,
       list: null,
       tabName: 'list',
-      currentPage: 0,
+      calendarPastDatePicker,
+      dateInterval: [],
       listQuery: {
         page: 0,
         limit: 20,
@@ -191,7 +195,7 @@ export default {
           type: 0
         }
       },
-      dateInterval: [],
+      currentPage: 0,
       // 編輯
       editVisible: false,
       editFormData: {},
@@ -316,10 +320,6 @@ export default {
         : {
           preset: false
         }
-
-      // this.addFormData.to_top = JSON.parse(
-      //   JSON.stringify(this.editData.to_top)
-      // )
     },
     makePublishTime() {
       return `${new Date().toLocaleDateString().replaceAll('/', '-')} ${
@@ -330,25 +330,20 @@ export default {
       if (this.listQuery.filter.status === '') {
         this.listQuery.filter.status = undefined
       }
-
       // 轉換時間格式
-      if (this.dateInterval.length) {
-        this.listQuery.filter.begin_date = new Date(
-          this.dateInterval[0]
-        ).toLocaleDateString()
-        this.listQuery.filter.end_date = new Date(
-          this.dateInterval[1]
-        ).toLocaleDateString()
+      if (this.dateInterval === null || this.dateInterval.length === 0) {
+        this.listQuery.filter.begin_date = ''
+        this.listQuery.filter.end_date = ''
+      } else {
+        [this.listQuery.filter.begin_date, this.listQuery.filter.end_date] = this.dateInterval
       }
       callApi(
         this.detailData.path,
         'articleList',
         removeNullAndEmptyString(this.listQuery)
       ).then((res) => {
-        // console.log(this.list);
         this.list = res.list
         this.total = res.total
-        this.dateInterval = []
       })
     },
     handleFilter() {
