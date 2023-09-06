@@ -39,6 +39,7 @@
               class="filter-item input"
             />
             <el-button
+              :loading="loading"
               class="filter-item"
               type="primary"
               icon="el-icon-search"
@@ -50,6 +51,7 @@
 
           <!-- 表格 -->
           <el-table
+            :loading="loading"
             :data="list"
             border
             fit
@@ -110,9 +112,7 @@
               width="140"
             >
               <template slot-scope="{ row }">
-                <span>{{
-                  new Date(row.create_date).toLocaleDateString()
-                }}</span>
+                <span>{{ row.create_date | parseTime('{y}-{m}-{d}') }}</span>
               </template>
             </el-table-column>
             <el-table-column
@@ -197,7 +197,7 @@
               <el-button @click="editLightBoxVisible = false">
                 {{ $t("lightbox.cancel") }}
               </el-button>
-              <el-button type="primary" @click="updateAdmin">
+              <el-button :loading="loading" type="primary" @click="updateAdmin">
                 {{ $t("lightbox.confirm") }}
               </el-button>
             </div>
@@ -231,7 +231,6 @@ export default {
       list: null,
       tabName: 'admin_list',
       listQuery: {
-        // token: getToken(),
         page: 0,
         limit: 20,
         filter: {
@@ -244,6 +243,8 @@ export default {
         }
       },
       currentPage: 0,
+      loading: false,
+      actionLoading: false,
       // 編輯會員
       editLightBoxVisible: false,
       edit_id: undefined,
@@ -256,6 +257,7 @@ export default {
   },
   methods: {
     getList() {
+      this.loading = true
       if (this.listQuery.filter.status === '') {
         this.listQuery.filter.status = undefined
       }
@@ -267,11 +269,11 @@ export default {
         (res) => {
           this.list = res.list
           this.total = res.total
+          this.loading = false
         }
       )
     },
     handleFilter() {
-      console.log(this.listQuery.filter)
       this.currentPage = 1
       this.getList()
     },
@@ -282,18 +284,24 @@ export default {
       this.edit_type = list.type
       this.edit_status = list.status
     },
-    updateAdmin() {
-      const data = {
-        // 'token': getToken(),
-        _id: this.edit_id,
-        type: this.edit_type,
-        status: this.edit_status
+    async updateAdmin() {
+      if (this.actionLoading) {
+        return
       }
-      callApi('admin', 'edit', data).then((res) => {
+      this.actionLoading = true
+      try {
+        const data = {
+          _id: this.edit_id,
+          type: this.edit_type,
+          status: this.edit_status
+        }
+        await callApi('admin', 'edit', data)
         alert(this.$t('alert.editSuccess'))
         this.editLightBoxVisible = false
         this.getList()
-      })
+      } finally {
+        this.actionLoading = false
+      }
     },
     // 新增會員
     addCompleted() {

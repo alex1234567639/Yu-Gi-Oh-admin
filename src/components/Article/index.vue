@@ -12,18 +12,21 @@
               clearable
               class="filter-item select"
             >
-              <el-option :label="$t('article.article')" :value="0" />
+              <el-option :label="$t('article.published')" :value="0" />
               <el-option :label="$t('article.removed')" :value="1" />
             </el-select>
             <el-date-picker
               v-model="dateInterval"
-              class=""
               type="daterange"
               :range-separator="$t('calendar.to')"
               :start-placeholder="$t('calendar.startDate')"
               :end-placeholder="$t('calendar.endDate')"
+              :picker-options="calendarPastDatePicker"
+              value-format="yyyy-MM-dd HH:mm:ss"
+              :default-time="['00:00:00', '23:59:59']"
             />
             <el-button
+              :loading="loading"
               class="filter-item"
               type="primary"
               icon="el-icon-search"
@@ -35,6 +38,7 @@
 
           <!-- 表格 -->
           <el-table
+            :loading="loading"
             :data="list"
             border
             fit
@@ -72,7 +76,7 @@
               width="120"
             >
               <template slot-scope="{ row }">
-                <span>{{ new Date(row.publish_date).toLocaleDateString() }}</span>
+                <span>{{ row.publish_date | parseTime('{y}-{m}-{d}') }}</span>
               </template>
             </el-table-column>
             <el-table-column
@@ -158,11 +162,11 @@
 import Pagination from '@/components/Pagination'
 import { callApi } from '@/api/api'
 import Form from '@/components/Form/index'
-import allStore from '@/store'
 import store from '@/store/modules/article'
 import userStore from '@/store/modules/user'
 import { checkUserList } from '@/api/article'
 import { removeNullAndEmptyString } from '@/utils/index.js'
+import { calendarPastDatePicker } from '@/utils/calendarPick'
 
 export default {
   components: {
@@ -180,7 +184,8 @@ export default {
       total: 0,
       list: null,
       tabName: 'list',
-      currentPage: 0,
+      calendarPastDatePicker,
+      dateInterval: [],
       listQuery: {
         page: 0,
         limit: 20,
@@ -191,7 +196,9 @@ export default {
           type: 0
         }
       },
-      dateInterval: [],
+      currentPage: 0,
+      loading: false,
+      actionLoading: false,
       // 編輯
       editVisible: false,
       editFormData: {},
@@ -316,10 +323,6 @@ export default {
         : {
           preset: false
         }
-
-      // this.addFormData.to_top = JSON.parse(
-      //   JSON.stringify(this.editData.to_top)
-      // )
     },
     makePublishTime() {
       return `${new Date().toLocaleDateString().replaceAll('/', '-')} ${
@@ -327,28 +330,25 @@ export default {
       }`
     },
     getList() {
+      this.loading = true
       if (this.listQuery.filter.status === '') {
         this.listQuery.filter.status = undefined
       }
-
       // 轉換時間格式
-      if (this.dateInterval.length) {
-        this.listQuery.filter.begin_date = new Date(
-          this.dateInterval[0]
-        ).toLocaleDateString()
-        this.listQuery.filter.end_date = new Date(
-          this.dateInterval[1]
-        ).toLocaleDateString()
+      if (this.dateInterval === null || this.dateInterval.length === 0) {
+        this.listQuery.filter.begin_date = ''
+        this.listQuery.filter.end_date = ''
+      } else {
+        [this.listQuery.filter.begin_date, this.listQuery.filter.end_date] = this.dateInterval
       }
       callApi(
         this.detailData.path,
         'articleList',
         removeNullAndEmptyString(this.listQuery)
       ).then((res) => {
-        // console.log(this.list);
         this.list = res.list
         this.total = res.total
-        this.dateInterval = []
+        this.loading = false
       })
     },
     handleFilter() {
@@ -373,21 +373,24 @@ export default {
         this.editFormData = this.editData
       })
     },
-    confirmEdit(data) {
-      data.publish_date = this.makePublishTime()
-      if (allStore.state.settings.showLog) {
-        console.log(data)
+    async confirmEdit(data) {
+      if (this.actionLoading) {
+        return
       }
-
-      callApi(
-        this.detailData.path,
-        'editArticle',
-        removeNullAndEmptyString(data)
-      ).then(() => {
+      this.actionLoading = true
+      try {
+        data.publish_date = this.makePublishTime()
+        await callApi(
+          this.detailData.path,
+          'editArticle',
+          removeNullAndEmptyString(data)
+        )
         alert(this.$t('alert.editSuccess'))
         this.getList()
         this.editVisible = false
-      })
+      } finally {
+        this.actionLoading = false
+      }
     },
     // 新增
     clearAdd() {
@@ -428,21 +431,26 @@ export default {
       }
       return true
     },
-    confirmAdd(data) {
-      if (Number.isInteger(this.detailData.type)) {
-        data.type = this.detailData.type
+    async confirmAdd(data) {
+      if (this.actionLoading) {
+        return
       }
-      data.publish_date = this.makePublishTime()
-      data.admin_id = this.user._id
-      if (allStore.state.settings.showLog) {
-        console.log(data)
-      }
-      if (this.formValidate(data)) {
-        callApi(this.detailData.path, 'addArticle', data).then(() => {
+      this.actionLoading = true
+      try {
+        if (Number.isInteger(this.detailData.type)) {
+          data.type = this.detailData.type
+        }
+        data.publish_date = this.makePublishTime()
+        data.admin_id = this.user._id
+        if (this.formValidate(data)) {
+          await callApi(this.detailData.path, 'addArticle', data)
           alert(this.$t('alert.addSuccess'))
           this.clearAdd()
           this.getList()
-        })
+          this.tabName = 'list'
+        }
+      } finally {
+        this.actionLoading = false
       }
     }
   }

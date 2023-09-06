@@ -49,7 +49,7 @@
         <el-button @click="dialogVisible = false">
           {{ $t('lightbox.cancel') }}
         </el-button>
-        <el-button type="primary" @click="confirmPermit">
+        <el-button :loading="actionLoading" type="primary" @click="confirmPermit">
           {{ $t('lightbox.confirm') }}
         </el-button>
       </div>
@@ -65,6 +65,7 @@ import { getPermitList } from '@/utils/permitsList'
 export default {
   data() {
     return {
+      actionLoading: false,
       permitOption,
       permitOptionList: [],
       checked: undefined,
@@ -159,6 +160,10 @@ export default {
     },
     // 送出
     confirmPermit() {
+      if (this.actionLoading) {
+        return
+      }
+      this.actionLoading = true
       if (this.dialogType === 'edit') {
         if (this.name === '') {
           alert(this.$t('permits.inputName'))
@@ -178,6 +183,7 @@ export default {
             this.dialogVisible = false
             this.clearForm()
             this.getList()
+            this.actionLoading = false
           })
         }
       } else {
@@ -202,6 +208,7 @@ export default {
             this.dialogVisible = false
             this.clearForm()
             this.getList()
+            this.actionLoading = false
           })
         }
       }

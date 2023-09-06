@@ -113,6 +113,7 @@
           </div>
           <!-- 搜尋 -->
           <el-button
+            :loading="loading"
             class="filter-item"
             type="primary"
             icon="el-icon-search"
@@ -221,6 +222,7 @@
 
         <!--表格-->
         <el-table
+          :loading="loading"
           :data="list"
           border
           fit
@@ -382,7 +384,6 @@
 <script>
 import Pagination from '@/components/Pagination'
 import Form from '@/components/Form/index'
-import store from '@/store'
 import router from '@/router'
 import { ygoOptions } from '@/config/ygo.config'
 import { height_limit, KB_limit, width_limit } from '@/config/main'
@@ -422,6 +423,8 @@ export default {
         }
       },
       currentPage: 0,
+      loading: false,
+      actionLoading: false,
       packListQuery: {
         page: 0,
         limit: 0,
@@ -501,6 +504,7 @@ export default {
   },
   methods: {
     getList() {
+      this.loading = true
       if (this.listQuery.filter.atk_l) {
         this.listQuery.filter.atk_l = parseInt(this.listQuery.filter.atk_l)
       }
@@ -513,12 +517,12 @@ export default {
       if (this.listQuery.filter.def_t) {
         this.listQuery.filter.def_t = parseInt(this.listQuery.filter.def_t)
       }
-
       this.listQuery.page = this.currentPage - 1
       callApi('cards', 'list', removeNullAndEmptyString(this.listQuery)).then(
         (res) => {
           this.list = res.list
           this.total = res.total
+          this.loading = false
         }
       )
     },
@@ -540,7 +544,7 @@ export default {
       this.photoId = ''
       this.photoName = ''
       this.photoBase64 = ''
-      this.getImage(row.number)
+      if (row.number) this.getImage(row.number)
       this.editVisible = true
       this.editData.type.options = this.typeOption
       this.editData.star.options = this.starOption
@@ -556,22 +560,30 @@ export default {
       this.editFormData = this.editData
     },
     confirmEdit(data) {
+      if (this.actionLoading) {
+        return
+      }
+      this.actionLoading = true
       data.atk = parseInt(data.atk)
       data.def = parseInt(data.def)
-      if (store.state.settings.showLog) {
-        console.log(data)
-      }
       if (this.formValidate(data)) {
         callApi('cards', 'edit', removeNullAndEmptyString(data))
           .then(() => {
-            // 判斷是否有更換圖片
+            // 判斷是否有上傳圖片
             if (this.photoName && data.number) {
               const imageUploadData = {
-                _id: this.photoId,
                 number: data.number,
                 photo: this.photoBase64
               }
-              return callApi('cardsImage', 'edit', imageUploadData)
+              // 判斷是新增or編輯圖片
+              if (this.photoId) {
+                // 編輯圖片
+                imageUploadData._id = this.photoId
+                return callApi('cardsImage', 'edit', imageUploadData)
+              } else {
+                // 新增圖片
+                return callApi('cardsImage', 'add', imageUploadData)
+              }
             } else {
               return Promise.resolve()
             }
@@ -580,6 +592,7 @@ export default {
             alert(this.$t('alert.editSuccess'))
             this.getList()
             this.editVisible = false
+            this.actionLoading = false
           })
       }
     },
@@ -665,7 +678,6 @@ export default {
     },
     handleCopy(row) {
       delete row['_id']
-      console.log(row)
       row.id = ''
       row.rarity = []
       sessionStorage.setItem('copyCardInfo', JSON.stringify(row))

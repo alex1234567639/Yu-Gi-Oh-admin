@@ -108,6 +108,8 @@ export default {
     date: '最後更新日期',
     photo_pc: 'banner(桌機版)',
     photo_mobile: 'banner(手機版)',
+    choosePhotoPc: '請選擇banner(桌機版)',
+    choosePhotoMobile: '請選擇banner(手機版)',
     url: '連結'
   },
   // 卡片管理

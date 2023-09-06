@@ -1,7 +1,5 @@
 import Vue from 'vue'
 
-import Cookies from 'js-cookie'
-
 import 'normalize.css/normalize.css'
 
 import Element from 'element-ui'
@@ -20,21 +18,12 @@ import './utils/error-log' // error log
 
 import * as filters from './filters' // global filters
 
-/**
- * If you don't want to use mock-server
- * you want to use MockJs for mock api
- * you can execute: mockXHR()
- *
- * Currently MockJs will be used in the production environment,
- * please remove it before going online ! ! !
- */
 if (process.env.NODE_ENV === 'production') {
   const { mockXHR } = require('../mock')
   mockXHR()
 }
 
 Vue.use(Element, {
-  size: Cookies.get('size') || 'medium',
   i18n: (key, value) => i18n.t(key, value)
 })
 

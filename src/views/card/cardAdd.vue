@@ -44,6 +44,7 @@ export default {
   },
   data() {
     return {
+      actionLoading: false,
       ygoOptions,
       tabName: 'card_add',
       packListQuery: {
@@ -134,6 +135,10 @@ export default {
       return result
     },
     confirmAdd(data) {
+      if (this.actionLoading) {
+        return
+      }
+      this.actionLoading = true
       data.id = data.id.toUpperCase()
       data.atk = data.atk ? parseInt(data.atk) : ''
       data.def = data.def ? parseInt(data.def) : ''
@@ -157,12 +162,16 @@ export default {
           .then(() => {
             alert(this.$t('alert.addSuccess'))
             this.clearAdd()
+            this.actionLoading = false
           })
       }
     },
     clearAdd() {
       Object.keys(this.addFormData).forEach((key) => {
-        this.addFormData[key].preset = key === 'rarity' ? [] : ''
+        // 不清除packType
+        if (key !== 'product_information_type') {
+          this.addFormData[key].preset = key === 'rarity' ? [] : ''
+        }
       })
       this.photoName = ''
       this.photoBase64 = ''
