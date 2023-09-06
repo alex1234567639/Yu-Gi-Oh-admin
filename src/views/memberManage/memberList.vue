@@ -56,11 +56,7 @@
             highlight-current-row
             class="table-list"
           >
-            <el-table-column
-              :label="$t('common.no')"
-              align="center"
-              width="60"
-            >
+            <el-table-column :label="$t('common.no')" align="center" width="60">
               <template slot-scope="row">
                 {{ row.$index + 1 + listQuery.page * listQuery.limit }}
               </template>
@@ -74,6 +70,12 @@
             <el-table-column
               :label="$t('memberManage.account')"
               prop="account"
+              align="center"
+              width="160"
+            />
+            <el-table-column
+              :label="$t('memberManage.email')"
+              prop="email"
               align="center"
               width="160"
             />

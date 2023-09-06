@@ -21,6 +21,16 @@
           class="input"
         />
       </el-form-item>
+      <el-form-item :label="'*' + $t('memberManage.email')">
+        <el-input
+          v-model="add_email"
+          autocomplete="off"
+          :placeholder="$t('memberManage.inputEmail')"
+          type="text"
+          maxlength="30"
+          class="input"
+        />
+      </el-form-item>
       <el-form-item :label="'*' + $t('memberManage.account')">
         <el-input
           v-model="add_account"
@@ -77,7 +87,8 @@ export default {
       add_name: '',
       add_account: '',
       add_password: '',
-      add_passwordConfirm: ''
+      add_passwordConfirm: '',
+      add_email: ''
     }
   },
   methods: {
@@ -98,7 +109,8 @@ export default {
           type: this.add_type,
           name: this.add_name,
           account: this.add_account,
-          password: this.add_password
+          password: this.add_password,
+          email: this.add_email
         }
         console.log(data)
         callApi('admin', 'add', data).then((res) => {
