@@ -544,7 +544,7 @@ export default {
       this.photoId = ''
       this.photoName = ''
       this.photoBase64 = ''
-      this.getImage(row.number)
+      if (row.number) this.getImage(row.number)
       this.editVisible = true
       this.editData.type.options = this.typeOption
       this.editData.star.options = this.starOption
@@ -569,14 +569,21 @@ export default {
       if (this.formValidate(data)) {
         callApi('cards', 'edit', removeNullAndEmptyString(data))
           .then(() => {
-            // 判斷是否有更換圖片
+            // 判斷是否有上傳圖片
             if (this.photoName && data.number) {
               const imageUploadData = {
-                _id: this.photoId,
                 number: data.number,
                 photo: this.photoBase64
               }
-              return callApi('cardsImage', 'edit', imageUploadData)
+              // 判斷是新增or編輯圖片
+              if (this.photoId) {
+                // 編輯圖片
+                imageUploadData._id = this.photoId
+                return callApi('cardsImage', 'edit', imageUploadData)
+              } else {
+                // 新增圖片
+                return callApi('cardsImage', 'add', imageUploadData)
+              }
             } else {
               return Promise.resolve()
             }
