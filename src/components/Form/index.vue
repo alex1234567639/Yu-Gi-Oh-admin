@@ -48,6 +48,7 @@
             v-model="item.preset"
             :placeholder="$t('form.pleaseChoose')"
             clearable
+            filterable
           >
             <el-option
               v-for="(option, optionIndex) in item.options"

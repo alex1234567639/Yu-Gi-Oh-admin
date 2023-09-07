@@ -190,6 +190,7 @@
               v-model="listQuery.filter.product_information_type"
               :placeholder="$t('card.product_information_type')"
               clearable
+              filterable
               class="select"
               style="width: 270px"
             >
