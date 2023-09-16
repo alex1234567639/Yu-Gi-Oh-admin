@@ -164,6 +164,8 @@ export default {
             this.clearAdd()
             this.actionLoading = false
           })
+      } else {
+        this.actionLoading = false
       }
     },
     clearAdd() {
