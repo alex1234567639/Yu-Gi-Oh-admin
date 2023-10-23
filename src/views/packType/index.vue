@@ -75,8 +75,12 @@
               width="120"
             >
               <template slot-scope="{ row }">
-                <el-tag v-if="row.status === 0" type="success">{{ $t("packType.published") }}</el-tag>
-                <el-tag v-if="row.status === 1" type="danger">{{ $t("packType.removed") }}</el-tag>
+                <el-tag v-if="row.status === 0" type="success">{{
+                  $t("packType.published")
+                }}</el-tag>
+                <el-tag v-if="row.status === 1" type="danger">{{
+                  $t("packType.removed")
+                }}</el-tag>
               </template>
             </el-table-column>
             <el-table-column
@@ -164,8 +168,16 @@ export default {
       editFormData: {},
       editData: {
         _id: { preset: '' },
-        name: { type: 'long-input', label: this.$t('packType.name'), preset: '' },
-        packType: { type: 'input', label: this.$t('packType.packType'), preset: '' },
+        name: {
+          type: 'long-input',
+          label: this.$t('packType.name'),
+          preset: ''
+        },
+        packType: {
+          type: 'input',
+          label: this.$t('packType.packType'),
+          preset: ''
+        },
         mainType: {
           type: 'select',
           label: this.$t('packType.mainType'),
@@ -194,7 +206,11 @@ export default {
         this.listQuery.filter.status = undefined
       }
       this.listQuery.page = this.currentPage - 1
-      callApi('packType', 'list', removeNullAndEmptyString(this.listQuery)).then((res) => {
+      callApi(
+        'packType',
+        'list',
+        removeNullAndEmptyString(this.listQuery)
+      ).then((res) => {
         this.list = res.list
         this.total = res.total
 
@@ -218,7 +234,7 @@ export default {
     },
     // 編輯
     getPackTypeLabel(value) {
-      const matchedItem = packMainTypeList.find(item => item.value === value)
+      const matchedItem = packMainTypeList.find((item) => item.value === value)
       return matchedItem ? matchedItem.label : '-'
     },
     handleEdit(row) {
@@ -253,9 +269,16 @@ export default {
     formValidate(form) {
       const validationRules = [
         { field: 'name', condition: !form.name, message: 'packType.inputId' },
-        { field: 'packType', condition: !form.packType, message: 'packType.inputName' },
-        { field: 'mainType', condition: !form.mainType, message: 'packType.mainType' },
-        { field: 'status', condition: !form.status, message: 'common.chooseStatus' }
+        {
+          field: 'packType',
+          condition: !form.packType,
+          message: 'packType.inputName'
+        },
+        {
+          field: 'mainType',
+          condition: !form.mainType,
+          message: 'packType.mainType'
+        }
       ]
       for (const rule of validationRules) {
         if (rule.condition) {
