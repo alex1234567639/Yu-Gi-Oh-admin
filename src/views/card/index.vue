@@ -240,6 +240,11 @@
                 class="demo-table-expand"
               >
                 <el-row>
+                  <el-form-item :label="$t('card.image')">
+                    <img class="card-img" :src="`${imgUrl}/api/card-image/cards/${props.row.number}.webp`" alt="">
+                  </el-form-item>
+                </el-row>
+                <el-row>
                   <el-form-item :label="$t('card.effect')">
                     <span
                       style="white-space: pre-wrap"
@@ -434,6 +439,7 @@ export default {
         }
       },
       packList: null,
+      imgUrl: process.env.VUE_APP_IMG_URL,
       // 編輯
       editVisible: false,
       editFormData: {},
@@ -545,7 +551,6 @@ export default {
       this.photoId = ''
       this.photoName = ''
       this.photoBase64 = ''
-      if (row.number) this.getImage(row.number)
       this.editVisible = true
       this.editData.type.options = this.typeOption
       this.editData.star.options = this.starOption
@@ -632,17 +637,6 @@ export default {
       }
       return true
     },
-    // 查看圖片
-    getImage(number) {
-      callApi('cardsImage', 'list', { filter: { number: number }}).then(
-        (res) => {
-          if (res.list.length > 0) {
-            this.photoBase64 = res.list[0].photo
-            this.photoId = res.list[0]['_id']
-          }
-        }
-      )
-    },
     chooseFile(event) {
       if (event.target.files.length === 0) {
         return
@@ -715,6 +709,9 @@ export default {
 }
 .table-list {
   width: fit-content;
+  & .card-img {
+    width: 150px;
+  }
 }
 .pagination {
   max-width: 1100px;
