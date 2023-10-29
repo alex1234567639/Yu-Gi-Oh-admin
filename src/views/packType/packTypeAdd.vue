@@ -14,6 +14,7 @@ import Form from '@/components/Form/index'
 import store from '@/store'
 import { packMainTypeList } from '@/config/main'
 import { callApi } from '@/api/api'
+import { resetPackTypeList } from '@/utils/packTypeList'
 
 export default {
   components: {
@@ -53,7 +54,10 @@ export default {
       this.actionLoading = true
       try {
         if (this.formValidate(data)) {
-          await callApi('packType', 'add', data)
+          await callApi('packType', 'add', data).then(() => {
+            // 將最新的packType存入storage
+            resetPackTypeList()
+          })
           alert(this.$t('alert.addSuccess'))
           this.clearAdd()
           this.$emit('addCompleted')

@@ -138,7 +138,7 @@ import { callApi } from '@/api/api'
 import { removeNullAndEmptyString } from '@/utils/index.js'
 import { packMainTypeList } from '@/config/main'
 import store from '@/store'
-import { setPackTypeList } from '@/utils/packTypeList'
+import { resetPackTypeList } from '@/utils/packTypeList'
 
 export default {
   components: {
@@ -193,6 +193,14 @@ export default {
             { label: this.$t('packType.removed'), value: 1 }
           ]
         }
+      },
+      // 產品包裝列表Query(所有上架中的)
+      packListQuery: {
+        page: 0,
+        limit: 0,
+        filter: {
+          status: 0
+        }
       }
     }
   },
@@ -213,18 +221,6 @@ export default {
       ).then((res) => {
         this.list = res.list
         this.total = res.total
-
-        // 將最新的packType存入storage
-        for (let i = 0; i < this.list.length; i++) {
-          this.productInfoArr.push({
-            label: this.list[i].name,
-            value: this.list[i].packType
-          })
-        }
-        this.productInfoArr = this.productInfoArr.sort((a, b) => {
-          return a.label > b.label ? 1 : -1
-        })
-        setPackTypeList(this.productInfoArr)
         this.loading = false
       })
     },
@@ -256,7 +252,10 @@ export default {
       this.actionLoading = true
       try {
         if (this.formValidate(data)) {
-          await callApi('packType', 'edit', data)
+          await callApi('packType', 'edit', data).then(() => {
+            // 將最新的packType存入storage
+            resetPackTypeList()
+          })
           alert(this.$t('alert.editSuccess'))
           this.getList()
           this.editVisible = false
