@@ -275,7 +275,7 @@ export default {
         },
         {
           field: 'mainType',
-          condition: !form.mainType,
+          condition: !Number.isInteger(form.mainType),
           message: 'packType.mainType'
         }
       ]
