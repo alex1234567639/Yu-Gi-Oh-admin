@@ -57,10 +57,10 @@
             <el-table-column
               :label="$t('article.photo')"
               align="center"
-              width="150"
+              width="180"
             >
               <template slot-scope="{ row }">
-                <img :src="row.photo" alt="" style="width: 120px; height: auto">
+                <img v-if="row.photo" :src="`${imgUrl}/api/card-image/article/${row.photo}`" alt="" style="width: 150px; height: auto">
               </template>
             </el-table-column>
             <el-table-column
@@ -111,7 +111,7 @@
             <el-table-column
               :label="$t('common.action')"
               align="center"
-              width="120"
+              width="100"
               class-name="small-padding fixed-width"
             >
               <template slot-scope="{ row }">
@@ -197,6 +197,7 @@ export default {
         }
       },
       currentPage: 0,
+      imgUrl: process.env.VUE_APP_IMG_URL,
       loading: false,
       actionLoading: false,
       // 編輯

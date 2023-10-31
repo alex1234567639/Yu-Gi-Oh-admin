@@ -45,7 +45,7 @@
                 width="250"
               >
                 <span slot-scope="{row}">
-                  <img :src="row.photo_pc" style="width:220px" alt="">
+                  <img v-if="row.photo_pc" :src="`${imgUrl}/api/card-image/banner/${row.photo_pc}`" style="width:220px" alt="">
                 </span>
               </el-table-column>
               <el-table-column
@@ -55,7 +55,7 @@
                 width="200"
               >
                 <span slot-scope="{row}">
-                  <img :src="row.photo_mobile" style="width:160px" alt="">
+                  <img v-if="row.photo_mobile" :src="`${imgUrl}/api/card-image/banner/${row.photo_mobile}`" style="width:160px" alt="">
                 </span>
               </el-table-column>
               <el-table-column
@@ -174,6 +174,7 @@ export default {
           end_date: ''
         }
       },
+      imgUrl: process.env.VUE_APP_IMG_URL,
       loading: false,
       actionLoading: false,
       // 編輯
