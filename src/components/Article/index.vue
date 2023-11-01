@@ -369,7 +369,7 @@ export default {
 
         // 帶入預設值
         Object.keys(this.editData).forEach((key) => {
-          this.editData[key].preset = res.list[0][key]
+          this.editData[key].preset = key === 'photo' ? '' : res.list[0][key]
         })
         this.editFormData = this.editData
       })

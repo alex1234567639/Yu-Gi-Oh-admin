@@ -66,18 +66,20 @@
         <el-form-item v-if="item.type === 'photo'" :label="item.label">
           <label class="photo-container">
             <input
+              :key="count"
               class="photo-btn"
               type="file"
               accept="image/*"
               @change="chooseFile($event)"
             >
-            {{ formData.photo.preset ? photoName : $t("form.choosePhoto") }}
+            {{ $t('form.choosePhoto') }}
           </label>
           <img
             class="upload-photo"
             :src="formData.photo.preset"
             alt=""
           >
+          <div class="photo-notice">{{ $t('article.image_notice') }}</div>
         </el-form-item>
         <!-- 副文本 -->
         <tinymce
@@ -186,9 +188,7 @@ export default {
   data() {
     return {
       ygoOptions,
-      // photo
-      photoName: this.$t('form.choosePhoto'),
-      imgSrc: ''
+      count: 0
     }
   },
   computed: {
@@ -213,7 +213,6 @@ export default {
     handleCancel() {
       this.$emit('cancel')
     },
-    // photo
     chooseFile(event) {
       if (event.target.files.length === 0) {
         return
@@ -231,7 +230,7 @@ export default {
           event,
           function(result) {
             vm.formData.photo.preset = result.result
-            vm.photoName = result.name
+            vm.count++
           },
           function(err) {
             alert(vm.$t('alert.' + err))
@@ -321,6 +320,10 @@ export default {
       overflow: hidden;
       z-index: -1;
     }
+  }
+  & .photo-notice {
+    color: red;
+    font-size: 12px;
   }
   & .upload-photo {
     width: 150px;

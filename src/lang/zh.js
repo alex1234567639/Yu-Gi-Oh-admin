@@ -209,7 +209,8 @@ export default {
     to_top: '置頂',
     inputContent: '內容不得為空',
     inputPhoto: '請上傳封面圖',
-    inputTitle: '請輸入文章標題'
+    inputTitle: '請輸入文章標題',
+    image_notice: '*若不更新則不需上傳圖片'
   },
   // 戰報介紹
   battlePaper: {
