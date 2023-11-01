@@ -71,6 +71,7 @@ export default {
         data.photo_mobile = this.addMbPhoto
         if (this.formValidate(data)) {
           await callApi('banner', 'add', removeNullAndEmptyString(data))
+          alert(this.$t('alert.addSuccess'))
           this.$emit('addCompleted')
           this.clearAdd()
         }
