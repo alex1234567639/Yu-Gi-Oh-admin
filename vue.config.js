@@ -6,7 +6,7 @@ function resolve(dir) {
   return path.join(__dirname, dir);
 }
 
-const name = defaultSettings.title || 'YGO卡壇'
+const name = defaultSettings.title || "YGO卡壇";
 
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
@@ -38,7 +38,7 @@ module.exports = {
     },
     proxy: {
       [process.env.VUE_APP_BASE_API + "/api"]: {
-        target: "http://localhost:3300",
+        target: "http://172.233.65.87:3300",
         changeOrigin: true,
         pathRewrite: {
           ["^" + process.env.VUE_APP_BASE_API]: "",
