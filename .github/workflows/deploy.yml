@@ -17,7 +17,7 @@ jobs:
           node-version: 18.12.1
           cache: "npm"
       - run: |
-          npm run install
+          npm install
           npm run build:prod
       - name: List files in dist directory
         run: ls -R dist
