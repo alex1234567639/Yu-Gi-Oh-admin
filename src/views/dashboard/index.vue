@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <span class="text1">Welcome!</span>
+    <span class="text1">Welcome</span>
     <span class="text2">Welcome!</span>
     <span class="text3">Welcome!</span>
     <span class="text4">Welcome!</span>
