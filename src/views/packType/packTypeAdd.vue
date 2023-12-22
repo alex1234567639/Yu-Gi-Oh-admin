@@ -39,6 +39,15 @@ export default {
           label: this.$t('packType.mainType'),
           preset: '',
           options: packMainTypeList
+        },
+        status: {
+          type: 'select',
+          label: this.$t('common.status'),
+          preset: 0,
+          options: [
+            { label: this.$t('article.published'), value: 0 },
+            { label: this.$t('article.removed'), value: 1 }
+          ]
         }
       }
     }

@@ -241,7 +241,11 @@
               >
                 <el-row>
                   <el-form-item :label="$t('card.image')">
-                    <img class="card-img" :src="`${imgUrl}/api/card-image/cards/${props.row.number}.webp`" alt="">
+                    <img
+                      class="card-img"
+                      :src="`${imgUrl}/api/card-image/cards/${props.row.number}.webp`"
+                      alt=""
+                    >
                   </el-form-item>
                 </el-row>
                 <el-row>
@@ -512,16 +516,16 @@ export default {
   methods: {
     getList() {
       this.loading = true
-      if (this.listQuery.filter.atk_l) {
+      if (this.listQuery.filter.atk_l >= 0) {
         this.listQuery.filter.atk_l = parseInt(this.listQuery.filter.atk_l)
       }
-      if (this.listQuery.filter.atk_t) {
+      if (this.listQuery.filter.atk_t >= 0) {
         this.listQuery.filter.atk_t = parseInt(this.listQuery.filter.atk_t)
       }
-      if (this.listQuery.filter.def_l) {
+      if (this.listQuery.filter.def_l >= 0) {
         this.listQuery.filter.def_l = parseInt(this.listQuery.filter.def_l)
       }
-      if (this.listQuery.filter.def_t) {
+      if (this.listQuery.filter.def_t >= 0) {
         this.listQuery.filter.def_t = parseInt(this.listQuery.filter.def_t)
       }
       this.listQuery.page = this.currentPage - 1
