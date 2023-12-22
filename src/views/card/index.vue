@@ -516,16 +516,16 @@ export default {
   methods: {
     getList() {
       this.loading = true
-      if (this.listQuery.filter.atk_l >= 0) {
+      if (parseInt(this.listQuery.filter.atk_l) >= 0) {
         this.listQuery.filter.atk_l = parseInt(this.listQuery.filter.atk_l)
       }
-      if (this.listQuery.filter.atk_t >= 0) {
+      if (parseInt(this.listQuery.filter.atk_t) >= 0) {
         this.listQuery.filter.atk_t = parseInt(this.listQuery.filter.atk_t)
       }
-      if (this.listQuery.filter.def_l >= 0) {
+      if (parseInt(this.listQuery.filter.def_l) >= 0) {
         this.listQuery.filter.def_l = parseInt(this.listQuery.filter.def_l)
       }
-      if (this.listQuery.filter.def_t >= 0) {
+      if (parseInt(this.listQuery.filter.def_t) >= 0) {
         this.listQuery.filter.def_t = parseInt(this.listQuery.filter.def_t)
       }
       this.listQuery.page = this.currentPage - 1
