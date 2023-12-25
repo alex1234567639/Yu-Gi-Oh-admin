@@ -140,8 +140,8 @@ export default {
       }
       this.actionLoading = true
       data.id = data.id.toUpperCase()
-      data.atk = data.atk ? parseInt(data.atk) : ''
-      data.def = data.def ? parseInt(data.def) : ''
+      data.atk = parseInt(data.atk) >= 0 ? parseInt(data.atk) : ''
+      data.def = parseInt(data.def) >= 0 ? parseInt(data.def) : ''
       if (store.state.settings.showLog) {
         console.log(data)
       }
