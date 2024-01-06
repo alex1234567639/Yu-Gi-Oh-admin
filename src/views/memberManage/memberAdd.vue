@@ -143,7 +143,7 @@ export default {
         },
         {
           field: 'password',
-          condition: validPlatformPassword(form.password),
+          condition: !validPlatformPassword(form.password),
           message: 'memberManage.inputValidPassword'
         },
         {
