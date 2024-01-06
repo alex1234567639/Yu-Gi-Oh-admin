@@ -126,11 +126,31 @@ export default {
     // 表單驗證
     formValidate(form) {
       const validationRules = [
-        { field: 'type', condition: !form.type, message: 'memberManage.chooseType' },
-        { field: 'name', condition: !form.name, message: 'memberManage.inputName' },
-        { field: 'account', condition: !form.account, message: 'memberManage.inputAccount' },
-        { field: 'password', condition: validPlatformPassword(form.password), message: 'memberManage.inputValidPassword' },
-        { field: 'passwordConfirm', condition: form.password !== this.add_passwordConfirm, message: 'memberManage.differentPassword' }
+        {
+          field: 'type',
+          condition: !Number.isInteger(form.type),
+          message: 'memberManage.chooseType'
+        },
+        {
+          field: 'name',
+          condition: !form.name,
+          message: 'memberManage.inputName'
+        },
+        {
+          field: 'account',
+          condition: !form.account,
+          message: 'memberManage.inputAccount'
+        },
+        {
+          field: 'password',
+          condition: validPlatformPassword(form.password),
+          message: 'memberManage.inputValidPassword'
+        },
+        {
+          field: 'passwordConfirm',
+          condition: form.password !== this.add_passwordConfirm,
+          message: 'memberManage.differentPassword'
+        }
       ]
       for (const rule of validationRules) {
         if (rule.condition) {
