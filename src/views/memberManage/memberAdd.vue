@@ -104,7 +104,8 @@ export default {
           name: this.add_name,
           account: this.add_account,
           password: this.add_password,
-          email: this.add_email
+          email: this.add_email,
+          create_date: new Date()
         }
         if (this.formValidate(data)) {
           await callApi('admin', 'add', data)

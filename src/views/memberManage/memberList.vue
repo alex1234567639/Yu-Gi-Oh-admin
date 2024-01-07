@@ -112,7 +112,7 @@
               width="140"
             >
               <template slot-scope="{ row }">
-                <span>{{ row.create_date | parseTime('{y}-{m}-{d}') }}</span>
+                <span>{{ new Date(row.create_date).toDateString() }}</span>
               </template>
             </el-table-column>
             <el-table-column
