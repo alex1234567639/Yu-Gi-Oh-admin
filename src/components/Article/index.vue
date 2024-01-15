@@ -134,7 +134,7 @@
           />
 
           <!-- 編輯 -->
-          <el-dialog :title="$t('common.edit')" :visible.sync="editVisible" width="1100px">
+          <el-dialog :key="editCount" :title="$t('common.edit')" :visible.sync="editVisible" width="1100px">
             <Form
               :form-data="editFormData"
               @emitData="confirmEdit"
@@ -201,6 +201,7 @@ export default {
       loading: false,
       actionLoading: false,
       // 編輯
+      editCount: 0,
       editVisible: false,
       editFormData: {},
       editData: {
@@ -358,6 +359,7 @@ export default {
     },
     // 編輯
     handleEdit(row) {
+      this.editCount++
       callApi(this.detailData.path, 'articleList', {
         page: 0,
         limit: 1,
@@ -365,13 +367,12 @@ export default {
           _id: row._id
         }
       }).then((res) => {
-        this.editVisible = true
-
         // 帶入預設值
         Object.keys(this.editData).forEach((key) => {
           this.editData[key].preset = key === 'photo' ? '' : res.list[0][key]
         })
         this.editFormData = this.editData
+        this.editVisible = true
       })
     },
     async confirmEdit(data) {
