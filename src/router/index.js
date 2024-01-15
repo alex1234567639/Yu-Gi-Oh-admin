@@ -317,23 +317,6 @@ export const asyncRoutes = [
       }
     ]
   },
-  // 戰報管理
-  {
-    path: '/battle_paper',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/battlePaper/index'),
-        name: 'battle_paper',
-        meta: {
-          title: 'battlePaper',
-          icon: 'excel',
-          roles: ['battle_paper']
-        }
-      }
-    ]
-  },
   // 行事曆
   {
     path: '/calendar',
