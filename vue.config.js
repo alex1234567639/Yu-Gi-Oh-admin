@@ -36,6 +36,7 @@ module.exports = {
       warnings: false,
       errors: true,
     },
+    // http://172.233.65.87:3300
     proxy: {
       [process.env.VUE_APP_BASE_API + "/api"]: {
         target: "http://172.233.65.87:3300",
