@@ -129,7 +129,7 @@ export default {
         body_class: 'panel-body ',
         object_resizing: false,
         toolbar: this.toolbar.length > 0 ? this.toolbar : toolbar,
-        fontsize_formats: '1.2rem 1.3rem 1.4rem 1.5rem 1.6rem 1.7rem 1.8rem 1.9rem 2rem',
+        fontsize_formats: '16px 17px 18px 20px 22px 24px 26px 28px 30px',
         menubar: this.menubar,
         plugins: plugins,
         end_container_on_empty_block: true,
