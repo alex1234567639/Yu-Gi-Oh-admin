@@ -13,8 +13,8 @@ export default {
   data() {
     return {
       detailData: {
-        list: this.$t('usefulCardIntroduction.strategyList'),
-        add: this.$t('usefulCardIntroduction.strategyAdd'),
+        list: this.$t('metaDeck.list'),
+        add: this.$t('metaDeck.add'),
         type: null,
         path: 'metaDeck'
       }
