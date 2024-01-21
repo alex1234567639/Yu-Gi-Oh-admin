@@ -81,16 +81,6 @@ export default {
         { id: 'series_story_edit', label: i18n.t('permits.series_story_edit'), disabled: true }
       ]
     },
-    // 戰報管理
-    {
-      id: 'battle_paper',
-      label: i18n.t('permits.battle_paper'),
-      disabled: true,
-      children: [
-        { id: 'battle_paper_add', label: i18n.t('permits.battle_paper_add'), disabled: true },
-        { id: 'battle_paper_edit', label: i18n.t('permits.battle_paper_edit'), disabled: true }
-      ]
-    },
     // 行事曆
     {
       id: 'calendar',
@@ -177,9 +167,6 @@ export default {
     series_story: false,
     series_story_add: false,
     series_story_edit: false,
-    battle_paper: false,
-    battle_paper_add: false,
-    battle_paper_edit: false,
     calendar: false,
     calendar_add: false,
     calendar_edit: false,
