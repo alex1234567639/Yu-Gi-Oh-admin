@@ -128,6 +128,9 @@
                 <el-tag v-if="row.status === 1" type="danger">{{
                   $t("memberManage.blocked")
                 }}</el-tag>
+                <el-tag v-if="row.status === 2" type="danger">{{
+                  $t("memberManage.inValidate")
+                }}</el-tag>
               </template>
             </el-table-column>
             <el-table-column

@@ -75,6 +75,7 @@ export default {
     chooseStatus: '選擇狀態',
     normal: '使用中',
     blocked: '停用中',
+    inValidate: '驗證中',
     chooseType: '選擇類型',
     manager: '管理者',
     blogAdminUser: '前後台用戶',
