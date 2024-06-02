@@ -13,6 +13,7 @@
             >
               <el-option :label="$t('memberManage.normal')" :value="0" />
               <el-option :label="$t('memberManage.blocked')" :value="1" />
+              <el-option :label="$t('memberManage.inValidate')" :value="2" />
             </el-select>
             <el-select
               v-model="listQuery.filter.type"
@@ -193,6 +194,10 @@
                 >
                   <el-option :label="$t('memberManage.normal')" :value="0" />
                   <el-option :label="$t('memberManage.blocked')" :value="1" />
+                  <el-option
+                    :label="$t('memberManage.inValidate')"
+                    :value="2"
+                  />
                 </el-select>
               </el-form-item>
             </el-form>
