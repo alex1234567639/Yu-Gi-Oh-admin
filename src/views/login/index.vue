@@ -113,8 +113,8 @@ export default {
     }
     return {
       loginForm: {
-        username: 'alex2223',
-        password: 'alex2223',
+        username: '',
+        password: '',
         captcha: ''
       },
       loginRules: {
