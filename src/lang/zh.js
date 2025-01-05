@@ -127,6 +127,7 @@ export default {
     effect: '效果',
     product_information_type: '包裝分類',
     rarity: '稀有度',
+    no_choose: '未選擇',
     image: '卡圖',
     checkImage: '查看卡圖',
     inputId: '請輸入卡號',

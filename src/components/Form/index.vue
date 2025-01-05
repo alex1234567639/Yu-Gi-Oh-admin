@@ -124,6 +124,7 @@
             <div slot="header" class="item-title">
               {{ $t("card.rarity") }}
             </div>
+            <div v-if="formData.rarity.preset.length === 0" class="no-choose">{{ $t("card.no_choose") }}</div>
             <el-tag
               v-for="(rarity, rarityIndex) in item.preset"
               :key="rarity"
@@ -135,7 +136,6 @@
               {{ rarity }}
             </el-tag>
           </div>
-
           <el-card class="tag-selection-box">
             <div
               v-for="item in ygoOptions.rare"
@@ -194,6 +194,29 @@ export default {
   computed: {
     tagList() {
       return store.state.tagList
+    }
+  },
+  watch: {
+    // 若輸入卡號則自動搜尋相對應的包裝分類
+    'formData.id.preset': {
+      handler(newVal, oldVal) {
+        if (this.formData.id && this.formData.id.preset) {
+          // 判斷值是否符合 "4個英文或數字 + '-'" 格式
+          const regex = /^[A-Za-z0-9]{4}-/
+          if (regex.test(newVal) && this.formData.product_information_type) {
+            // 提取前4個英文字母
+            const prefix = newVal.split('-')[0]
+            // 遍歷 product_information_type 的 options，找出符合的項目
+            const matchingOption = this.formData.product_information_type.options.find(option =>
+              option.value === prefix
+            )
+            if (matchingOption) {
+              this.formData.product_information_type.preset = matchingOption.value
+            }
+          }
+        }
+      },
+      immediate: true
     }
   },
   mounted() {
@@ -335,6 +358,11 @@ export default {
   }
   & .tag-container {
     margin: 20px 0;
+    & .no-choose {
+      padding: 8px 0;
+      font-size: 14px;
+      color: grey;
+    }
     & .tag {
       margin-right: 10px;
     }
